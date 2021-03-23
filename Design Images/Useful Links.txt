@@ -1,0 +1,14 @@
+https://davengrace.com/cgi-bin/cspace.pl -conversion site
+
+The RGB in our thing is using the SRGB [0,1] format converted to Hex
+
+https://en.wikipedia.org/wiki/SRGB
+https://en.wikipedia.org/wiki/SRGB#/media/File:SRGB_gamma.svg
+
+I'm hoping this is about turning SRGB' to SRGB
+
+
+https://github.com/sk-Prime/Pycker/blob/master/Pycker/Pycker.pyw - colour picker 
+
+app code for colour picker
+
