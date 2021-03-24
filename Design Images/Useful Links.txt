@@ -1,6 +1,8 @@
 https://davengrace.com/cgi-bin/cspace.pl -conversion site
 
-The RGB in our thing is using the SRGB [0,1] format converted to Hex
+http://davengrace.com/dave/cspace/ - I think this is the working link
+
+The RGB in our thing wants to be using the SRGB [0,1] format converted to Hex
 
 https://en.wikipedia.org/wiki/SRGB
 https://en.wikipedia.org/wiki/SRGB#/media/File:SRGB_gamma.svg
