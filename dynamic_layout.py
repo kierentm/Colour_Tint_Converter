@@ -9,6 +9,7 @@ root.title("Colour Tint Converter")
 root.geometry('450x400')
 tab_control = ttk.Notebook()
 main = ttk.Frame(tab_control, borderwidth=5)
+
 main_content_1 = ttk.Frame(main, borderwidth=10, relief="groove")
 
 settings = ttk.Frame(tab_control, borderwidth=5)
