@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
+from convert import nonlinearsrgbtolinear
+import webcolors
 
 root = tk.Tk()
 root.geometry("400x400")
@@ -49,9 +51,16 @@ class RemovableTint(tk.Frame):
         self.remove.pack(fill="both", side="left")
 
     def hex_conversion(self):
-        # TODO: Combine with Alex's function
-        hex_value = "DUMMYFFFFFFF"
-        self.hex_entry_var.set(hex_value)
+        r_nonlin = float(self.r_spin.get())
+        g_nonlin = float(self.g_spin.get())
+        b_nonlin = float(self.b_spin.get())
+        rgb_nonlin = (r_nonlin, g_nonlin, b_nonlin)
+        rgb_linear = nonlinearsrgbtolinear(rgb_nonlin)
+        hexvals = webcolors.rgb_to_hex(rgb_linear)
+        self.hex_entry_var.set(hexvals)
+        self.hex_spin.config({"background": self.hex_spin.get()})
+        # TODO: Create box with colour next to hex value (to prevent text becoming unreadable)
+        # TODO: Need to check hex value as might be a rounding error when producing rgb8 values
 
     def remove(self):
         RemovableTint.instances.remove(self)
