@@ -93,11 +93,12 @@ class RemovableTint(tk.Frame):
         # self.colour_tint_name = tk.Entry(self, width=15, font="Calibri")
         self.colour_tint_name = EntryWithPlaceholder(self, "Colour Name", width=15)
         self.r_spin = tk.Entry(self, width=4, font="Calibri")
+        # self.r_spin = EntryWithPlaceholder(self, "0", width=4)
         self.g_spin = tk.Entry(self, width=4, font="Calibri")
         self.b_spin = tk.Entry(self, width=4, font="Calibri")
-        self.hex_spin = tk.Entry(self, width=8, font="Calibri", textvariable=self.hex_entry_var)
+        self.hex_spin = tk.Entry(self, width=8, font="Calibri", textvariable=self.hex_entry_var, state="disabled")
         self.colour_spin = tk.Entry(self, width=4)
-        self.update = tk.Button(self, text="Update", font="Calibri", command=self.hex_conversion)
+        # self.update = tk.Button(self, text="Update", font="Calibri", command=self.hex_conversion)
         self.remove = tk.Button(self, font="Calibri", text="X", command=self.remove)
 
         self.colour_tint_name.pack(fill="both", side="left", expand=True)
@@ -106,7 +107,7 @@ class RemovableTint(tk.Frame):
         self.b_spin.pack(fill="both", side="left")
         self.hex_spin.pack(fill="both", side="left")
         self.colour_spin.pack(fill="both", side="left")
-        self.update.pack(fill="both", side="left")
+        # self.update.pack(fill="both", side="left")
         self.remove.pack(fill="both", side="left")
         # TODO: Create box with colour next to hex value (to prevent text becoming unreadable)
 
@@ -168,6 +169,11 @@ def filewrite():
     file1.close()
 
 
+def on_key_press(event):
+    # Enter key
+    if event.keycode == 13:
+        add_frame()
+
 # TODO: Choose output file
 
 # TODO: Add Column names
@@ -179,4 +185,6 @@ btn3 = tk.Button(home_frame, text="Fetch all")
 btn.pack(side="bottom", fill=tk.X)
 btn2.pack(side="bottom", fill=tk.X)
 btn3.pack(side="bottom", fill=tk.BOTH)
+
+root.bind('<KeyPress>', on_key_press)
 home_frame.mainloop()
