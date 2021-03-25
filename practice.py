@@ -3,6 +3,8 @@ from tkinter import ttk
 from convert import nonlinearsrgbtolinear
 import webcolors
 
+# TODO: Add Comments
+
 root = tk.Tk()
 root.geometry("400x400")
 
@@ -25,9 +27,12 @@ tab_parent.add(about_frame, text="About")
 # Pack Tabs into Layout
 tab_parent.pack(expand=1, fill="both")
 
+# TODO: Fill in about
 
 class RemovableTint(tk.Frame):
     instances = []
+
+    # TODO: Add Column names
 
     def __init__(self, parent_frame):
         RemovableTint.instances.append(self)
