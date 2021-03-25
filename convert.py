@@ -8,11 +8,11 @@ def nonlinearsrgbtolinear(nlsrgb):
             # Converts SRGB Linear to SRGB Non-Linear
             lvalue = nlvalue * 12.92
             # Converts Non-Linear SRGB to SRGB8 and ints
-            value8 = int(255 * lvalue)
+            value8 = int(256 * lvalue)
             lsrgb.append(value8)
         else:
             lvalue = 1.055 * nlvalue ** (1 / 2.4) - 0.055
-            value8 = int(255 * lvalue)
+            value8 = int(256 * lvalue)
             lsrgb.append(value8)
     # Returns int tuple for entry into webcolor function
     return tuple(lsrgb)

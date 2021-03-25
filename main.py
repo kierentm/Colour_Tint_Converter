@@ -19,6 +19,8 @@ home_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
 settings_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
 hotkeys_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
 about_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
+btn_frame_left = ttk.Frame(home_frame, borderwidth=5, relief="groove")
+btn_frame_right = ttk.Frame(home_frame, borderwidth=5, relief="groove")
 
 # Add Tabs to Tab Parent
 tab_parent.add(home_frame, text="Home")
@@ -84,7 +86,7 @@ class RemovableTint(tk.Frame):
         rgb_nonlin = (r_nonlin, g_nonlin, b_nonlin)
         rgb_linear = nonlinearsrgbtolinear(rgb_nonlin)
         hexvals = webcolors.rgb_to_hex(rgb_linear)
-        self.hex_entry_var.set(hexvals)
+        self.hex_entry_var.set(hexvals.upper())
         #self.hex_spin.config({"background": self.hex_spin.get()}) Adds colour to main box
         self.colour_spin.config({"background": self.hex_spin.get()}) #  Adds colour to side box
         # TODO: Need to check hex value as might be a rounding error when producing rgb8 values (and test generally)
@@ -100,20 +102,33 @@ def add_frame():
     RemovableTint(home_frame).pack(fill=tk.X)
     # print(RemovableTint.instances)
 
+    #maybe nuke
 
-def fetch_all():
-    # TODO: Loop through instances to fetch all data
+
+def filewrite():
+    file1 = open("Text"+"_Colors.txt", "w+")
     for i in RemovableTint.instances:
-        print(i)
+        file1.write(f"Colour Name = {i.colour_tint_name.get()}\n")
+        file1.write(i.r_spin.get())
+        file1.write(i.g_spin.get())
+        file1.write(i.b_spin.get())
+        file1.write(i.hex_spin.get())
 
+    item_name = ""
+
+    #L = [item_name+"\n", "R = 0.1\n", "G = 0.1\n", "B = 0.1\n", "#FFFFFF"]
+    #file1.writelines(L)
+    file1.close()
 
 # TODO: Choose output file
 
 # TODO: Add Column names
-btn = tk.Button(home_frame, text="Add Entry", width=5, command=add_frame)
-btn2 = tk.Button(home_frame, text="List Instances", command=fetch_all)
 
+btn = tk.Button(home_frame, text="Add Entry", width=5, command=add_frame)
+btn2 = tk.Button(home_frame, text="Export .txt", command=filewrite)
+btn3 = tk.Button(home_frame, text="Fetch all")
 
 btn.pack(side="bottom", fill=tk.X)
 btn2.pack(side="bottom", fill=tk.X)
+btn3.pack(side="bottom", fill=tk.BOTH)
 home_frame.mainloop()
