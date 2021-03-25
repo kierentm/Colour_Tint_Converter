@@ -39,8 +39,10 @@ tab_parent.pack(expand=1, fill="both")
 
 # TODO: Add Comments
 # TODO: Add program name and icon
-
+# TODO: make text white when all three numbers are below 0.1 (practically black)
+# TODO: Figure out if entry boxes can have grey text label when nothing is in the box
 # TODO: Add colour picker tool
+
 
 class RemovableTint(tk.Frame):
     instances = []
