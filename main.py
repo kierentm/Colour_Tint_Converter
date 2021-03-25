@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from convert import nonlinearsrgbtolinear
 import webcolors
+import webbrowser
 
 # TODO: Currently setting root geometry twice
 
@@ -181,7 +182,7 @@ def filewrite():
     # L = [item_name+"\n", "R = 0.1\n", "G = 0.1\n", "B = 0.1\n", "#FFFFFF"]
     # file1.writelines(L)
     file1.close()
-
+    webbrowser.open("Text_Colors.txt")
 
 # Setting up global key binds
 def on_key_press(event):
