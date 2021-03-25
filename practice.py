@@ -3,9 +3,10 @@ from tkinter import ttk
 from convert import nonlinearsrgbtolinear
 import webcolors
 
+# TODO: Currently setting root geometry twice
 
 root = tk.Tk()
-root.geometry("400x400")
+#  root.geometry("400x400")
 
 root.title("Colour Tint Converter")
 root.geometry('450x400')
