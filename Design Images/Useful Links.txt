@@ -9,7 +9,6 @@ https://en.wikipedia.org/wiki/SRGB#/media/File:SRGB_gamma.svg
 
 I'm hoping this is about turning SRGB' to SRGB
 
-
 https://github.com/sk-Prime/Pycker/blob/master/Pycker/Pycker.pyw - colour picker 
 
 app code for colour picker

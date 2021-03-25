@@ -3,7 +3,6 @@ from tkinter import ttk
 from convert import nonlinearsrgbtolinear
 import webcolors
 
-# TODO: Add Comments
 
 root = tk.Tk()
 root.geometry("400x400")
@@ -29,10 +28,26 @@ tab_parent.pack(expand=1, fill="both")
 
 # TODO: Fill in about
 
+# TODO: Settings
+# TODO: Keep window on top toggle
+# TODO: Choose output file
+# TODO: Toggle Dark mode
+
+# TODO: Add hotkeys (update all colours, toggle keep on top .etc)
+
+# TODO: Output colours to txt file button
+
+# TODO: Add Comments
+# TODO: Add program name and icon
+
+# TODO: Add colour picker tool
+
 class RemovableTint(tk.Frame):
     instances = []
 
     # TODO: Add Column names
+    # TODO: Remove redundant self. tags
+    # TODO: Refactor some names (eg. spin)
 
     def __init__(self, parent_frame):
         RemovableTint.instances.append(self)
@@ -80,11 +95,9 @@ def add_frame():
 
 
 def fetch_all():
-    # TODO: loop through instances to fetch all data
+    # TODO: Loop through instances to fetch all data
     for i in RemovableTint.instances:
-        name = i.colour_tint_name.get()
-        hex_spin = i.hex_spin.get()
-        print(f"Name: {name}, {hex_spin}")
+        print(i)
 
 
 btn = tk.Button(home_frame, text="Add Entry", width=5, command=add_frame)
