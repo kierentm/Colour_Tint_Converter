@@ -52,13 +52,12 @@ AboutContent.grid(column=0, row=0)
 
 # Class to generate placeholder objects
 class EntryWithPlaceholder(tk.Entry):
-    def __init__(self, master=None, placeholder="_", color='grey', width=5, font="Calibri"):
+    def __init__(self, master=None, placeholder="_", color='grey', font="Calibri"):
         super().__init__(master)
 
         self.placeholder = placeholder
         self.placeholder_color = color
         self.default_fg_color = self['fg']
-        self.width = width
         self.font = font
 
         self.bind("<FocusIn>", self.foc_in)
@@ -80,26 +79,36 @@ class EntryWithPlaceholder(tk.Entry):
             self.put_placeholder()
 
 
+# Class to generate tint frame objects
 class RemovableTint(tk.Frame):
     instances = []
 
     # TODO: Refactor some names (eg. spin)
 
     def __init__(self, parent_frame):
+        # Adds instance to list of instances
         RemovableTint.instances.append(self)
+
         # TODO: Remove redundant self. tags
+        # Initialise all entry boxes and buttons
         tk.Frame.__init__(self, parent_frame, height=5, pady=1)
         self.hex_entry_var = tk.StringVar()
-        # self.colour_tint_name = tk.Entry(self, width=15, font="Calibri")
-        self.colour_tint_name = EntryWithPlaceholder(self, "Colour Name", width=15)
-        self.r_spin = tk.Entry(self, width=4, font="Calibri")
-        # self.r_spin = EntryWithPlaceholder(self, "0", width=4)
-        self.g_spin = tk.Entry(self, width=4, font="Calibri")
-        self.b_spin = tk.Entry(self, width=4, font="Calibri")
+        self.colour_tint_name = EntryWithPlaceholder(self, "Colour Name")
+        self.r_spin = EntryWithPlaceholder(self, "0")
+        self.g_spin = EntryWithPlaceholder(self, "0")
+        self.b_spin = EntryWithPlaceholder(self, "0")
         self.hex_spin = tk.Entry(self, width=8, font="Calibri", textvariable=self.hex_entry_var, state="disabled")
         self.colour_spin = tk.Entry(self, width=4)
-        # self.update = tk.Button(self, text="Update", font="Calibri", command=self.hex_conversion)
         self.remove = tk.Button(self, font="Calibri", text="X", command=self.remove)
+
+        # Resize widgets (workaround to sizing bug)
+        self.r_spin.config(width=4)
+        self.g_spin.config(width=4)
+        self.b_spin.config(width=4)
+        self.hex_spin.config(width=8)
+
+        # Set the cursor to the name box when initializing a tint frame
+        self.colour_tint_name.focus_set()
 
         self.colour_tint_name.pack(fill="both", side="left", expand=True)
         self.r_spin.pack(fill="both", side="left")
@@ -107,20 +116,19 @@ class RemovableTint(tk.Frame):
         self.b_spin.pack(fill="both", side="left")
         self.hex_spin.pack(fill="both", side="left")
         self.colour_spin.pack(fill="both", side="left")
-        # self.update.pack(fill="both", side="left")
         self.remove.pack(fill="both", side="left")
         # TODO: Create box with colour next to hex value (to prevent text becoming unreadable)
 
-        # run foc_in function when the cursor is "focus in"
-        self.r_spin.bind("<FocusIn>", self.focus_change)
-        self.g_spin.bind("<FocusIn>", self.focus_change)
-        self.b_spin.bind("<FocusIn>", self.focus_change)
+        # Bind both tab and left click to
+        self.r_spin.bind("<Tab>", self.focus_change)
+        self.g_spin.bind("<Tab>", self.focus_change)
+        self.b_spin.bind("<Tab>", self.focus_change)
 
-        # run foc_out function when the cursor is "focus in"
-        self.r_spin.bind("<FocusOut>", self.focus_change)
-        self.g_spin.bind("<FocusOut>", self.focus_change)
-        self.b_spin.bind("<FocusOut>", self.focus_change)
+        self.r_spin.bind("<Button-1>", self.focus_change)
+        self.g_spin.bind("<Button-1>", self.focus_change)
+        self.b_spin.bind("<Button-1>", self.focus_change)
 
+    # Get hex value and update colour
     def hex_conversion(self):
         # Try to convert the values
         try:
@@ -141,16 +149,22 @@ class RemovableTint(tk.Frame):
     def focus_change(self, *args):
         self.hex_conversion()
 
+    # Remove current instance from list and visualisation
     def remove(self):
         RemovableTint.instances.remove(self)
         self.destroy()
-        print(self.instances)
+        # print(self.instances)
+
+    # Remove bottom most instance
+    def delete_last(self):
+        self.destroy()
+        RemovableTint.instances.remove(self)
 
 
 # Add frame instance (dynamic addition of widgets)
 def add_frame():
     RemovableTint(home_frame).pack(fill=tk.X)
-    # print(RemovableTint.instances)
+    print(RemovableTint.instances)
 
 
 def filewrite():
@@ -169,14 +183,25 @@ def filewrite():
     file1.close()
 
 
+# Setting up global key binds
 def on_key_press(event):
     # Enter key
     if event.keycode == 13:
         add_frame()
+        RemovableTint.hex_conversion(RemovableTint.instances[-1])
+    # Escape key
+    if event.keycode == 27:
+        # Delete last tint frame instance
+        RemovableTint.instances[-1].delete_last()
+        print(RemovableTint.instances)
+    # Print keypress for debugging
+    print(f"Key Press - char:{event.keycode}, readable: {event.char}")
+
 
 # TODO: Choose output file
 
 # TODO: Add Column names
+
 
 btn = tk.Button(home_frame, text="Add Entry", width=5, command=add_frame)
 btn2 = tk.Button(home_frame, text="Export .txt", command=filewrite)
