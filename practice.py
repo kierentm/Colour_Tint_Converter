@@ -16,17 +16,21 @@ tab_parent = ttk.Notebook(root)
 # Define Tabs - MAIN TABS TO REFERENCE
 home_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
 settings_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
+hotkeys_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
 about_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
 
 # Add Tabs to Tab Parent
 tab_parent.add(home_frame, text="Home")
 tab_parent.add(settings_frame, text="Settings")
+tab_parent.add(hotkeys_frame, text="Hotkeys")
 tab_parent.add(about_frame, text="About")
 
 # Pack Tabs into Layout
 tab_parent.pack(expand=1, fill="both")
 
-# TODO: Fill in about
+# Add content to about frame
+AboutContent = tk.Label(about_frame, text="Tool developed by Kieren Townley-Moss, Jake Broughton and Alex Todd")
+AboutContent.grid(column=0, row=0)
 
 # TODO: Settings
 # TODO: Keep window on top toggle
@@ -38,8 +42,8 @@ tab_parent.pack(expand=1, fill="both")
 # TODO: Output colours to txt file button
 
 # TODO: Add Comments
-# TODO: Add program name and icon
-# TODO: make text white when all three numbers are below 0.1 (practically black)
+# TODO: Add program icon
+# TODO: Make text white when all three numbers are below 0.1 (practically black)
 # TODO: Figure out if entry boxes can have grey text label when nothing is in the box
 # TODO: Add colour picker tool
 
@@ -60,7 +64,8 @@ class RemovableTint(tk.Frame):
         self.r_spin = tk.Entry(self, width=4, font="Calibri")
         self.g_spin = tk.Entry(self, width=4, font="Calibri")
         self.b_spin = tk.Entry(self, width=4, font="Calibri")
-        self.hex_spin = tk.Entry(self, width=10, font="Calibri", textvariable=self.hex_entry_var)
+        self.hex_spin = tk.Entry(self, width=8, font="Calibri", textvariable=self.hex_entry_var)
+        self.colour_spin = tk.Entry(self, width=4)
         self.update = tk.Button(self, text="Update", font="Calibri", command=self.hex_conversion)
         self.remove = tk.Button(self, font="Calibri", text="X", command=self.remove)
 
@@ -69,8 +74,10 @@ class RemovableTint(tk.Frame):
         self.g_spin.pack(fill="both", side="left")
         self.b_spin.pack(fill="both", side="left")
         self.hex_spin.pack(fill="both", side="left")
+        self.colour_spin.pack(fill="both", side="left")
         self.update.pack(fill="both", side="left")
         self.remove.pack(fill="both", side="left")
+        # TODO: Create box with colour next to hex value (to prevent text becoming unreadable)
 
     def hex_conversion(self):
         r_nonlin = float(self.r_spin.get())
@@ -80,8 +87,8 @@ class RemovableTint(tk.Frame):
         rgb_linear = nonlinearsrgbtolinear(rgb_nonlin)
         hexvals = webcolors.rgb_to_hex(rgb_linear)
         self.hex_entry_var.set(hexvals)
-        self.hex_spin.config({"background": self.hex_spin.get()})
-        # TODO: Create box with colour next to hex value (to prevent text becoming unreadable)
+        #self.hex_spin.config({"background": self.hex_spin.get()}) Adds colour to main box
+        self.colour_spin.config({"background": self.hex_spin.get()}) #  Adds colour to side box
         # TODO: Need to check hex value as might be a rounding error when producing rgb8 values (and test generally)
 
     def remove(self):
