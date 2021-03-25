@@ -3,6 +3,8 @@ from tkinter import ttk
 from convert import nonlinearsrgbtolinear
 import webcolors
 
+# TODO: Add Comments
+
 root = tk.Tk()
 root.geometry("400x400")
 
@@ -25,9 +27,12 @@ tab_parent.add(about_frame, text="About")
 # Pack Tabs into Layout
 tab_parent.pack(expand=1, fill="both")
 
+# TODO: Fill in about
 
 class RemovableTint(tk.Frame):
     instances = []
+
+    # TODO: Add Column names
 
     def __init__(self, parent_frame):
         RemovableTint.instances.append(self)
@@ -60,7 +65,7 @@ class RemovableTint(tk.Frame):
         self.hex_entry_var.set(hexvals)
         self.hex_spin.config({"background": self.hex_spin.get()})
         # TODO: Create box with colour next to hex value (to prevent text becoming unreadable)
-        # TODO: Need to check hex value as might be a rounding error when producing rgb8 values
+        # TODO: Need to check hex value as might be a rounding error when producing rgb8 values (and test generally)
 
     def remove(self):
         RemovableTint.instances.remove(self)
