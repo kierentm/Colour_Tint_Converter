@@ -1,3 +1,5 @@
-Colour Name = Red
-181#FFFFFFColour Name = 134
-018#00FFFF
+Colour Name = Colour Name
+100#FF0000Colour Name = Colour Name
+010#00FF00Colour Name = Colour Name
+001#0000FFColour Name = Colour Name
+111#FFFFFF

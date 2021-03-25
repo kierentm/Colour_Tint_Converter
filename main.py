@@ -35,6 +35,7 @@ tab_parent.pack(expand=1, fill="both")
 AboutContent = tk.Label(about_frame, text="Tool developed by Kieren Townley-Moss, Jake Broughton and Alex Todd")
 AboutContent.grid(column=0, row=0)
 
+
 # TODO: Settings
 # TODO: Keep window on top toggle
 # TODO: Toggle Dark mode
@@ -49,6 +50,35 @@ AboutContent.grid(column=0, row=0)
 # TODO: Figure out if entry boxes can have grey text label when nothing is in the box
 # TODO: Add colour picker tool
 
+# Class to generate placeholder objects
+class EntryWithPlaceholder(tk.Entry):
+    def __init__(self, master=None, placeholder="_", color='grey', width=5, font="Calibri"):
+        super().__init__(master)
+
+        self.placeholder = placeholder
+        self.placeholder_color = color
+        self.default_fg_color = self['fg']
+        self.width = width
+        self.font = font
+
+        self.bind("<FocusIn>", self.foc_in)
+        self.bind("<FocusOut>", self.foc_out)
+
+        self.put_placeholder()
+
+    def put_placeholder(self):
+        self.insert(0, self.placeholder)
+        self['fg'] = self.placeholder_color
+
+    def foc_in(self, *args):
+        if self['fg'] == self.placeholder_color:
+            self.delete('0', 'end')
+            self['fg'] = self.default_fg_color
+
+    def foc_out(self, *args):
+        if not self.get():
+            self.put_placeholder()
+
 
 class RemovableTint(tk.Frame):
     instances = []
@@ -60,7 +90,8 @@ class RemovableTint(tk.Frame):
         # TODO: Remove redundant self. tags
         tk.Frame.__init__(self, parent_frame, height=5, pady=1)
         self.hex_entry_var = tk.StringVar()
-        self.colour_tint_name = tk.Entry(self, width=15, font="Calibri")
+        # self.colour_tint_name = tk.Entry(self, width=15, font="Calibri")
+        self.colour_tint_name = EntryWithPlaceholder(self, "Colour Name", width=15)
         self.r_spin = tk.Entry(self, width=4, font="Calibri")
         self.g_spin = tk.Entry(self, width=4, font="Calibri")
         self.b_spin = tk.Entry(self, width=4, font="Calibri")
@@ -79,17 +110,35 @@ class RemovableTint(tk.Frame):
         self.remove.pack(fill="both", side="left")
         # TODO: Create box with colour next to hex value (to prevent text becoming unreadable)
 
+        # run foc_in function when the cursor is "focus in"
+        self.r_spin.bind("<FocusIn>", self.focus_change)
+        self.g_spin.bind("<FocusIn>", self.focus_change)
+        self.b_spin.bind("<FocusIn>", self.focus_change)
+
+        # run foc_out function when the cursor is "focus in"
+        self.r_spin.bind("<FocusOut>", self.focus_change)
+        self.g_spin.bind("<FocusOut>", self.focus_change)
+        self.b_spin.bind("<FocusOut>", self.focus_change)
+
     def hex_conversion(self):
-        r_nonlin = float(self.r_spin.get())
-        g_nonlin = float(self.g_spin.get())
-        b_nonlin = float(self.b_spin.get())
-        rgb_nonlin = (r_nonlin, g_nonlin, b_nonlin)
-        rgb_linear = nonlinearsrgbtolinear(rgb_nonlin)
-        hexvals = webcolors.rgb_to_hex(rgb_linear)
-        self.hex_entry_var.set(hexvals.upper())
-        #self.hex_spin.config({"background": self.hex_spin.get()}) Adds colour to main box
-        self.colour_spin.config({"background": self.hex_spin.get()}) #  Adds colour to side box
+        # Try to convert the values
+        try:
+            r_nonlin = float(self.r_spin.get())
+            g_nonlin = float(self.g_spin.get())
+            b_nonlin = float(self.b_spin.get())
+            rgb_nonlin = (r_nonlin, g_nonlin, b_nonlin)
+            rgb_linear = nonlinearsrgbtolinear(rgb_nonlin)
+            hexvals = webcolors.rgb_to_hex(rgb_linear)
+            self.hex_entry_var.set(hexvals.upper())
+            # self.hex_spin.config({"background": self.hex_spin.get()}) Adds colour to main box
+            self.colour_spin.config({"background": self.hex_spin.get()})  # Adds colour to side box
+        except ValueError:
+            # print("One box still empty?")
+            pass
         # TODO: Need to check hex value as might be a rounding error when producing rgb8 values (and test generally)
+
+    def focus_change(self, *args):
+        self.hex_conversion()
 
     def remove(self):
         RemovableTint.instances.remove(self)
@@ -102,11 +151,9 @@ def add_frame():
     RemovableTint(home_frame).pack(fill=tk.X)
     # print(RemovableTint.instances)
 
-    #maybe nuke
-
 
 def filewrite():
-    file1 = open("Text"+"_Colors.txt", "w+")
+    file1 = open("Text" + "_Colors.txt", "w+")
     for i in RemovableTint.instances:
         file1.write(f"Colour Name = {i.colour_tint_name.get()}\n")
         file1.write(i.r_spin.get())
@@ -116,9 +163,10 @@ def filewrite():
 
     item_name = ""
 
-    #L = [item_name+"\n", "R = 0.1\n", "G = 0.1\n", "B = 0.1\n", "#FFFFFF"]
-    #file1.writelines(L)
+    # L = [item_name+"\n", "R = 0.1\n", "G = 0.1\n", "B = 0.1\n", "#FFFFFF"]
+    # file1.writelines(L)
     file1.close()
+
 
 # TODO: Choose output file
 
