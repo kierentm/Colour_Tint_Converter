@@ -145,7 +145,7 @@ class RemovableTint(tk.Frame):
         except ValueError:
             # print("One box still empty?")
             pass
-        # TODO: Need to check hex value as might be a rounding error when producing rgb8 values (and test generally)
+
 
     def focus_change(self, *args):
         self.hex_conversion()
@@ -170,12 +170,20 @@ def add_frame():
 
 def filewrite():
     file1 = open("Text" + "_Colors.txt", "w+")
+    item_name="Item_Name"
+    file1.write(item_name+"\n\n")
+    colour_area="Colours for the\n\n"
+
+# TODO: figure out how to make it print the colour area when it changes, not every single time (it will be an entry column soon)
     for i in RemovableTint.instances:
-        file1.write(f"Colour Name = {i.colour_tint_name.get()}\n")
-        file1.write(i.r_spin.get())
-        file1.write(i.g_spin.get())
-        file1.write(i.b_spin.get())
-        file1.write(i.hex_spin.get())
+        file1.write(colour_area)
+        file1.write(f"{i.colour_tint_name.get()}\n")
+        file1.write(f"  R = {float(i.r_spin.get())}\n")
+
+        file1.write(f"  B = {float(i.g_spin.get())}\n")
+        file1.write(f"  G = {float(i.b_spin.get())}\n")
+        file1.write(f"  {i.hex_spin.get()}\n\n")
+
 
     item_name = ""
 
@@ -206,11 +214,12 @@ def on_key_press(event):
 
 btn = tk.Button(home_frame, text="Add Entry", width=5, command=add_frame)
 btn2 = tk.Button(home_frame, text="Export .txt", command=filewrite)
-btn3 = tk.Button(home_frame, text="Fetch all")
 
 btn.pack(side="bottom", fill=tk.X)
 btn2.pack(side="bottom", fill=tk.X)
-btn3.pack(side="bottom", fill=tk.BOTH)
+
+
 
 root.bind('<KeyPress>', on_key_press)
+
 home_frame.mainloop()
