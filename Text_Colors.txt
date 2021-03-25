@@ -2,17 +2,22 @@ Item_Name
 
 Colours for the
 
-Red_001
-  R = 1.0
-  B = 0.5
-  G = 0.0
-  #FFBC00
-
+Name
+ R = 1.0
+ B = 0.2
+ G = 0.5
+  #FF7CBC
 Colours for the
 
-Orange_001
-  R = 1.0
-  B = 0.3
-  G = 0.0
-  #FF9500
+Name2
+ R = 0.5
+ B = 0.6
+ G = 1.0
+  #BC0000
+Colours for the
 
+Asdf
+ R = 1.0
+ B = 1.0
+ G = 1.0
+  #FFFFFF
