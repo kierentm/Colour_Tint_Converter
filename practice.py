@@ -77,12 +77,14 @@ def add_frame():
 def fetch_all():
     # TODO: loop through instances to fetch all data
     for i in RemovableTint.instances:
-        print(i)
-    pass
+        name = i.colour_tint_name.get()
+        hex_spin = i.hex_spin.get()
+        print(f"Name: {name}, {hex_spin}")
 
 
-btn = tk.Button(home_frame, text="Add Entry", width=50, command=add_frame)
-
+btn = tk.Button(home_frame, text="Add Entry", width=5, command=add_frame)
+btn2 = tk.Button(home_frame, text="test", command=fetch_all)
 
 btn.pack(side="bottom", fill=tk.X)
+btn2.pack(side="bottom", fill=tk.X)
 home_frame.mainloop()
