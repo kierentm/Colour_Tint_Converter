@@ -1,118 +1,119 @@
 import tkinter as tk
 from tkinter import ttk
+from convert import nonlinearsrgbtolinear
 import webcolors
-window = tk.Tk()
 
-def rbg_2_hex():
-    r = int(R_spin.get())
-    g = int(G_spin.get())
-    b = int(B_spin.get())
-    print(r, g, b)
-    print(webcolors.rgb_to_hex((r, g, b)))
+# TODO: Currently setting root geometry twice
 
-Hex_Entry_Text = tk.StringVar()
+root = tk.Tk()
+#  root.geometry("400x400")
 
-def hex_convertion():
+root.title("Colour Tint Converter")
+root.geometry('450x400')
 
-    r_value = int(255 * float(R_spin.get()))
-    g_value = int(255 * float(G_spin.get()))
-    b_value = int(255 * float(B_spin.get()))
+# Initialise Tab Parent Notebook
+tab_parent = ttk.Notebook(root)
 
-    hex_value = webcolors.rgb_to_hex((r_value, g_value, b_value))
-    Hex_Entry_Text.set(hex_value)
-    print(r_value, g_value, b_value)
+# Define Tabs - MAIN TABS TO REFERENCE
+home_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
+settings_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
+hotkeys_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
+about_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
 
+# Add Tabs to Tab Parent
+tab_parent.add(home_frame, text="Home")
+tab_parent.add(settings_frame, text="Settings")
+tab_parent.add(hotkeys_frame, text="Hotkeys")
+tab_parent.add(about_frame, text="About")
 
-window["bg"] = "gray30"
-window.title("Colour Tint Converter")
-window.geometry('400x400')
+# Pack Tabs into Layout
+tab_parent.pack(expand=1, fill="both")
 
-tab_control = ttk.Notebook()
-main = ttk.Frame(tab_control, borderwidth=5)
-main_content_1 = ttk.Frame(main, borderwidth=10, relief="groove")
+# Add content to about frame
+AboutContent = tk.Label(about_frame, text="Tool developed by Kieren Townley-Moss, Jake Broughton and Alex Todd")
+AboutContent.grid(column=0, row=0)
 
-main_content_2 = ttk.Frame(main, borderwidth=10, relief="groove")
-settings = ttk.Frame(tab_control, borderwidth=5)
+# TODO: Settings
+# TODO: Keep window on top toggle
+# TODO: Toggle Dark mode
 
-about = ttk.Frame(tab_control,)
+# TODO: Add hotkeys (update all colours, toggle keep on top .etc)
 
-tab_control.add(main, text='Main')
-main_content_1.grid(column=1, row=2)
-main_content_2.grid(column=1, row=0)
+# TODO: Output colours to txt file button
 
-tab_control.add(settings, text='Settings')
-
-tab_control.add(about, text='About')
-
-tab_control.pack(side="left", expand="yes", fill='both')
-
-#Testing Item Name
-#ItemNameLabel = tk.Label(main_content_2, text="ItemName")
-#ItemNameLabel.grid(column=0,row=2)
-#Item_Name_Entry = tk.Entry(main_content_2, width =24)
-#Item_Name_Entry.grid(column=1, row=2)
-
-#name field
-
-Colour_Tint_Name = tk.Entry(main_content_1, width =18, bg="gray40", fg="white", font="Calibri")
-Colour_Tint_Name.grid(column=1, row=2)
-
-#Red green and blue field
+# TODO: Add Comments
+# TODO: Add program icon
+# TODO: Make text white when all three numbers are below 0.1 (practically black)
+# TODO: Figure out if entry boxes can have grey text label when nothing is in the box
+# TODO: Add colour picker tool
 
 
-R_spin = tk.Entry(main_content_1, width =4, bg="gray40", fg="white", font="Calibri")
-R_spin.grid(column=2, row=2)
-R_SV = tk.StringVar()
-#R_SV.trace_add("write", hex_convertion())
+class RemovableTint(tk.Frame):
+    instances = []
 
-G_spin = tk.Entry(main_content_1, width =4, bg="gray40", fg="white", font="Calibri")
-G_spin.grid(column=3, row=2)
+    # TODO: Refactor some names (eg. spin)
 
+    def __init__(self, parent_frame):
+        RemovableTint.instances.append(self)
+        # TODO: Remove redundant self. tags
+        tk.Frame.__init__(self, parent_frame, height=5, pady=1)
+        self.hex_entry_var = tk.StringVar()
+        self.colour_tint_name = tk.Entry(self, width=15, font="Calibri")
+        self.r_spin = tk.Entry(self, width=4, font="Calibri")
+        self.g_spin = tk.Entry(self, width=4, font="Calibri")
+        self.b_spin = tk.Entry(self, width=4, font="Calibri")
+        self.hex_spin = tk.Entry(self, width=8, font="Calibri", textvariable=self.hex_entry_var)
+        self.colour_spin = tk.Entry(self, width=4)
+        self.update = tk.Button(self, text="Update", font="Calibri", command=self.hex_conversion)
+        self.remove = tk.Button(self, font="Calibri", text="X", command=self.remove)
 
-B_spin = tk.Entry(main_content_1, width =4, bg="gray40", fg="white", font="Calibri")
-B_spin.grid(column=4, row=2)
+        self.colour_tint_name.pack(fill="both", side="left", expand=True)
+        self.r_spin.pack(fill="both", side="left")
+        self.g_spin.pack(fill="both", side="left")
+        self.b_spin.pack(fill="both", side="left")
+        self.hex_spin.pack(fill="both", side="left")
+        self.colour_spin.pack(fill="both", side="left")
+        self.update.pack(fill="both", side="left")
+        self.remove.pack(fill="both", side="left")
+        # TODO: Create box with colour next to hex value (to prevent text becoming unreadable)
 
+    def hex_conversion(self):
+        r_nonlin = float(self.r_spin.get())
+        g_nonlin = float(self.g_spin.get())
+        b_nonlin = float(self.b_spin.get())
+        rgb_nonlin = (r_nonlin, g_nonlin, b_nonlin)
+        rgb_linear = nonlinearsrgbtolinear(rgb_nonlin)
+        hexvals = webcolors.rgb_to_hex(rgb_linear)
+        self.hex_entry_var.set(hexvals)
+        #self.hex_spin.config({"background": self.hex_spin.get()}) Adds colour to main box
+        self.colour_spin.config({"background": self.hex_spin.get()}) #  Adds colour to side box
+        # TODO: Need to check hex value as might be a rounding error when producing rgb8 values (and test generally)
 
-
-Button = tk.Button(main_content_1, width=4, text ="update", command=hex_convertion)
-Button.grid(column=6, row=2)
-
-#auto convert hex field
-
-Hex_Value = "#FFFFFF"
-
-Hex_spin = tk.Entry(main_content_1, textvariable=Hex_Entry_Text,width =10, bg=Hex_Value, fg="black", font="Calibri")
-Hex_Entry_Text.set(Hex_Value.upper())
-Hex_spin.grid(column=5, row=2)
-
-
-
-
-
-
-
-
-
-#drop down box
-
-#Drop_Down = ["Mult","Add"]
-#Drop_Down_Variable = tk.StringVar(window)
-#Drop_Down_Variable.set(Drop_Down[0])
-
-#opt = tk.OptionMenu(tab_control, Drop_Down_Variable, *Drop_Down)
-#opt.pack()
-
-#About
-AboutL = tk.Label(about, text="Tool developed by Kieren Townley-Moss and Jake Broughton")
-AboutL.grid(column=0,row=2)
-
-#Settings
-SettingsL = tk.Label(settings, text="Export Location option, always on top option, minimize to tray option")
-SettingsL.grid(column=0,row=2)
-
-#rgb_convert = tk.Button(main, text="Convert", command=rbg_2_hex)
-#rgb_convert.grid(column=4, row=2)
+    def remove(self):
+        RemovableTint.instances.remove(self)
+        self.destroy()
+        print(self.instances)
 
 
-window.wm_attributes("-topmost", 1)
-window.mainloop()
+# Add frame instance (dynamic addition of widgets)
+def add_frame():
+    RemovableTint(home_frame).pack(fill=tk.X)
+    # print(RemovableTint.instances)
+
+
+def fetch_all():
+    # TODO: Loop through instances to fetch all data
+    for i in RemovableTint.instances:
+        print(i)
+
+
+# TODO: Choose output file
+
+# TODO: Add Column names
+btn = tk.Button(home_frame, text="Add Entry", width=5, command=add_frame)
+btn2 = tk.Button(home_frame, text="List Instances", command=fetch_all)
+
+
+btn.pack(side="bottom", fill=tk.X)
+btn2.pack(side="bottom", fill=tk.X)
+home_frame.mainloop()
