@@ -74,7 +74,15 @@ def add_frame():
     print(RemovableTint.instances)
 
 
-btn = tk.Button(home_frame, text="Add Entry", width=50, command=add_frame)
-btn.pack(side="bottom", fill=tk.X)
+def fetch_all():
+    # TODO: loop through instances to fetch all data
+    for i in RemovableTint.instances:
+        print(i)
+    pass
 
+
+btn = tk.Button(home_frame, text="Add Entry", width=50, command=add_frame)
+
+
+btn.pack(side="bottom", fill=tk.X)
 home_frame.mainloop()
