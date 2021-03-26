@@ -34,14 +34,15 @@ tab_parent.add(about_frame, text="About")
 # Pack Tabs into Layout
 tab_parent.pack(expand=1, fill="both")
 
-# # Load Config
-# config = ConfigParser()
-#
-# config.read(config.ini)
-# config.add_section('main')
-#
-# with open('config.ini', 'w') as f:
-#     config.write(f)
+# Load Config
+config = ConfigParser()
+
+config.read('config.ini')
+
+if not config.has_section('main'):
+    config.add_section('main')
+    with open('config.ini', 'w') as f:
+        config.write(f)
 
 
 # TODO: Toggle Dark mode
@@ -53,8 +54,6 @@ tab_parent.pack(expand=1, fill="both")
 # TODO: Make text white when all three numbers are below 0.1 (practically black)
 # TODO: Figure out if entry boxes can have grey text label when nothing is in the box
 # TODO: Add colour picker tool
-
-# TODO: I think Esc to exit maybe broken
 
 class Home:
     def __init__(self, master):
@@ -134,8 +133,10 @@ class Settings:
     def getFilepast(self):
         # open dialog box to select file
         self.pathpast = filedialog.askdirectory(initialdir="/", title="Select Directory")
-        # config.set('main', 'SaveLocation', self.pathpast)
-        print(self.pathpast)
+        config.set('main', 'SaveLocation', self.pathpast)
+        with open('config.ini', 'w') as f:
+            config.write(f)
+        print(f"From within function = {self.pathpast}")
 
 
 # Class to generate placeholder objects
@@ -255,11 +256,12 @@ def add_frame():
 
 
 def filewrite():
-    file1 = open("Text" + "_Colors.txt", "w+")
+    file1 = open(f"{config.get('main', 'SaveLocation')}" + "/Text" + "_Colors.txt", "w+")
     item_name = "Item_Name"
     file1.write(item_name + "\n\n")
     colour_area = "Colours for the\n\n"
 
+    print(f"From config in file write {config.get('main', 'SaveLocation')}")
 
     # TODO: figure out how to make it print the colour area when it changes, not every single time (it will be an entry column soon)
     for i in RemovableTint.instances:
@@ -276,7 +278,7 @@ def filewrite():
     # L = [item_name+"\n", "R = 0.1\n", "G = 0.1\n", "B = 0.1\n", "#FFFFFF"]
     # file1.writelines(L)
     file1.close()
-    webbrowser.open("Text_Colors.txt")
+    webbrowser.open(f"{config.get('main', 'SaveLocation')}/Text_Colors.txt")
 
 
 # Setting up global key binds
