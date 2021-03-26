@@ -235,15 +235,16 @@ def filewrite():
     file1.write(item_name + "\n\n")
     colour_area = "Colours for the\n\n"
 
+
     # TODO: figure out how to make it print the colour area when it changes, not every single time (it will be an entry column soon)
     for i in RemovableTint.instances:
-        file1.write(colour_area)
-        file1.write(f"{i.colour_tint_name.get()}\n")
-        file1.write(f"  R = {float(i.r_spin.get())}\n")
+        file1.write(colour_area.capitalize())
+        file1.write(f"{i.colour_tint_name.get().capitalize()}\n")
+        file1.write(f" R = {float(i.r_spin.get())}\n")
 
-        file1.write(f"  B = {float(i.g_spin.get())}\n")
-        file1.write(f"  G = {float(i.b_spin.get())}\n")
-        file1.write(f"  {i.hex_spin.get()}\n\n")
+        file1.write(f" B = {float(i.g_spin.get())}\n")
+        file1.write(f" G = {float(i.b_spin.get())}\n")
+        file1.write(f"  {i.hex_spin.get()}\n")
 
     item_name = ""
 
