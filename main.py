@@ -4,6 +4,7 @@ from tkinter import filedialog
 from convert import nonlinearsrgbtolinear
 import webcolors
 import webbrowser
+from configparser import ConfigParser
 
 # TODO: Currently setting root geometry twice
 
@@ -33,6 +34,15 @@ tab_parent.add(about_frame, text="About")
 # Pack Tabs into Layout
 tab_parent.pack(expand=1, fill="both")
 
+# # Load Config
+# config = ConfigParser()
+#
+# config.read(config.ini)
+# config.add_section('main')
+#
+# with open('config.ini', 'w') as f:
+#     config.write(f)
+
 
 # TODO: Toggle Dark mode
 
@@ -43,6 +53,8 @@ tab_parent.pack(expand=1, fill="both")
 # TODO: Make text white when all three numbers are below 0.1 (practically black)
 # TODO: Figure out if entry boxes can have grey text label when nothing is in the box
 # TODO: Add colour picker tool
+
+# TODO: I think Esc to exit maybe broken
 
 class Home:
     def __init__(self, master):
@@ -122,6 +134,7 @@ class Settings:
     def getFilepast(self):
         # open dialog box to select file
         self.pathpast = filedialog.askdirectory(initialdir="/", title="Select Directory")
+        # config.set('main', 'SaveLocation', self.pathpast)
         print(self.pathpast)
 
 
@@ -152,19 +165,6 @@ class EntryWithPlaceholder(tk.Entry):
     def foc_out(self, *args):
         if not self.get():
             self.put_placeholder()
-
-
-# Class to select folder
-class PathSelect:
-    def __init__(self):
-        self.browsebutton2 = tk.Button(root, text="Select Save Location", command=self.getFilepast)
-        self.browsebutton2.grid(row=0, column=1)
-        # etc.
-
-    def getFilepast(self):
-        # open dialog box to select file
-        self.pathpast = filedialog.askdirectory(initialdir="/", title="Select Directory")
-        print(self.pathpast)
 
 
 # Class to generate tint frame objects
