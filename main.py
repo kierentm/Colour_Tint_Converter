@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import filedialog
 from convert import nonlinearsrgbtolinear
 import webcolors
 import webbrowser
@@ -83,6 +84,7 @@ class Settings:
     dark_mode = tk.IntVar()
     dummy1 = tk.IntVar()
     dummy2 = tk.IntVar()
+    directory = tk.StringVar
 
     def __init__(self, master):
         self.master = master
@@ -98,6 +100,9 @@ class Settings:
         self.hotkey1 = tk.Checkbutton(self.hotkey_frame, text="Dummy 1", variable=Settings.dummy1)
         self.hotkey2 = tk.Checkbutton(self.hotkey_frame, text="Dummy 2", variable=Settings.dummy2)
 
+        self.directory_button = tk.Button(self.master, text="Select Save Location", command=self.getFilepast)
+
+
         #.label_frame.grid(column=0, row=0, sticky='w')
         self.label_frame.grid(column=0, row=0, sticky='w', pady=5)
         self.hotkey_frame.grid(column=0, row=1, sticky='w', pady=5)
@@ -105,12 +110,19 @@ class Settings:
         self.dark_mode.grid(column=0, row=2, sticky='w')
         self.hotkey1.grid(column=0, row=1, sticky='w')
         self.hotkey2.grid(column=0, row=2, sticky='w')
+        self.directory_button.grid(column=0, row=3, sticky='w')
         self.save_button.grid(column=0, row=10, sticky='w')
+
 
     def update_settings(self):
         root.attributes('-topmost', Settings.on_top_var.get())
         print(Settings.on_top_var.get())
         print(Settings.dark_mode.get())
+
+    def getFilepast(self):
+        # open dialog box to select file
+        self.pathpast = filedialog.askdirectory(initialdir="/", title="Select Directory")
+        print(self.pathpast)
 
 
 # Class to generate placeholder objects
@@ -140,6 +152,19 @@ class EntryWithPlaceholder(tk.Entry):
     def foc_out(self, *args):
         if not self.get():
             self.put_placeholder()
+
+
+# Class to select folder
+class PathSelect:
+    def __init__(self):
+        self.browsebutton2 = tk.Button(root, text="Select Save Location", command=self.getFilepast)
+        self.browsebutton2.grid(row=0, column=1)
+        # etc.
+
+    def getFilepast(self):
+        # open dialog box to select file
+        self.pathpast = filedialog.askdirectory(initialdir="/", title="Select Directory")
+        print(self.pathpast)
 
 
 # Class to generate tint frame objects
