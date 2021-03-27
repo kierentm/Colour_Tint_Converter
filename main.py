@@ -60,9 +60,9 @@ class Home:
 
         self.entry_btn = tk.Button(self.master, text="Add Entry", width=5, command=add_frame)
 
-        self.file_name = tk.StringVar
         self.export_frame = tk.Frame(self.master)
         self.export_btn = tk.Button(self.export_frame, text="Export .txt", command=self.file_write)
+
         # self.export_name = tk.Entry(self.export_frame, font="Calibri", textvariable=self.file_name)
         self.export_name = EntryWithPlaceholder(self.export_frame, "Item Name")
 
