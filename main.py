@@ -18,6 +18,14 @@ root.geometry('450x500')
 # Initialise Tab Parent Notebook
 tab_parent = ttk.Notebook(root)
 
+# Colour Variables
+#btn_clr = "#393a40"
+#btn_clr_active = "#212124"
+#bg_clr = "#f4f4f4"
+btn_clr = "#AA3F00"
+btn_clr_active = "#212124"
+bg_clr = "#f4f4f4"
+
 # Define Tabs - MAIN TABS TO REFERENCE
 home_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
 settings_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
@@ -59,6 +67,8 @@ plus_ico = tk.PhotoImage(file="UI_Images\Plus_Icon_Test4.png")
 pipette_ico = tk.PhotoImage(file="UI_Images\Pipette_Icon4.png")
 export_ico = tk.PhotoImage(file="UI_Images\Export_txt_2.png")
 
+
+
 class Home:
     def __init__(self, master):
         self.master = master
@@ -66,16 +76,16 @@ class Home:
 
         # Create Entry and Colour Frame
         self.entry_frame = tk.Frame(self.master)
-        self.entry_btn = tk.Button(self.entry_frame, image=plus_ico, bg="#393a40",
-                                   activebackground="#212124", bd="3", height="22", command=add_frame)
-        self.divider = tk.Label(self.entry_frame, bg="#f4f4f4", width="0", padx="1")
-        self.colour_btn = tk.Button(self.entry_frame, image=pipette_ico, bg="#393a40",
-                                   activebackground="#212124", bd="3", height="22")
+        self.entry_btn = tk.Button(self.entry_frame, image=plus_ico, bg=btn_clr,
+                                   activebackground=btn_clr_active, bd="3", height="22", command=add_frame)
+        self.divider = tk.Label(self.entry_frame, bg=bg_clr, width="0", padx="1")
+        self.colour_btn = tk.Button(self.entry_frame, image=pipette_ico, bg=btn_clr,
+                                   activebackground=btn_clr_active, bd="3", height="22")
         # Create Export Frame
         self.export_frame = tk.Frame(self.master)
         #self.export_btn = tk.Button(self.export_frame, text="Export .txt",fg="#ffffff", bg="#393a40", command=self.file_write)
-        self.export_btn = tk.Button(self.export_frame, image=export_ico, bg="#393a40",
-                                   activebackground="#313136", bd="3", height="24", command=self.file_write)
+        self.export_btn = tk.Button(self.export_frame, image=export_ico, bg=btn_clr,
+                                   activebackground=btn_clr_active, bd="3", height="24", command=self.file_write)
         self.export_name = EntryWithPlaceholder(self.export_frame, "Item Name")
 
         # Pack the stuff
