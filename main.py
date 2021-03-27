@@ -7,10 +7,7 @@ import webbrowser
 from configparser import ConfigParser
 import pathlib
 
-# TODO: Currently setting root geometry twice
-
 root = tk.Tk()
-#  root.geometry("400x400")
 
 root.title("Colour Tint Converter")
 root.geometry('450x400')
@@ -54,18 +51,17 @@ if not config.has_section('main'):
 # TODO: Add Comments
 # TODO: Add program icon
 # TODO: Make text white when all three numbers are below 0.1 (practically black)
-# TODO: Figure out if entry boxes can have grey text label when nothing is in the box
 # TODO: Add colour picker tool
 
 class Home:
     def __init__(self, master):
         self.master = master
         self.frame = tk.Frame(self.master)
-        self.btn = tk.Button(home_frame, text="Add Entry", width=5, command=add_frame)
-        self.btn2 = tk.Button(home_frame, text="Export .txt", command=filewrite)
+        self.entry_btn = tk.Button(home_frame, text="Add Entry", width=5, command=add_frame)
+        self.entry_btn = tk.Button(home_frame, text="Export .txt", command=filewrite)
 
-        self.btn.pack(side="bottom", fill=tk.X)
-        self.btn2.pack(side="bottom", fill=tk.X)
+        self.entry_btn.pack(side="top", fill=tk.X)
+        self.entry_btn.pack(side="bottom", fill=tk.X)
 
         root.bind('<KeyPress>', on_key_press)
 
@@ -220,7 +216,6 @@ class RemovableTint(tk.Frame):
         self.hex_spin.pack(fill="both", side="left")
         self.colour_spin.pack(fill="both", side="left")
         self.remove.pack(fill="both", side="left")
-        # TODO: Create box with colour next to hex value (to prevent text becoming unreadable)
 
         # Bind both tab and left click to
         self.r_spin.bind("<Tab>", self.focus_change)
@@ -277,7 +272,9 @@ def filewrite():
 
     print(f"From config in file write {config.get('main', 'SaveLocation')}")
 
-    # TODO: figure out how to make it print the colour area when it changes, not every single time (it will be an entry column soon)
+    # TODO: figure out how to make it print the colour area when it changes
+    #  , not every single time (it will be an entry column soon)
+
     for i in RemovableTint.instances:
         file1.write(colour_area.capitalize())
         file1.write(f"{i.colour_tint_name.get().capitalize()}\n")
@@ -309,10 +306,8 @@ def on_key_press(event):
     # Print keypress for debugging
     # print(f"Key Press - char:{event.keycode}, readable: {event.char}")
 
-
 # TODO: Choose output file
 
-# TODO: Add Column names
 def main():
     Settings(settings_frame)
     About(about_frame)
