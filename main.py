@@ -136,7 +136,7 @@ class Home:
         self.image = ImageGrab.grab()  # Takes screenshot of whole screen
         self.tracer_win = tk.Toplevel(self.master)  # To make top level
         self.tracer_win.attributes("-fullscreen", True)  # Full screen
-        # self.tracer_win.overrideredirect(1)
+        self.tracer_win.overrideredirect(1)
         self.tracer_win.attributes('-alpha', 0.3)  # Sets transparency
         self.tracer_win.attributes('-topmost', True)  # Keeps on top
         self.tracer_win.bind("<Button-1>", self.capture)  # Binds left click to run capture
