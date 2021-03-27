@@ -5,6 +5,7 @@ from convert import nonlinearsrgbtolinear
 import webcolors
 import webbrowser
 from configparser import ConfigParser
+import pathlib
 
 # TODO: Currently setting root geometry twice
 
@@ -34,13 +35,14 @@ tab_parent.add(about_frame, text="About")
 # Pack Tabs into Layout
 tab_parent.pack(expand=1, fill="both")
 
-# Load Config
+# Load Config and generate main if required
 config = ConfigParser()
 
 config.read('config.ini')
 
 if not config.has_section('main'):
     config.add_section('main')
+    config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
     with open('config.ini', 'w') as f:
         config.write(f)
 
@@ -95,7 +97,6 @@ class Settings:
     dark_mode = tk.IntVar()
     dummy1 = tk.IntVar()
     dummy2 = tk.IntVar()
-    directory = tk.StringVar
 
     def __init__(self, master):
         self.master = master
@@ -111,10 +112,13 @@ class Settings:
         self.hotkey1 = tk.Checkbutton(self.hotkey_frame, text="Dummy 1", variable=Settings.dummy1)
         self.hotkey2 = tk.Checkbutton(self.hotkey_frame, text="Dummy 2", variable=Settings.dummy2)
 
+        # Create setting for File Location
         self.directory_button = tk.Button(self.master, text="Select Save Location", command=self.getFilepast)
+        self.folder_location = tk.StringVar(self.master, f"{config.get('main', 'SaveLocation')}")
+        self.directory_display = tk.Entry(self.master, width=36, font="Calibri", textvariable=self.folder_location
+                                          , state="disabled")
 
-
-        #.label_frame.grid(column=0, row=0, sticky='w')
+        # .label_frame.grid(column=0, row=0, sticky='w')
         self.label_frame.grid(column=0, row=0, sticky='w', pady=5)
         self.hotkey_frame.grid(column=0, row=1, sticky='w', pady=5)
         self.on_top.grid(column=0, row=1, sticky='w')
@@ -122,6 +126,7 @@ class Settings:
         self.hotkey1.grid(column=0, row=1, sticky='w')
         self.hotkey2.grid(column=0, row=2, sticky='w')
         self.directory_button.grid(column=0, row=3, sticky='w')
+        self.directory_display.grid(column=1, row=3, sticky='w')
         self.save_button.grid(column=0, row=10, sticky='w')
 
 
@@ -130,13 +135,22 @@ class Settings:
         print(Settings.on_top_var.get())
         print(Settings.dark_mode.get())
 
+    # Initialise windows directory selection and save within config
     def getFilepast(self):
-        # open dialog box to select file
+        # Open dialog box to select file and saves location to config
         self.pathpast = filedialog.askdirectory(initialdir="/", title="Select Directory")
         config.set('main', 'SaveLocation', self.pathpast)
         with open('config.ini', 'w') as f:
             config.write(f)
-        print(f"From within function = {self.pathpast}")
+
+        # TODO: Better way of updating file location box?
+        # Updates file location box
+        self.folder_location = tk.StringVar(self.master, f"{config.get('main', 'SaveLocation')}")
+        self.directory_display = tk.Entry(self.master, width=36, font="Calibri", textvariable=self.folder_location
+                                          , state="disabled")
+        self.directory_display.grid(column=1, row=3, sticky='w')
+
+        #print(f"From within function = {self.pathpast}")
 
 
 # Class to generate placeholder objects
