@@ -154,7 +154,6 @@ class Settings:
         self.directory_display.grid(column=1, row=3, sticky='w')
         self.save_button.grid(column=0, row=10, sticky='w')
 
-
     def update_settings(self):
         root.attributes('-topmost', Settings.on_top_var.get())
         print(Settings.on_top_var.get())
@@ -171,8 +170,8 @@ class Settings:
         # TODO: Better way of updating file location box?
         # Updates file location box
         self.folder_location = tk.StringVar(self.master, f"{config.get('main', 'SaveLocation')}")
-        self.directory_display = tk.Entry(self.master, width=36, font="Calibri", textvariable=self.folder_location
-                                          , state="disabled")
+        self.directory_display.config(text=self.folder_location)
+        
         self.directory_display.grid(column=1, row=3, sticky='w')
 
 
@@ -215,17 +214,33 @@ class RemovableTint(tk.Frame):
         # Adds instance to list of instances
         RemovableTint.instances.append(self)
 
+        # Create variables for r, g and b entry boxes
+        self.r_contents = tk.StringVar()
+        self.r_contents.set("0")
+        self.g_contents = tk.StringVar()
+        self.g_contents.set("0")
+        self.b_contents = tk.StringVar()
+        self.b_contents.set("0")
+
+
         # TODO: Remove redundant self. tags
         # Initialise all entry boxes and buttons
         tk.Frame.__init__(self, parent_frame, height=5, pady=1)
         self.hex_entry_var = tk.StringVar()
         self.colour_tint_name = EntryWithPlaceholder(self, "Colour Name")
+
+        # Create r, g and b entry boxes with grey 0 placeholder
         self.r_spin = EntryWithPlaceholder(self, "0")
         self.g_spin = EntryWithPlaceholder(self, "0")
         self.b_spin = EntryWithPlaceholder(self, "0")
         self.hex_spin = tk.Entry(self, width=8, font="Calibri", textvariable=self.hex_entry_var, state="disabled")
-        self.colour_spin = tk.Entry(self, width=4)
+        self.colour_spin = tk.Label(self, width=4, background="black")
         self.remove = tk.Button(self, font="Calibri", text="X", command=self.remove)
+
+        # Add textvaribles to the r, g and b entry boxes
+        self.r_spin.config(textvariable=self.r_contents)
+        self.g_spin.config(textvariable=self.g_contents)
+        self.b_spin.config(textvariable=self.b_contents)
 
         # Resize widgets (workaround to sizing bug)
         self.r_spin.config(width=4)
@@ -244,15 +259,10 @@ class RemovableTint(tk.Frame):
         self.colour_spin.pack(fill="both", side="left")
         self.remove.pack(fill="both", side="left")
 
-        # Bind both tab and left click to
-        self.r_spin.bind("<Tab>", self.focus_change)
-        self.g_spin.bind("<Tab>", self.focus_change)
-        self.b_spin.bind("<Tab>", self.focus_change)
-
-        self.r_spin.bind("<Button-1>", self.focus_change)
-        self.g_spin.bind("<Button-1>", self.focus_change)
-        self.b_spin.bind("<Button-1>", self.focus_change)
-
+        # Trace r,g, b entry box variables, running value_change when they change
+        self.r_contents.trace('w', self.value_change)
+        self.g_contents.trace('w', self.value_change)
+        self.b_contents.trace('w', self.value_change)
 
     # Get hex value and update colour
     def hex_conversion(self):
@@ -271,11 +281,8 @@ class RemovableTint(tk.Frame):
             # print("One box still empty?")
             pass
 
-    def focus_change(self, *args):
-        self.hex_conversion()
-
     def value_change(self, *args):
-        print("value changed")
+        self.hex_conversion()
 
     # Remove current instance from list and visualisation
     def remove(self):
@@ -292,6 +299,7 @@ class RemovableTint(tk.Frame):
 # Add frame instance (dynamic addition of widgets)
 def add_frame():
     RemovableTint(home_frame).pack(fill=tk.X)
+    RemovableTint.hex_conversion(RemovableTint.instances[-1])
     # print(RemovableTint.instances)
 
 
@@ -300,7 +308,6 @@ def on_key_press(event):
     # Enter key
     if event.keycode == 13:
         add_frame()
-        RemovableTint.hex_conversion(RemovableTint.instances[-1])
     # Escape key
     if event.keycode == 27:
         # Delete last tint frame instance
