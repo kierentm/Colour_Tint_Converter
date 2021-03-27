@@ -25,8 +25,8 @@ tab_parent = ttk.Notebook(root)
 # bg_clr = "#f4f4f4"
 btn_clr = "#393a40"         #button colour
 btn_clr_act = "#57a337"     #button colour when clicked
-btn_fg_clr = "#ffffff"          #button font colour
-btn_fg = "Calibri", "16"
+btn_fg = "#ffffff"          #button font colour
+btn_font = "Calibri", "16"
 
 bg_clr = "#2f3136"          #background colour
 
@@ -84,16 +84,17 @@ class Home:
         self.entry_frame = tk.Frame(self.master, bg=bg_clr)
 
         self.entry_btn = tk.Button(self.entry_frame, image=plus_ico, bg=btn_clr, activebackground=btn_clr_act,
-                                   fg=btn_fg_clr, bd="3", height="22", text="New Entry", compound="left", command=add_frame,
-                                   font=btn_fg)
+                                   fg=btn_fg, bd="3", height="22", text="New Entry", compound="left", command=add_frame,
+                                   font=btn_font)
         self.divider = tk.Label(self.entry_frame, bg=bg_clr, width="0", padx="1")
         self.colour_btn = tk.Button(self.entry_frame, image=pipette_ico, bg=btn_clr, activebackground=btn_clr_act,
-                                    fg=btn_fg_clr, height="22", text="New Colour", compound="left", command=self.screenshot,
-                                    font=btn_fg)
+                                    fg=btn_fg, height="22", text="New Colour", compound="left", command=self.screenshot,
+                                    font=btn_font)
         # Create Export Frame
         self.export_frame = tk.Frame(self.master, bg=bg_clr)
         self.export_btn = tk.Button(self.export_frame, image=export_ico, bg=btn_clr,
-                                    activebackground=btn_clr_act, bd="3", height="24", command=self.file_write)
+                                    activebackground=btn_clr_act, bd="3", height="24", text="Export .txt",
+                                    compound="left", command=self.file_write, fg=btn_fg)
         self.export_name = EntryWithPlaceholder(self.export_frame, "Item Name")
 
         # Pack the stuff
@@ -114,13 +115,13 @@ class Home:
         file1 = open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt", "w+")
         item_name = "Item_Name"
         file1.write(item_name + "\n\n")
-        colour_area = "Colours for the\n\n"
+        #colour_area = "Colours for the\n\n"
 
         # TODO: figure out how to make it print the colour area when it changes
         #  , not every single time (it will be an entry column soon)
 
         for i in RemovableTint.instances:
-            file1.write(colour_area.capitalize())
+            #file1.write(colour_area.capitalize())
             file1.write(f"{i.colour_tint_name.get().capitalize()}\n")
             file1.write(f" R = {float(i.r_spin.get())}\n")
 
@@ -133,6 +134,7 @@ class Home:
 
     # ----------------------------- Screenshot Start ----------------------------- #
     def screenshot(self):
+        self.image = ImageGrab.grab()  # Takes screenshot of whole screen
         self.tracer_win = tk.Toplevel(self.master)  # To make top level
         self.tracer_win.attributes("-fullscreen", True)  # Full screen
         # self.tracer_win.overrideredirect(1)
@@ -144,11 +146,11 @@ class Home:
         print(event)
         x, y = event.x, event.y
         self.tracer_win.destroy()  # Destroys grey window
-        image = ImageGrab.grab()  # Takes screenshot of whole screen
-        image = image.crop((x - 1, y - 1, x + 1, y + 1))  # Crops image to 2 x 2 box
-        image = image.convert('RGB')  # Converts to RGB8
-        image.save("screenshot.png")
-        rgb_tuple = image.getpixel((1, 1))  # Gets SRGB8 of centre pixel
+
+        self.image = self.image.crop((x - 1, y - 1, x + 1, y + 1))  # Crops image to 2 x 2 box
+        self.image = self.image.convert('RGB')  # Converts to RGB8
+        self.image.save("screenshot.png")
+        rgb_tuple = self.image.getpixel((1, 1))  # Gets SRGB8 of centre pixel
         lsrgb_tuple = RGBtoNLSRGB(rgb_tuple) # Convert RBG8 to SRGB [0,1]
         add_frame(lsrgb_tuple[0], lsrgb_tuple[1], lsrgb_tuple[2], True)  # Sends RBG values to add_frame
 
@@ -290,7 +292,7 @@ class RemovableTint(tk.Frame):
         self.g_spin = EntryWithPlaceholder(self, "0")
         self.b_spin = EntryWithPlaceholder(self, "0")
         self.hex_spin = tk.Entry(self, width=8, font="Calibri", textvariable=self.hex_entry_var, state="disabled")
-        self.colour_spin = tk.Label(self, width=4, background="black")
+        self.colour_spin = tk.Label(self, width=4, background="black", relief="ridge")
         self.remove = tk.Button(self, font="Calibri", text="X", command=self.remove)
 
         # Add textvaribles to the r, g and b entry boxes
