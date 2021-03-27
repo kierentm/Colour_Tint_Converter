@@ -76,13 +76,10 @@ class Home:
         pass
 
     def file_write(self):
-        print(f"Checking file name entered = {self.export_name.get()}")
         file1 = open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt", "w+")
         item_name = "Item_Name"
         file1.write(item_name + "\n\n")
         colour_area = "Colours for the\n\n"
-
-        print(f"From config in file write {config.get('main', 'SaveLocation')}")
 
         # TODO: figure out how to make it print the colour area when it changes
         #  , not every single time (it will be an entry column soon)
@@ -96,15 +93,9 @@ class Home:
             file1.write(f" G = {float(i.b_spin.get())}\n")
             file1.write(f"  {i.hex_spin.get()}\n")
 
-        item_name = ""
-
-        # L = [item_name+"\n", "R = 0.1\n", "G = 0.1\n", "B = 0.1\n", "#FFFFFF"]
-        # file1.writelines(L)
         file1.close()
         webbrowser.open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt")
 
-    # def file_name_func(self):
-    #     return self.file_name
 
 class About:
     def __init__(self, master):
@@ -182,8 +173,6 @@ class Settings:
         self.directory_display = tk.Entry(self.master, width=36, font="Calibri", textvariable=self.folder_location
                                           , state="disabled")
         self.directory_display.grid(column=1, row=3, sticky='w')
-
-        #print(f"From within function = {self.pathpast}")
 
 
 # Class to generate placeholder objects
