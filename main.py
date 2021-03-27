@@ -10,7 +10,7 @@ import pathlib
 root = tk.Tk()
 
 root.title("Colour Tint Master")
-root.geometry('550x700')
+root.geometry('450x500')
 
 # Initialise Tab Parent Notebook
 tab_parent = ttk.Notebook(root)
@@ -54,7 +54,7 @@ if not config.has_section('main'):
 # TODO: Add colour picker tool
 plus_ico = tk.PhotoImage(file="UI_Images\Plus_Icon_Test4.png")
 pipette_ico = tk.PhotoImage(file="UI_Images\Pipette_Icon4.png")
-export_ico = tk.PhotoImage(file="UI_Images\Export_txt_1.png")
+export_ico = tk.PhotoImage(file="UI_Images\Export_txt_2.png")
 
 class Home:
     def __init__(self, master):
@@ -64,19 +64,21 @@ class Home:
         # Create Entry and Colour Frame
         self.entry_frame = tk.Frame(self.master)
         self.entry_btn = tk.Button(self.entry_frame, image=plus_ico, bg="#393a40",
-                                   activebackground="#212124", bd="3", command=add_frame)
+                                   activebackground="#212124", bd="3", height="22", command=add_frame)
+        self.divider = tk.Label(self.entry_frame, bg="#f4f4f4", width="0", padx="1")
         self.colour_btn = tk.Button(self.entry_frame, image=pipette_ico, bg="#393a40",
-                                   activebackground="#212124", bd="3")
+                                   activebackground="#212124", bd="3", height="22")
         # Create Export Frame
         self.export_frame = tk.Frame(self.master)
         #self.export_btn = tk.Button(self.export_frame, text="Export .txt",fg="#ffffff", bg="#393a40", command=self.file_write)
         self.export_btn = tk.Button(self.export_frame, image=export_ico, bg="#393a40",
-                                   activebackground="#313136", bd="3", command=self.file_write)
+                                   activebackground="#313136", bd="3", height="24", command=self.file_write)
         self.export_name = EntryWithPlaceholder(self.export_frame, "Item Name")
 
         # Pack the stuff
-        self.entry_frame.pack(side="top", fill=tk.X)
+        self.entry_frame.pack(side="top", fill=tk.X, pady=(0, 5))
         self.entry_btn.pack(side="left", fill=tk.X, expand=True)
+        self.divider.pack(side="left")
         self.colour_btn.pack(side="left", fill=tk.X, expand=True)
         self.export_frame.pack(side="bottom", fill=tk.X)
         self.export_btn.pack(side="right")
