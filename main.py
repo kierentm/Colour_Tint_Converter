@@ -58,14 +58,15 @@ class Home:
         self.master = master
         self.frame = tk.Frame(self.master)
 
+        # Create Entry and Colour Frame
         self.entry_btn = tk.Button(self.master, text="Add Entry", width=5, command=add_frame)
 
+        # Create Export Frame
         self.export_frame = tk.Frame(self.master)
         self.export_btn = tk.Button(self.export_frame, text="Export .txt", command=self.file_write)
-
-        # self.export_name = tk.Entry(self.export_frame, font="Calibri", textvariable=self.file_name)
         self.export_name = EntryWithPlaceholder(self.export_frame, "Item Name")
 
+        # Pack the stuff
         self.export_frame.pack(side="bottom", fill=tk.X)
         self.entry_btn.pack(side="bottom", fill=tk.X)
         self.export_btn.pack(side="right")
