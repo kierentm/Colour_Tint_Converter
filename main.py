@@ -12,14 +12,22 @@ import pathlib
 
 root = tk.Tk()
 
-p1 = tk.PhotoImage(file = 'Design Images/CTC.png')
+p1 = tk.PhotoImage(file='Design Images/CTC.png')
 root.iconphoto(False, p1)
 
 root.title("Colour Tint Master")
-root.geometry('550x700')
+root.geometry('450x500')
 
 # Initialise Tab Parent Notebook
 tab_parent = ttk.Notebook(root)
+
+# Colour Variables
+# btn_clr = "#393a40"
+# btn_clr_active = "#212124"
+# bg_clr = "#f4f4f4"
+btn_clr = "#AA3F00"
+btn_clr_active = "#212124"
+bg_clr = "#f4f4f4"
 
 # Define Tabs - MAIN TABS TO REFERENCE
 home_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
@@ -49,7 +57,6 @@ if not config.has_section('main'):
     with open('config.ini', 'w') as f:
         config.write(f)
 
-
 # TODO: Toggle Dark mode
 
 # TODO: Add hotkeys (update all colours, toggle keep on top .etc)
@@ -60,7 +67,8 @@ if not config.has_section('main'):
 # TODO: Add colour picker tool
 plus_ico = tk.PhotoImage(file="UI_Images\Plus_Icon_Test4.png")
 pipette_ico = tk.PhotoImage(file="UI_Images\Pipette_Icon4.png")
-export_ico = tk.PhotoImage(file="UI_Images\Export_txt_1.png")
+export_ico = tk.PhotoImage(file="UI_Images\Export_txt_2.png")
+
 
 class Home:
     tracer_win: Toplevel
@@ -71,20 +79,22 @@ class Home:
 
         # Create Entry and Colour Frame
         self.entry_frame = tk.Frame(self.master)
-        self.entry_btn = tk.Button(self.entry_frame, image=plus_ico, bg="#393a40",
-                                   activebackground="#212124", bd="3", command=add_frame)
-        self.colour_btn = tk.Button(self.entry_frame, image=pipette_ico, bg="#393a40",
-                                   activebackground="#212124", bd="3", command=self.screenshot_overlay)
+
+        self.entry_btn = tk.Button(self.entry_frame, image=plus_ico, bg=btn_clr,
+                                   activebackground=btn_clr_active, bd="3", height="22", command=add_frame)
+        self.divider = tk.Label(self.entry_frame, bg=bg_clr, width="0", padx="1")
+        self.colour_btn = tk.Button(self.entry_frame, image=pipette_ico, bg=btn_clr,
+                                    activebackground=btn_clr_active, bd="3", height="22", command=self.screenshot)
         # Create Export Frame
         self.export_frame = tk.Frame(self.master)
-        #self.export_btn = tk.Button(self.export_frame, text="Export .txt",fg="#ffffff", bg="#393a40", command=self.file_write)
-        self.export_btn = tk.Button(self.export_frame, image=export_ico, bg="#393a40",
-                                   activebackground="#313136", bd="3", command=self.file_write)
+        self.export_btn = tk.Button(self.export_frame, image=export_ico, bg=btn_clr,
+                                    activebackground=btn_clr_active, bd="3", height="24", command=self.file_write)
         self.export_name = EntryWithPlaceholder(self.export_frame, "Item Name")
 
         # Pack the stuff
-        self.entry_frame.pack(side="top", fill=tk.X)
+        self.entry_frame.pack(side="top", fill=tk.X, pady=(0, 5))
         self.entry_btn.pack(side="left", fill=tk.X, expand=True)
+        self.divider.pack(side="left")
         self.colour_btn.pack(side="left", fill=tk.X, expand=True)
         self.export_frame.pack(side="bottom", fill=tk.X)
         self.export_btn.pack(side="right")
@@ -117,7 +127,7 @@ class Home:
         webbrowser.open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt")
 
     # ----------------------------- Screenshot ----------------------------- #
-    def screenshot_overlay(self):
+    def screenshot(self):
         self.tracer_win = tk.Toplevel(self.master)
         self.tracer_win.attributes("-fullscreen", True)
         # self.tracer_win.overrideredirect(1)
@@ -135,9 +145,8 @@ class Home:
         image.save("screenshot.png")
         r, g, b = image.getpixel((1, 1))
 
-        add_frame(r/255, g/255, b/255, True)
+        add_frame(r / 255, g / 255, b / 255, True)
         print(r, g, b)
-
 
 
 class About:
@@ -213,7 +222,7 @@ class Settings:
         # Updates file location box
         self.folder_location = tk.StringVar(self.master, f"{config.get('main', 'SaveLocation')}")
         self.directory_display.config(text=self.folder_location)
-        
+
         self.directory_display.grid(column=1, row=3, sticky='w')
 
 
@@ -263,7 +272,6 @@ class RemovableTint(tk.Frame):
         self.g_contents.set("0")
         self.b_contents = tk.StringVar()
         self.b_contents.set("0")
-
 
         # TODO: Remove redundant self. tags
         # Initialise all entry boxes and buttons
@@ -364,6 +372,7 @@ def on_key_press(event):
         print(RemovableTint.instances)
     # Print keypress for debugging
     # print(f"Key Press - char:{event.keycode}, readable: {event.char}")
+
 
 # TODO: Choose output file
 
