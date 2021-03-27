@@ -9,6 +9,9 @@ import pathlib
 
 root = tk.Tk()
 
+p1 = tk.PhotoImage(file = 'Design Images/CTC.png')
+root.iconphoto(False, p1)
+
 root.title("Colour Tint Master")
 root.geometry('550x700')
 
