@@ -57,17 +57,54 @@ class Home:
     def __init__(self, master):
         self.master = master
         self.frame = tk.Frame(self.master)
-        self.entry_btn = tk.Button(home_frame, text="Add Entry", width=5, command=add_frame)
-        self.entry_btn = tk.Button(home_frame, text="Export .txt", command=filewrite)
 
-        self.entry_btn.pack(side="top", fill=tk.X)
+        self.entry_btn = tk.Button(self.master, text="Add Entry", width=5, command=add_frame)
+
+        self.file_name = tk.StringVar
+        self.export_frame = tk.Frame(self.master)
+        self.export_btn = tk.Button(self.export_frame, text="Export .txt", command=self.file_write)
+        self.export_name = tk.Entry(self.export_frame, font="Calibri", textvariable=self.file_name)
+
+        self.export_frame.pack(side="bottom", fill=tk.X)
         self.entry_btn.pack(side="bottom", fill=tk.X)
+        self.export_btn.pack(side="right")
+        self.export_name.pack(fill="both", side="left", expand=True)
 
         root.bind('<KeyPress>', on_key_press)
 
     def my_function(self):
         pass
 
+    def file_write(self):
+        print(f"Checking file name entered = {self.export_name.get()}")
+        file1 = open(f"{config.get('main', 'SaveLocation')}" + "/Text" + "_Colors.txt", "w+")
+        item_name = "Item_Name"
+        file1.write(item_name + "\n\n")
+        colour_area = "Colours for the\n\n"
+
+        print(f"From config in file write {config.get('main', 'SaveLocation')}")
+
+        # TODO: figure out how to make it print the colour area when it changes
+        #  , not every single time (it will be an entry column soon)
+
+        for i in RemovableTint.instances:
+            file1.write(colour_area.capitalize())
+            file1.write(f"{i.colour_tint_name.get().capitalize()}\n")
+            file1.write(f" R = {float(i.r_spin.get())}\n")
+
+            file1.write(f" B = {float(i.g_spin.get())}\n")
+            file1.write(f" G = {float(i.b_spin.get())}\n")
+            file1.write(f"  {i.hex_spin.get()}\n")
+
+        item_name = ""
+
+        # L = [item_name+"\n", "R = 0.1\n", "G = 0.1\n", "B = 0.1\n", "#FFFFFF"]
+        # file1.writelines(L)
+        file1.close()
+        webbrowser.open(f"{config.get('main', 'SaveLocation')}/Text_Colors.txt")
+
+    # def file_name_func(self):
+    #     return self.file_name
 
 class About:
     def __init__(self, master):
@@ -262,34 +299,6 @@ class RemovableTint(tk.Frame):
 def add_frame():
     RemovableTint(home_frame).pack(fill=tk.X)
     # print(RemovableTint.instances)
-
-
-def filewrite():
-    file1 = open(f"{config.get('main', 'SaveLocation')}" + "/Text" + "_Colors.txt", "w+")
-    item_name = "Item_Name"
-    file1.write(item_name + "\n\n")
-    colour_area = "Colours for the\n\n"
-
-    print(f"From config in file write {config.get('main', 'SaveLocation')}")
-
-    # TODO: figure out how to make it print the colour area when it changes
-    #  , not every single time (it will be an entry column soon)
-
-    for i in RemovableTint.instances:
-        file1.write(colour_area.capitalize())
-        file1.write(f"{i.colour_tint_name.get().capitalize()}\n")
-        file1.write(f" R = {float(i.r_spin.get())}\n")
-
-        file1.write(f" B = {float(i.g_spin.get())}\n")
-        file1.write(f" G = {float(i.b_spin.get())}\n")
-        file1.write(f"  {i.hex_spin.get()}\n")
-
-    item_name = ""
-
-    # L = [item_name+"\n", "R = 0.1\n", "G = 0.1\n", "B = 0.1\n", "#FFFFFF"]
-    # file1.writelines(L)
-    file1.close()
-    webbrowser.open(f"{config.get('main', 'SaveLocation')}/Text_Colors.txt")
 
 
 # Setting up global key binds
