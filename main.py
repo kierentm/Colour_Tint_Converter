@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, Toplevel
 from tkinter import filedialog
-from convert import nonlinearsrgbtolinear, KierensStupidTest
+from convert import *
 from PIL import ImageGrab
 import webcolors
 import webbrowser
@@ -63,6 +63,9 @@ if not config.has_section('main'):
 # TODO: Add program icon
 # TODO: Make text white when all three numbers are below 0.1 (practically black)
 # TODO: Add colour picker tool
+
+# TODO: Fix Jakes input from screenshot
+
 plus_ico = tk.PhotoImage(file="UI_Images\Plus_Icon_Test4.png")
 pipette_ico = tk.PhotoImage(file="UI_Images\Pipette_Icon4.png")
 export_ico = tk.PhotoImage(file="UI_Images\Export_txt_2.png")
@@ -124,27 +127,28 @@ class Home:
         file1.close()
         webbrowser.open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt")
 
-    # ----------------------------- Screenshot ----------------------------- #
+    # ----------------------------- Screenshot Start ----------------------------- #
     def screenshot(self):
-        self.tracer_win = tk.Toplevel(self.master)
-        self.tracer_win.attributes("-fullscreen", True)
+        self.tracer_win = tk.Toplevel(self.master)  # To make top level
+        self.tracer_win.attributes("-fullscreen", True)  # Full screen
         # self.tracer_win.overrideredirect(1)
-        self.tracer_win.attributes('-alpha', 0.3)  # to make toplevel
-        self.tracer_win.attributes('-topmost', True)
-        self.tracer_win.bind("<Button-1>", self.capture)
+        self.tracer_win.attributes('-alpha', 0.3)  # Sets transparency
+        self.tracer_win.attributes('-topmost', True)  # Keeps on top
+        self.tracer_win.bind("<Button-1>", self.capture)  # Binds left click to run capture
 
-    def capture(self, event):
+    def capture(self, event):  # Auto pass in event details (clicking)
         print(event)
         x, y = event.x, event.y
-        self.tracer_win.destroy()
-        image = ImageGrab.grab()
-        image = image.crop((x, y, x + 2, y + 2))
-        image = image.convert('RGB')
+        self.tracer_win.destroy()  # Destroys grey window
+        image = ImageGrab.grab()  # Takes screenshot of whole screen
+        image = image.crop((x - 1, y - 1, x + 1, y + 1))  # Crops image to 2 x 2 box
+        image = image.convert('RGB')  # Converts to RGB8
         image.save("screenshot.png")
-        r, g, b = image.getpixel((1, 1))
+        rgb_tuple = image.getpixel((1, 1))  # Gets SRGB8 of centre pixel
+        lsrgb_tuple = RGBtoNLSRGB(rgb_tuple) # Convert RBG8 to SRGB [0,1]
+        add_frame(lsrgb_tuple[0], lsrgb_tuple[1], lsrgb_tuple[2], True)  # Sends RBG values to add_frame
 
-        add_frame(r / 255, g / 255, b / 255, True)
-        print(r, g, b)
+    # ------------------------------- Screenshot End ------------------------------- #
 
 
 class About:
@@ -258,7 +262,7 @@ class RemovableTint(tk.Frame):
     instances = []
 
     # TODO: Refactor some names (eg. spin)
-
+    # Passed in is screenshot from add_frame
     def __init__(self, parent_frame, r=0, g=0, b=0, is_screenshot=False):
         # Adds instance to list of instances
         RemovableTint.instances.append(self)
@@ -312,6 +316,7 @@ class RemovableTint(tk.Frame):
         self.g_contents.trace('w', self.value_change)
         self.b_contents.trace('w', self.value_change)
 
+        # If screenshot is true then use screenshot values
         if is_screenshot:
             print("screenshot")
             self.r_contents.set(str(r))
@@ -343,7 +348,7 @@ class RemovableTint(tk.Frame):
             g_nonlin = float(self.g_spin.get())
             b_nonlin = float(self.b_spin.get())
             rgb_nonlin = (r_nonlin, g_nonlin, b_nonlin)
-            rgb_linear = nonlinearsrgbtolinear(rgb_nonlin)
+            rgb_linear = LSRGBtoSRGB8(rgb_nonlin)
             hexvals = webcolors.rgb_to_hex(rgb_linear)
             self.hex_entry_var.set(hexvals.upper())
             # self.hex_spin.config({"background": self.hex_spin.get()}) Adds colour to main box
@@ -368,8 +373,9 @@ class RemovableTint(tk.Frame):
 
 
 # Add frame instance (dynamic addition of widgets)
+# If add frame called from anywhere but screenshot does not provide Bool
 def add_frame(r=0, g=0, b=0, is_screenshot=False):
-    RemovableTint(home_frame, r, g, b, True).pack(fill=tk.X)
+    RemovableTint(home_frame, r, g, b, is_screenshot).pack(fill=tk.X)
     RemovableTint.hex_conversion(RemovableTint.instances[-1])
     # print(RemovableTint.instances)
 
