@@ -77,7 +77,7 @@ class Home:
 
     def file_write(self):
         print(f"Checking file name entered = {self.export_name.get()}")
-        file1 = open(f"{config.get('main', 'SaveLocation')}" + "/Text" + "_Colors.txt", "w+")
+        file1 = open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt", "w+")
         item_name = "Item_Name"
         file1.write(item_name + "\n\n")
         colour_area = "Colours for the\n\n"
@@ -101,7 +101,7 @@ class Home:
         # L = [item_name+"\n", "R = 0.1\n", "G = 0.1\n", "B = 0.1\n", "#FFFFFF"]
         # file1.writelines(L)
         file1.close()
-        webbrowser.open(f"{config.get('main', 'SaveLocation')}/Text_Colors.txt")
+        webbrowser.open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt")
 
     # def file_name_func(self):
     #     return self.file_name
