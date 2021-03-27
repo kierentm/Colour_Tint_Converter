@@ -327,12 +327,12 @@ class RemovableTint(tk.Frame):
         else:
             self.r_spin.config(background="red")
 
-        if KierensStupidTest(self.r_spin.get()):
+        if KierensStupidTest(self.g_spin.get()):
             self.g_spin.config(background="white")
         else:
             self.g_spin.config(background="red")
 
-        if KierensStupidTest(self.r_spin.get()):
+        if KierensStupidTest(self.b_spin.get()):
             self.b_spin.config(background="white")
         else:
             self.b_spin.config(background="red")
