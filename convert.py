@@ -43,3 +43,10 @@ def RGBtoNLSRGB(rgbt):
             lsrgb = ((nlsrgb + 0.055) / 1.055) ** 2.4
             lsrgb_list.append(lsrgb)
     return tuple(lsrgb_list)
+
+# If greater than 1 return 1
+def ifgreaterthan1(value):
+    if value > 0:
+        return 1
+    else:
+        return value

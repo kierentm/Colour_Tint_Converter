@@ -122,10 +122,9 @@ class Home:
         for i in RemovableTint.instances:
             file1.write(colour_area.capitalize())
             file1.write(f"{i.colour_tint_name.get().capitalize()}\n")
-            file1.write(f" R = {float(i.r_spin.get())}\n")
-
-            file1.write(f" B = {float(i.g_spin.get())}\n")
-            file1.write(f" G = {float(i.b_spin.get())}\n")
+            file1.write(f" R = {ifgreaterthan1(float(i.r_spin.get()))}\n")
+            file1.write(f" B = {ifgreaterthan1(float(i.g_spin.get()))}\n")
+            file1.write(f" G = {ifgreaterthan1(float(i.b_spin.get()))}\n")
             file1.write(f"  {i.hex_spin.get()}\n")
 
         file1.close()
@@ -228,7 +227,6 @@ class Settings:
         # Updates file location box
         self.folder_location = tk.StringVar(self.master, f"{config.get('main', 'SaveLocation')}")
         self.directory_display.config(text=self.folder_location)
-
         self.directory_display.grid(column=1, row=3, sticky='w')
 
 
