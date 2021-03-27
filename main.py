@@ -9,8 +9,8 @@ import pathlib
 
 root = tk.Tk()
 
-root.title("Colour Tint Converter")
-root.geometry('450x400')
+root.title("Colour Tint Master")
+root.geometry('550x700')
 
 # Initialise Tab Parent Notebook
 tab_parent = ttk.Notebook(root)
@@ -52,6 +52,9 @@ if not config.has_section('main'):
 # TODO: Add program icon
 # TODO: Make text white when all three numbers are below 0.1 (practically black)
 # TODO: Add colour picker tool
+plus_ico = tk.PhotoImage(file="UI_Images\Plus_Icon_Test4.png")
+pipette_ico = tk.PhotoImage(file="UI_Images\Pipette_Icon4.png")
+export_ico = tk.PhotoImage(file="UI_Images\Export_txt_1.png")
 
 class Home:
     def __init__(self, master):
@@ -59,16 +62,23 @@ class Home:
         self.frame = tk.Frame(self.master)
 
         # Create Entry and Colour Frame
-        self.entry_btn = tk.Button(self.master, text="Add Entry", width=5, command=add_frame)
-
+        self.entry_frame = tk.Frame(self.master)
+        self.entry_btn = tk.Button(self.entry_frame, image=plus_ico, bg="#393a40",
+                                   activebackground="#212124", bd="3", command=add_frame)
+        self.colour_btn = tk.Button(self.entry_frame, image=pipette_ico, bg="#393a40",
+                                   activebackground="#212124", bd="3")
         # Create Export Frame
         self.export_frame = tk.Frame(self.master)
-        self.export_btn = tk.Button(self.export_frame, text="Export .txt", command=self.file_write)
+        #self.export_btn = tk.Button(self.export_frame, text="Export .txt",fg="#ffffff", bg="#393a40", command=self.file_write)
+        self.export_btn = tk.Button(self.export_frame, image=export_ico, bg="#393a40",
+                                   activebackground="#313136", bd="3", command=self.file_write)
         self.export_name = EntryWithPlaceholder(self.export_frame, "Item Name")
 
         # Pack the stuff
+        self.entry_frame.pack(side="top", fill=tk.X)
+        self.entry_btn.pack(side="left", fill=tk.X, expand=True)
+        self.colour_btn.pack(side="left", fill=tk.X, expand=True)
         self.export_frame.pack(side="bottom", fill=tk.X)
-        self.entry_btn.pack(side="bottom", fill=tk.X)
         self.export_btn.pack(side="right")
         self.export_name.pack(fill="both", side="left", expand=True)
 
