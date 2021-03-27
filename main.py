@@ -1,10 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, Toplevel
 from tkinter import filedialog
-
+from convert import *
 from PIL import ImageGrab
-
-from convert import nonlinearsrgbtolinear
 import webcolors
 import webbrowser
 from configparser import ConfigParser
@@ -25,9 +23,14 @@ tab_parent = ttk.Notebook(root)
 # btn_clr = "#393a40"
 # btn_clr_active = "#212124"
 # bg_clr = "#f4f4f4"
-btn_clr = "#AA3F00"
-btn_clr_active = "#212124"
-bg_clr = "#f4f4f4"
+btn_clr = "#393a40"         #button colour
+btn_clr_act = "#57a337"     #button colour when clicked
+btn_fg_clr = "#ffffff"          #button font colour
+btn_fg = "Calibri", "16"
+
+bg_clr = "#2f3136"          #background colour
+
+
 
 # Define Tabs - MAIN TABS TO REFERENCE
 home_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
@@ -64,10 +67,10 @@ if not config.has_section('main'):
 # TODO: Add Comments
 # TODO: Add program icon
 # TODO: Make text white when all three numbers are below 0.1 (practically black)
-# TODO: Add colour picker tool
-plus_ico = tk.PhotoImage(file="UI_Images\Plus_Icon_Test4.png")
-pipette_ico = tk.PhotoImage(file="UI_Images\Pipette_Icon4.png")
-export_ico = tk.PhotoImage(file="UI_Images\Export_txt_2.png")
+
+plus_ico = tk.PhotoImage(file="UI_Images\Plus_Solo_1.png")
+pipette_ico = tk.PhotoImage(file="UI_Images\Pipette_Solo.png")
+export_ico = tk.PhotoImage(file="UI_Images\Txt_Solo.png")
 
 
 class Home:
@@ -75,20 +78,22 @@ class Home:
 
     def __init__(self, master):
         self.master = master
-        self.frame = tk.Frame(self.master)
+        self.frame = tk.Frame(self.master, bg=bg_clr, relief="ridge", bd="500")
 
         # Create Entry and Colour Frame
-        self.entry_frame = tk.Frame(self.master)
+        self.entry_frame = tk.Frame(self.master, bg=bg_clr)
 
-        self.entry_btn = tk.Button(self.entry_frame, image=plus_ico, bg=btn_clr,
-                                   activebackground=btn_clr_active, bd="3", height="22", command=add_frame)
+        self.entry_btn = tk.Button(self.entry_frame, image=plus_ico, bg=btn_clr, activebackground=btn_clr_act,
+                                   fg=btn_fg_clr, bd="3", height="22", text="New Entry", compound="left", command=add_frame,
+                                   font=btn_fg)
         self.divider = tk.Label(self.entry_frame, bg=bg_clr, width="0", padx="1")
-        self.colour_btn = tk.Button(self.entry_frame, image=pipette_ico, bg=btn_clr,
-                                    activebackground=btn_clr_active, bd="3", height="22", command=self.screenshot)
+        self.colour_btn = tk.Button(self.entry_frame, image=pipette_ico, bg=btn_clr, activebackground=btn_clr_act,
+                                    fg=btn_fg_clr, height="22", text="New Colour", compound="left", command=self.screenshot,
+                                    font=btn_fg)
         # Create Export Frame
-        self.export_frame = tk.Frame(self.master)
+        self.export_frame = tk.Frame(self.master, bg=bg_clr)
         self.export_btn = tk.Button(self.export_frame, image=export_ico, bg=btn_clr,
-                                    activebackground=btn_clr_active, bd="3", height="24", command=self.file_write)
+                                    activebackground=btn_clr_act, bd="3", height="24", command=self.file_write)
         self.export_name = EntryWithPlaceholder(self.export_frame, "Item Name")
 
         # Pack the stuff
@@ -126,27 +131,28 @@ class Home:
         file1.close()
         webbrowser.open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt")
 
-    # ----------------------------- Screenshot ----------------------------- #
+    # ----------------------------- Screenshot Start ----------------------------- #
     def screenshot(self):
-        self.tracer_win = tk.Toplevel(self.master)
-        self.tracer_win.attributes("-fullscreen", True)
+        self.tracer_win = tk.Toplevel(self.master)  # To make top level
+        self.tracer_win.attributes("-fullscreen", True)  # Full screen
         # self.tracer_win.overrideredirect(1)
-        self.tracer_win.attributes('-alpha', 0.3)  # to make toplevel
-        self.tracer_win.attributes('-topmost', True)
-        self.tracer_win.bind("<Button-1>", self.capture)
+        self.tracer_win.attributes('-alpha', 0.3)  # Sets transparency
+        self.tracer_win.attributes('-topmost', True)  # Keeps on top
+        self.tracer_win.bind("<Button-1>", self.capture)  # Binds left click to run capture
 
-    def capture(self, event):
+    def capture(self, event):  # Auto pass in event details (clicking)
         print(event)
         x, y = event.x, event.y
-        self.tracer_win.destroy()
-        image = ImageGrab.grab()
-        image = image.crop((x, y, x + 2, y + 2))
-        image = image.convert('RGB')
+        self.tracer_win.destroy()  # Destroys grey window
+        image = ImageGrab.grab()  # Takes screenshot of whole screen
+        image = image.crop((x - 1, y - 1, x + 1, y + 1))  # Crops image to 2 x 2 box
+        image = image.convert('RGB')  # Converts to RGB8
         image.save("screenshot.png")
-        r, g, b = image.getpixel((1, 1))
+        rgb_tuple = image.getpixel((1, 1))  # Gets SRGB8 of centre pixel
+        lsrgb_tuple = RGBtoNLSRGB(rgb_tuple) # Convert RBG8 to SRGB [0,1]
+        add_frame(lsrgb_tuple[0], lsrgb_tuple[1], lsrgb_tuple[2], True)  # Sends RBG values to add_frame
 
-        add_frame(r / 255, g / 255, b / 255, True)
-        print(r, g, b)
+    # ------------------------------- Screenshot End ------------------------------- #
 
 
 class About:
@@ -260,7 +266,7 @@ class RemovableTint(tk.Frame):
     instances = []
 
     # TODO: Refactor some names (eg. spin)
-
+    # Passed in is screenshot from add_frame
     def __init__(self, parent_frame, r=0, g=0, b=0, is_screenshot=False):
         # Adds instance to list of instances
         RemovableTint.instances.append(self)
@@ -314,6 +320,7 @@ class RemovableTint(tk.Frame):
         self.g_contents.trace('w', self.value_change)
         self.b_contents.trace('w', self.value_change)
 
+        # If screenshot is true then use screenshot values
         if is_screenshot:
             print("screenshot")
             self.r_contents.set(str(r))
@@ -323,13 +330,29 @@ class RemovableTint(tk.Frame):
 
     # Get hex value and update colour
     def hex_conversion(self):
+        # Tests if incorrect entry and highlights red
+        if KierensStupidTest(self.r_spin.get()):
+            self.r_spin.config(background="white")
+        else:
+            self.r_spin.config(background="red")
+
+        if KierensStupidTest(self.g_spin.get()):
+            self.g_spin.config(background="white")
+        else:
+            self.g_spin.config(background="red")
+
+        if KierensStupidTest(self.b_spin.get()):
+            self.b_spin.config(background="white")
+        else:
+            self.b_spin.config(background="red")
+
         # Try to convert the values
         try:
             r_nonlin = float(self.r_spin.get())
             g_nonlin = float(self.g_spin.get())
             b_nonlin = float(self.b_spin.get())
             rgb_nonlin = (r_nonlin, g_nonlin, b_nonlin)
-            rgb_linear = nonlinearsrgbtolinear(rgb_nonlin)
+            rgb_linear = LSRGBtoSRGB8(rgb_nonlin)
             hexvals = webcolors.rgb_to_hex(rgb_linear)
             self.hex_entry_var.set(hexvals.upper())
             # self.hex_spin.config({"background": self.hex_spin.get()}) Adds colour to main box
@@ -354,8 +377,9 @@ class RemovableTint(tk.Frame):
 
 
 # Add frame instance (dynamic addition of widgets)
+# If add frame called from anywhere but screenshot does not provide Bool
 def add_frame(r=0, g=0, b=0, is_screenshot=False):
-    RemovableTint(home_frame, r, g, b, True).pack(fill=tk.X)
+    RemovableTint(home_frame, r, g, b, is_screenshot).pack(fill=tk.X)
     RemovableTint.hex_conversion(RemovableTint.instances[-1])
     # print(RemovableTint.instances)
 
