@@ -63,7 +63,8 @@ class Home:
         self.file_name = tk.StringVar
         self.export_frame = tk.Frame(self.master)
         self.export_btn = tk.Button(self.export_frame, text="Export .txt", command=self.file_write)
-        self.export_name = tk.Entry(self.export_frame, font="Calibri", textvariable=self.file_name)
+        # self.export_name = tk.Entry(self.export_frame, font="Calibri", textvariable=self.file_name)
+        self.export_name = EntryWithPlaceholder(self.export_frame, "Item Name")
 
         self.export_frame.pack(side="bottom", fill=tk.X)
         self.entry_btn.pack(side="bottom", fill=tk.X)
@@ -252,6 +253,7 @@ class RemovableTint(tk.Frame):
         self.g_spin.bind("<Button-1>", self.focus_change)
         self.b_spin.bind("<Button-1>", self.focus_change)
 
+
     # Get hex value and update colour
     def hex_conversion(self):
         # Try to convert the values
@@ -271,6 +273,9 @@ class RemovableTint(tk.Frame):
 
     def focus_change(self, *args):
         self.hex_conversion()
+
+    def value_change(self, *args):
+        print("value changed")
 
     # Remove current instance from list and visualisation
     def remove(self):
