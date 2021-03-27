@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
-from convert import nonlinearsrgbtolinear
+from convert import nonlinearsrgbtolinear, KierensStupidTest
 import webcolors
 import webbrowser
 from configparser import ConfigParser
@@ -282,6 +282,22 @@ class RemovableTint(tk.Frame):
 
     # Get hex value and update colour
     def hex_conversion(self):
+        # Tests if incorrect entry and highlights red
+        if KierensStupidTest(self.r_spin.get()):
+            self.r_spin.config(background="white")
+        else:
+            self.r_spin.config(background="red")
+
+        if KierensStupidTest(self.r_spin.get()):
+            self.g_spin.config(background="white")
+        else:
+            self.g_spin.config(background="red")
+
+        if KierensStupidTest(self.r_spin.get()):
+            self.b_spin.config(background="white")
+        else:
+            self.b_spin.config(background="red")
+
         # Try to convert the values
         try:
             r_nonlin = float(self.r_spin.get())

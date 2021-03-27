@@ -16,3 +16,17 @@ def nonlinearsrgbtolinear(nlsrgb):
             lsrgb.append(value8)
     # Returns int tuple for entry into webcolor function
     return tuple(lsrgb)
+
+
+def KierensStupidTest(value):
+    if not value == "":
+        try:
+            if not 0 <= float(value) <= 1:
+                return False
+            else:
+                return True
+        except ValueError:
+            return False
+            pass
+    else:
+        return True
