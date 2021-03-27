@@ -57,11 +57,11 @@ class Home:
     def __init__(self, master):
         self.master = master
         self.frame = tk.Frame(self.master)
-        self.entry_btn = tk.Button(home_frame, text="Add Entry", width=5, command=add_frame)
-        self.entry_btn = tk.Button(home_frame, text="Export .txt", command=filewrite)
+        self.btn = tk.Button(home_frame, text="Add Entry", width=5, command=add_frame)
+        self.btn2 = tk.Button(home_frame, text="Export .txt", command=filewrite)
 
-        self.entry_btn.pack(side="top", fill=tk.X)
-        self.entry_btn.pack(side="bottom", fill=tk.X)
+        self.btn.pack(side="bottom", fill=tk.X)
+        self.btn2.pack(side="bottom", fill=tk.X)
 
         root.bind('<KeyPress>', on_key_press)
 
