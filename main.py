@@ -7,10 +7,7 @@ import webbrowser
 from configparser import ConfigParser
 import pathlib
 
-# TODO: Currently setting root geometry twice
-
 root = tk.Tk()
-#  root.geometry("400x400")
 
 root.title("Colour Tint Converter")
 root.geometry('450x400')
@@ -54,23 +51,49 @@ if not config.has_section('main'):
 # TODO: Add Comments
 # TODO: Add program icon
 # TODO: Make text white when all three numbers are below 0.1 (practically black)
-# TODO: Figure out if entry boxes can have grey text label when nothing is in the box
 # TODO: Add colour picker tool
 
 class Home:
     def __init__(self, master):
         self.master = master
         self.frame = tk.Frame(self.master)
-        self.btn = tk.Button(home_frame, text="Add Entry", width=5, command=add_frame)
-        self.btn2 = tk.Button(home_frame, text="Export .txt", command=filewrite)
 
-        self.btn.pack(side="bottom", fill=tk.X)
-        self.btn2.pack(side="bottom", fill=tk.X)
+        self.entry_btn = tk.Button(self.master, text="Add Entry", width=5, command=add_frame)
+
+        self.export_frame = tk.Frame(self.master)
+        self.export_btn = tk.Button(self.export_frame, text="Export .txt", command=self.file_write)
+        self.export_name = tk.Entry(self.export_frame, font="Calibri")
+
+        self.export_frame.pack(side="bottom", fill=tk.X)
+        self.entry_btn.pack(side="bottom", fill=tk.X)
+        self.export_btn.pack(side="right")
+        self.export_name.pack(fill="both", side="left", expand=True)
 
         root.bind('<KeyPress>', on_key_press)
 
     def my_function(self):
         pass
+
+    def file_write(self):
+        file1 = open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt", "w+")
+        item_name = "Item_Name"
+        file1.write(item_name + "\n\n")
+        colour_area = "Colours for the\n\n"
+
+        # TODO: figure out how to make it print the colour area when it changes
+        #  , not every single time (it will be an entry column soon)
+
+        for i in RemovableTint.instances:
+            file1.write(colour_area.capitalize())
+            file1.write(f"{i.colour_tint_name.get().capitalize()}\n")
+            file1.write(f" R = {float(i.r_spin.get())}\n")
+
+            file1.write(f" B = {float(i.g_spin.get())}\n")
+            file1.write(f" G = {float(i.b_spin.get())}\n")
+            file1.write(f"  {i.hex_spin.get()}\n")
+
+        file1.close()
+        webbrowser.open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt")
 
 
 class About:
@@ -150,8 +173,6 @@ class Settings:
                                           , state="disabled")
         self.directory_display.grid(column=1, row=3, sticky='w')
 
-        #print(f"From within function = {self.pathpast}")
-
 
 # Class to generate placeholder objects
 class EntryWithPlaceholder(tk.Entry):
@@ -220,7 +241,6 @@ class RemovableTint(tk.Frame):
         self.hex_spin.pack(fill="both", side="left")
         self.colour_spin.pack(fill="both", side="left")
         self.remove.pack(fill="both", side="left")
-        # TODO: Create box with colour next to hex value (to prevent text becoming unreadable)
 
         # Bind both tab and left click to
         self.r_spin.bind("<Tab>", self.focus_change)
@@ -269,32 +289,6 @@ def add_frame():
     # print(RemovableTint.instances)
 
 
-def filewrite():
-    file1 = open(f"{config.get('main', 'SaveLocation')}" + "/Text" + "_Colors.txt", "w+")
-    item_name = "Item_Name"
-    file1.write(item_name + "\n\n")
-    colour_area = "Colours for the\n\n"
-
-    print(f"From config in file write {config.get('main', 'SaveLocation')}")
-
-    # TODO: figure out how to make it print the colour area when it changes, not every single time (it will be an entry column soon)
-    for i in RemovableTint.instances:
-        file1.write(colour_area.capitalize())
-        file1.write(f"{i.colour_tint_name.get().capitalize()}\n")
-        file1.write(f" R = {float(i.r_spin.get())}\n")
-
-        file1.write(f" B = {float(i.g_spin.get())}\n")
-        file1.write(f" G = {float(i.b_spin.get())}\n")
-        file1.write(f"  {i.hex_spin.get()}\n")
-
-    item_name = ""
-
-    # L = [item_name+"\n", "R = 0.1\n", "G = 0.1\n", "B = 0.1\n", "#FFFFFF"]
-    # file1.writelines(L)
-    file1.close()
-    webbrowser.open(f"{config.get('main', 'SaveLocation')}/Text_Colors.txt")
-
-
 # Setting up global key binds
 def on_key_press(event):
     # Enter key
@@ -309,10 +303,8 @@ def on_key_press(event):
     # Print keypress for debugging
     # print(f"Key Press - char:{event.keycode}, readable: {event.char}")
 
-
 # TODO: Choose output file
 
-# TODO: Add Column names
 def main():
     Settings(settings_frame)
     About(about_frame)
