@@ -202,6 +202,7 @@ class RemovableTint(tk.Frame):
         self.r_contents = tk.StringVar()
         self.g_contents = tk.StringVar()
         self.b_contents = tk.StringVar()
+        self.hex_contents = tk.StringVar()
 
         # TODO: Remove redundant self. tags
         # Initialise all entry boxes and buttons
@@ -220,8 +221,7 @@ class RemovableTint(tk.Frame):
             self.g_spin.config(fg="black")
             self.b_spin.config(fg="black")
 
-        self.hex_spin = tk.Entry(self, width=8, font="Calibri", textvariable=self.hex_entry_var, state="disabled")
-        self.hex_spin.bind('<1>', lambda event: self.hex_spin.focus_set())
+        self.hex_spin = tk.Entry(self, width=8, font="Calibri", textvariable=self.hex_entry_var)
         self.colour_spin = tk.Label(self, width=4, background="black", relief="ridge")
         self.remove = tk.Button(self, font="Calibri", text="X", command=self.remove)
 
