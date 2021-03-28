@@ -251,6 +251,8 @@ class RemovableTint(tk.Frame):
     @staticmethod
     def ctrl_event(event):
         print(event)
+        if event.keycode == 9 or event.keycode == 13 or event.keycode == 27:
+            return
         if event.state == 12 and event.keysym == 'c':
             return
         else:
