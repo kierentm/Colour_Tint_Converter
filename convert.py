@@ -17,19 +17,23 @@ def LSRGBtoSRGB8(lsrgb):
     # Returns int tuple for entry into webcolor function
     return tuple(rgb_list)
 
+
 # Tests if correct input is entered and returns false if incorrect
 def KierensStupidTest(value):
     if not value == "":
-        try:
-            if not 0 <= float(value) <= 1:
+        if not value == ".":
+            try:
+                if not 0 <= float(value) <= 1:
+                    return False
+                else:
+                    return True
+            except ValueError:
                 return False
-            else:
-                return True
-        except ValueError:
-            return False
-            pass
+        else:
+            return True
     else:
         return True
+
 
 # Converts SRGB8 values from colour picker to SRBG
 def RGBtoNLSRGB(rgbt):
