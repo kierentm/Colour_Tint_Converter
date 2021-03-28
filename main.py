@@ -13,6 +13,7 @@ root = tk.Tk()
 p1 = tk.PhotoImage(file='Design Images/CTC.png')
 root.iconphoto(False, p1)
 
+
 root.title("Colour Tint Master")
 root.geometry('450x500')
 
@@ -51,6 +52,7 @@ tab_parent.pack(expand=1, fill="both")
 config = ConfigParser()
 
 config.read('config.ini')
+
 
 if not config.has_section('main'):
     config.add_section('main')
@@ -242,23 +244,26 @@ class RemovableTint(tk.Frame):
         self.g_contents.trace('w', self.value_change)
         self.b_contents.trace('w', self.value_change)
 
+        # Disallow editing of hex box
+        self.hex_spin.bind("<Key>", lambda e: self.ctrl_event(e))
+
+    # Runs when trying to edit the hex value
+    @staticmethod
+    def ctrl_event(event):
+        print(event)
+        if event.state == 12 and event.keysym == 'c':
+            return
+        else:
+            return "break"
+
     # Get hex value and update colour
     def hex_conversion(self):
-        # Tests if incorrect entry and highlights red
-        if KierensStupidTest(self.r_spin.get()):
-            self.r_spin.config(background="white")
-        else:
-            self.r_spin.config(background="red")
-
-        if KierensStupidTest(self.g_spin.get()):
-            self.g_spin.config(background="white")
-        else:
-            self.g_spin.config(background="red")
-
-        if KierensStupidTest(self.b_spin.get()):
-            self.b_spin.config(background="white")
-        else:
-            self.b_spin.config(background="red")
+        entries = [self.r_spin, self.g_spin, self.b_spin]
+        for e in entries:
+            if KierensStupidTest(e.get()):
+                e.config(background="white")
+            else:
+                e.config(background="red")
 
         # Try to convert the values
         try:
@@ -322,11 +327,12 @@ class Settings:
         self.frame = tk.Frame(self.master)
         self.save_button = tk.Button(self.master, text="Save", width=10, command=self.update_settings)
         self.path_past = None
+        self.topmost = None
 
         self.label_frame = tk.LabelFrame(self.master, text="Visual")
         self.hotkey_frame = tk.LabelFrame(self.master, text="Hotkeys")
 
-        self.on_top = tk.Checkbutton(self.label_frame, text="Keep window on top", variable=Settings.on_top_var)
+        self.on_top = tk.Checkbutton(self.label_frame, text="Keep window on top", variable=self.on_top_var)
         self.dark_mode = tk.Checkbutton(self.label_frame, text="Dark Mode", variable=Settings.dark_mode)
 
         self.hotkey1 = tk.Checkbutton(self.hotkey_frame, text="Dummy 1", variable=Settings.dummy1)
@@ -351,7 +357,6 @@ class Settings:
 
     @staticmethod
     def update_settings():
-        root.attributes('-topmost', Settings.on_top_var.get())
         print(Settings.on_top_var.get())
         print(Settings.dark_mode.get())
 
@@ -360,6 +365,7 @@ class Settings:
         # Open dialog box to select file and saves location to config
         self.path_past = filedialog.askdirectory(initialdir="/", title="Select Directory")
         config.set('main', 'SaveLocation', self.path_past)
+
         with open('config.ini', 'w') as file:
             config.write(file)
 
