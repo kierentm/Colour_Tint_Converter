@@ -23,14 +23,12 @@ tab_parent = ttk.Notebook(root)
 # btn_clr = "#393a40"
 # btn_clr_active = "#212124"
 # bg_clr = "#f4f4f4"
-btn_clr = "#393a40"         #button colour
-btn_clr_act = "#57a337"     #button colour when clicked
-btn_fg = "#ffffff"          #button font colour
+btn_clr = "#393a40"  # button colour
+btn_clr_act = "#57a337"  # button colour when clicked
+btn_fg = "#ffffff"  # button font colour
 btn_font = "Calibri", "16"
 
-bg_clr = "#2f3136"          #background colour
-
-
+bg_clr = "#2f3136"  # background colour
 
 # Define Tabs - MAIN TABS TO REFERENCE
 home_frame = ttk.Frame(tab_parent, borderwidth=5, relief="groove")
@@ -58,8 +56,8 @@ if not config.has_section('main'):
     config.add_section('main')
     config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
     config.set('main', 'OnTop', '0')
-    with open('config.ini', 'w') as f:
-        config.write(f)
+    with open('config.ini', 'w') as file:
+        config.write(file)
 
 # TODO: Toggle Dark mode
 
@@ -69,17 +67,17 @@ if not config.has_section('main'):
 # TODO: Add program icon
 # TODO: Make text white when all three numbers are below 0.1 (practically black)
 
-plus_ico = tk.PhotoImage(file="UI_Images\Plus_Solo_1.png")
-pipette_ico = tk.PhotoImage(file="UI_Images\Pipette_Solo.png")
-export_ico = tk.PhotoImage(file="UI_Images\Txt_Solo.png")
+plus_ico = tk.PhotoImage(file="UI_Images/Plus_Solo_1.png")
+pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Solo.png")
+export_ico = tk.PhotoImage(file="UI_Images/Txt_Solo.png")
 
 
 class Home:
     tracer_win: Toplevel
 
     def __init__(self, master):
+        self.image = None
         self.master = master
-        self.frame = tk.Frame(self.master, bg=bg_clr, relief="ridge", bd="500")
 
         # Create Entry and Colour Frame
         self.entry_frame = tk.Frame(self.master, bg=bg_clr)
@@ -109,20 +107,18 @@ class Home:
 
         root.bind('<KeyPress>', on_key_press)
 
-    def my_function(self):
-        pass
-
+    # ----------------------------- File write Start ----------------------------- #
     def file_write(self):
         file1 = open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt", "w+")
         item_name = "Item_Name"
         file1.write(item_name + "\n\n")
-        #colour_area = "Colours for the\n\n"
+        # colour_area = "Colours for the\n\n"
 
         # TODO: figure out how to make it print the colour area when it changes
         #  , not every single time (it will be an entry column soon)
 
         for i in RemovableTint.instances:
-            #file1.write(colour_area.capitalize())
+            # file1.write(colour_area.capitalize())
             file1.write(f"{i.colour_tint_name.get().capitalize()}\n")
             file1.write(f" R = {ifgreaterthan1(float(i.r_spin.get()))}\n")
             file1.write(f" B = {ifgreaterthan1(float(i.g_spin.get()))}\n")
@@ -149,9 +145,10 @@ class Home:
 
         self.image = self.image.crop((x - 1, y - 1, x + 1, y + 1))  # Crops image to 2 x 2 box
         self.image = self.image.convert('RGB')  # Converts to RGB8
-        self.image.save("screenshot.png")
+        # self.image.save("screenshot.png")
         rgb_tuple = self.image.getpixel((1, 1))  # Gets SRGB8 of centre pixel
-        lsrgb_tuple = RGBtoNLSRGB(rgb_tuple) # Convert RBG8 to SRGB [0,1]
+        lsrgb_tuple = RGBtoNLSRGB(rgb_tuple)  # Convert RBG8 to SRGB [0,1]
+        lsrgb_tuple = [round(num, 3) for num in lsrgb_tuple]  # Round Tuple
         add_frame(lsrgb_tuple[0], lsrgb_tuple[1], lsrgb_tuple[2], True)  # Sends RBG values to add_frame
 
     # ------------------------------- Screenshot End ------------------------------- #
@@ -172,7 +169,8 @@ class About:
 
         self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
 
-    def github_click(self, url):
+    @staticmethod
+    def github_click(url):
         webbrowser.open_new(url)
 
 
@@ -197,10 +195,10 @@ class Settings:
         self.hotkey2 = tk.Checkbutton(self.hotkey_frame, text="Dummy 2", variable=Settings.dummy2)
 
         # Create setting for File Location
-        self.directory_button = tk.Button(self.master, text="Select Save Location", command=self.getFilepast)
+        self.directory_button = tk.Button(self.master, text="Select Save Location", command=self.get_file_past)
         self.folder_location = tk.StringVar(self.master, f"{config.get('main', 'SaveLocation')}")
-        self.directory_display = tk.Entry(self.master, width=36, font="Calibri", textvariable=self.folder_location
-                                          , state="disabled")
+        self.directory_display = tk.Entry(self.master, width=36, font="Calibri", textvariable=self.folder_location,
+                                          state="disabled")
 
         # .label_frame.grid(column=0, row=0, sticky='w')
         self.label_frame.grid(column=0, row=0, sticky='w', pady=5)
@@ -213,22 +211,26 @@ class Settings:
         self.directory_display.grid(column=1, row=3, sticky='w')
         self.save_button.grid(column=0, row=10, sticky='w')
 
+        # Declare Settings Path Variable
+        self.path_past = ""
+
         # Check config to apply settings
         root.attributes('-topmost', config.get('main', 'OnTop'))
 
-    def update_settings(self):
+    @staticmethod
+    def update_settings():
         config.set('main', 'OnTop', f"{Settings.on_top_var.get()}")
         with open('config.ini', 'w') as f:
             config.write(f)
         root.attributes('-topmost', config.get('main', 'OnTop'))
 
     # Initialise windows directory selection and save within config
-    def getFilepast(self):
+    def get_file_past(self):
         # Open dialog box to select file and saves location to config
-        self.pathpast = filedialog.askdirectory(initialdir="/", title="Select Directory")
-        config.set('main', 'SaveLocation', self.pathpast)
-        with open('config.ini', 'w') as f:
-            config.write(f)
+        self.path_past = filedialog.askdirectory(initialdir="/", title="Select Directory")
+        config.set('main', 'SaveLocation', self.path_past)
+        with open('config.ini', 'w') as past_file:
+            config.write(past_file)
 
         # Updates file location box
         self.folder_location = tk.StringVar(self.master, f"{config.get('main', 'SaveLocation')}")
@@ -238,8 +240,8 @@ class Settings:
 
 # Class to generate placeholder objects
 class EntryWithPlaceholder(tk.Entry):
-    def __init__(self, master=None, placeholder="_", color='grey', font="Calibri"):
-        super().__init__(master)
+    def __init__(self, master=None, placeholder="_", color='grey', font="Calibri", *args, **kwargs):
+        super().__init__(master, *args, **kwargs)
 
         self.placeholder = placeholder
         self.placeholder_color = color
@@ -248,7 +250,6 @@ class EntryWithPlaceholder(tk.Entry):
 
         self.bind("<FocusIn>", self.foc_in)
         self.bind("<FocusOut>", self.foc_out)
-
         self.put_placeholder()
 
     def put_placeholder(self):
@@ -256,11 +257,13 @@ class EntryWithPlaceholder(tk.Entry):
         self['fg'] = self.placeholder_color
 
     def foc_in(self, *args):
+        print(args)
         if self['fg'] == self.placeholder_color:
             self.delete('0', 'end')
             self['fg'] = self.default_fg_color
 
     def foc_out(self, *args):
+        print(args)
         if not self.get():
             self.put_placeholder()
 
@@ -275,13 +278,18 @@ class RemovableTint(tk.Frame):
         # Adds instance to list of instances
         RemovableTint.instances.append(self)
 
+        self.r = r
+        self.g = g
+        self.b = b
+
+        self.is_screenshot = is_screenshot
+        print(self.is_screenshot)
+
         # Create variables for r, g and b entry boxes
         self.r_contents = tk.StringVar()
-        self.r_contents.set("0")
         self.g_contents = tk.StringVar()
-        self.g_contents.set("0")
         self.b_contents = tk.StringVar()
-        self.b_contents.set("0")
+        self.hex_contents = tk.StringVar()
 
         # TODO: Remove redundant self. tags
         # Initialise all entry boxes and buttons
@@ -290,27 +298,24 @@ class RemovableTint(tk.Frame):
         self.colour_tint_name = EntryWithPlaceholder(self, "Colour Name")
 
         # Create r, g and b entry boxes with grey 0 placeholder
-        self.r_spin = EntryWithPlaceholder(self, "0")
-        self.g_spin = EntryWithPlaceholder(self, "0")
-        self.b_spin = EntryWithPlaceholder(self, "0")
-        self.hex_spin = tk.Entry(self, width=8, font="Calibri", textvariable=self.hex_entry_var, state="disabled")
+        self.r_spin = EntryWithPlaceholder(self, str(self.r), width=5, color='grey', textvariable=self.r_contents)
+        self.g_spin = EntryWithPlaceholder(self, str(self.g), width=5, color='grey', textvariable=self.g_contents)
+        self.b_spin = EntryWithPlaceholder(self, str(self.b), width=5, color='grey', textvariable=self.b_contents)
+
+        # Make grey if not a screenshot, black otherwise. If black, won't use placeholder function
+        if self.is_screenshot:
+            self.r_spin.config(fg="black")
+            self.g_spin.config(fg="black")
+            self.b_spin.config(fg="black")
+
+        self.hex_spin = tk.Entry(self, width=8, font="Calibri", textvariable=self.hex_entry_var)
         self.colour_spin = tk.Label(self, width=4, background="black", relief="ridge")
         self.remove = tk.Button(self, font="Calibri", text="X", command=self.remove)
-
-        # Add textvaribles to the r, g and b entry boxes
-        self.r_spin.config(textvariable=self.r_contents)
-        self.g_spin.config(textvariable=self.g_contents)
-        self.b_spin.config(textvariable=self.b_contents)
-
-        # Resize widgets (workaround to sizing bug)
-        self.r_spin.config(width=5)
-        self.g_spin.config(width=5)
-        self.b_spin.config(width=5)
-        self.hex_spin.config(width=8)
 
         # Set the cursor to the name box when initializing a tint frame
         self.colour_tint_name.focus_set()
 
+        # Pack buttons into frame
         self.colour_tint_name.pack(fill="both", side="left", expand=True)
         self.r_spin.pack(fill="both", side="left")
         self.g_spin.pack(fill="both", side="left")
@@ -324,31 +329,28 @@ class RemovableTint(tk.Frame):
         self.g_contents.trace('w', self.value_change)
         self.b_contents.trace('w', self.value_change)
 
-        # If screenshot is true then use screenshot values
-        if is_screenshot:
-            print("screenshot")
-            self.r_contents.set(str(r))
-            self.g_contents.set(str(g))
-            self.b_contents.set(str(b))
-            self.hex_conversion()
+        # Disallow editing of hex box
+        self.hex_spin.bind("<Key>", lambda e: self.ctrl_event(e))
+
+    # Runs when trying to edit the hex value
+    @staticmethod
+    def ctrl_event(event):
+        print(event)
+        if event.keycode == 9 or event.keycode == 13 or event.keycode == 27:
+            return
+        if event.state == 12 and event.keysym == 'c':
+            return
+        else:
+            return "break"
 
     # Get hex value and update colour
     def hex_conversion(self):
-        # Tests if incorrect entry and highlights red
-        if KierensStupidTest(self.r_spin.get()):
-            self.r_spin.config(background="white")
-        else:
-            self.r_spin.config(background="red")
-
-        if KierensStupidTest(self.g_spin.get()):
-            self.g_spin.config(background="white")
-        else:
-            self.g_spin.config(background="red")
-
-        if KierensStupidTest(self.b_spin.get()):
-            self.b_spin.config(background="white")
-        else:
-            self.b_spin.config(background="red")
+        entries = [self.r_spin, self.g_spin, self.b_spin]
+        for e in entries:
+            if KierensStupidTest(e.get()):
+                e.config(background="white")
+            else:
+                e.config(background="red")
 
         # Try to convert the values
         try:
@@ -366,12 +368,13 @@ class RemovableTint(tk.Frame):
             pass
 
     def value_change(self, *args):
+        print(args)
         self.hex_conversion()
 
     # Remove current instance from list and visualisation
     def remove(self):
-        RemovableTint.instances.remove(self)
         self.destroy()
+        RemovableTint.instances.remove(self)
         # print(self.instances)
 
     # Remove bottom most instance
