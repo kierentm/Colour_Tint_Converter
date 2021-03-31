@@ -213,9 +213,9 @@ fabric.properties
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
 
-Text_Colors.txt
-Text_Colors.txt
+archive/Text_Colors.txt
+archive/Text_Colors.txt
 config.ini
-Text_Colors.txt
+archive/Text_Colors.txt
 UI_Stuff/20i-resistance.png
-image.png
+archive/image.png

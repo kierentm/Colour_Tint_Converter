@@ -10,7 +10,7 @@ import pathlib
 
 root = tk.Tk()
 
-p1 = tk.PhotoImage(file='Design Images/CTC.png')
+p1 = tk.PhotoImage(file='../Design Images/CTC.png')
 root.iconphoto(False, p1)
 
 root.title("Colour Tint Master")
@@ -42,7 +42,7 @@ config.read('config.ini')
 if not config.has_section('main'):
     config.add_section('main')
     config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
-    with open('config.ini', 'w') as f:
+    with open('../config.ini', 'w') as f:
         config.write(f)
 
 # TODO: Toggle Dark mode
@@ -53,9 +53,9 @@ if not config.has_section('main'):
 # TODO: Add program icon
 # TODO: Make text white when all three numbers are below 0.1 (practically black)
 # TODO: Add colour picker tool
-plus_ico = tk.PhotoImage(file="UI_Images/Plus_Icon_Test4.png")
-pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Icon4.png")
-export_ico = tk.PhotoImage(file="UI_Images/Export_txt_2.png")
+plus_ico = tk.PhotoImage(file="../UI_Images/Plus_Icon_Test4.png")
+pipette_ico = tk.PhotoImage(file="../UI_Images/Pipette_Icon4.png")
+export_ico = tk.PhotoImage(file="../UI_Images/Export_txt_2.png")
 
 
 class Home:

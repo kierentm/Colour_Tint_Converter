@@ -19,15 +19,15 @@ btn_fg = "#ffffff"  # button font colour
 btn_font = "Calibri", "16"
 bg_clr = "#2f3136"  # background colour
 
-plus_ico = tk.PhotoImage(file="UI_Images/Plus_Solo_1.png")
-pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Solo.png")
-export_ico = tk.PhotoImage(file="UI_Images/Txt_Solo.png")
+plus_ico = tk.PhotoImage(file="../UI_Images/Plus_Solo_1.png")
+pipette_ico = tk.PhotoImage(file="../UI_Images/Pipette_Solo.png")
+export_ico = tk.PhotoImage(file="../UI_Images/Txt_Solo.png")
 
 
 # ---- Main Loop ---- #
 def main():
 
-    p1 = tk.PhotoImage(file='Design Images/CTC.png')
+    p1 = tk.PhotoImage(file='../Design Images/CTC.png')
     root.iconphoto(False, p1)
 
     root.title("Colour Tint Master")
@@ -59,7 +59,7 @@ def main():
     if not config.has_section('main'):
         config.add_section('main')
         config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
-        with open('config.ini', 'w') as f:
+        with open('../config.ini', 'w') as f:
             config.write(f)
 
     Settings(settings_frame)
