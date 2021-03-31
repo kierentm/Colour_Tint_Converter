@@ -13,7 +13,6 @@ root = tk.Tk()
 p1 = tk.PhotoImage(file='Design Images/CTC.png')
 root.iconphoto(False, p1)
 
-
 root.title("Colour Tint Master")
 root.geometry('450x500')
 
@@ -53,12 +52,12 @@ config = ConfigParser()
 
 config.read('config.ini')
 
-
 if not config.has_section('main'):
     config.add_section('main')
     config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
-    with open('config.ini', 'w') as f:
-        config.write(f)
+    config.set('main', 'OnTop', '0')
+    with open('config.ini', 'w') as file:
+        config.write(file)
 
 # TODO: Toggle Dark mode
 
@@ -151,6 +150,92 @@ class Home:
         lsrgb_tuple = RGBtoNLSRGB(rgb_tuple)  # Convert RBG8 to SRGB [0,1]
         lsrgb_tuple = [round(num, 3) for num in lsrgb_tuple]  # Round Tuple
         add_frame(lsrgb_tuple[0], lsrgb_tuple[1], lsrgb_tuple[2], True)  # Sends RBG values to add_frame
+
+    # ------------------------------- Screenshot End ------------------------------- #
+
+
+class About:
+    def __init__(self, master):
+        self.master = master
+        self.frame = tk.Frame(self.master)
+        # Add content to about frame
+        self.AboutContent = tk.Label(self.master, text="Tool developed by Kieren Townley-Moss,"
+                                                       " Jake Broughton and "
+                                                       "Alex Todd")
+        self.github = tk.Label(self.master, text="Github", fg="blue", cursor="hand2")
+
+        self.AboutContent.grid(column=0, row=0, sticky='w')
+        self.github.grid(column=0, row=1, sticky='w')
+
+        self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
+
+    @staticmethod
+    def github_click(url):
+        webbrowser.open_new(url)
+
+
+class Settings:
+    on_top_var = tk.IntVar(value=config.get('main', 'OnTop'))
+    dark_mode = tk.IntVar()
+    dummy1 = tk.IntVar()
+    dummy2 = tk.IntVar()
+
+    def __init__(self, master):
+        self.master = master
+        self.frame = tk.Frame(self.master)
+        self.save_button = tk.Button(self.master, text="Save", width=10, command=self.update_settings)
+
+        self.label_frame = tk.LabelFrame(self.master, text="Visual")
+        self.hotkey_frame = tk.LabelFrame(self.master, text="Hotkeys")
+
+        self.on_top = tk.Checkbutton(self.label_frame, text="Keep window on top", variable=Settings.on_top_var)
+        self.dark_mode = tk.Checkbutton(self.label_frame, text="Dark Mode", variable=Settings.dark_mode)
+
+        self.hotkey1 = tk.Checkbutton(self.hotkey_frame, text="Dummy 1", variable=Settings.dummy1)
+        self.hotkey2 = tk.Checkbutton(self.hotkey_frame, text="Dummy 2", variable=Settings.dummy2)
+
+        # Create setting for File Location
+        self.directory_button = tk.Button(self.master, text="Select Save Location", command=self.get_file_past)
+        self.folder_location = tk.StringVar(self.master, f"{config.get('main', 'SaveLocation')}")
+        self.directory_display = tk.Entry(self.master, width=36, font="Calibri", textvariable=self.folder_location,
+                                          state="disabled")
+
+        # .label_frame.grid(column=0, row=0, sticky='w')
+        self.label_frame.grid(column=0, row=0, sticky='w', pady=5)
+        self.hotkey_frame.grid(column=0, row=1, sticky='w', pady=5)
+        self.on_top.grid(column=0, row=1, sticky='w')
+        self.dark_mode.grid(column=0, row=2, sticky='w')
+        self.hotkey1.grid(column=0, row=1, sticky='w')
+        self.hotkey2.grid(column=0, row=2, sticky='w')
+        self.directory_button.grid(column=0, row=3, sticky='w')
+        self.directory_display.grid(column=1, row=3, sticky='w')
+        self.save_button.grid(column=0, row=10, sticky='w')
+
+        # Declare Settings Path Variable
+        self.path_past = ""
+
+        # Check config to apply settings
+        root.attributes('-topmost', config.get('main', 'OnTop'))
+
+    @staticmethod
+    def update_settings():
+        config.set('main', 'OnTop', f"{Settings.on_top_var.get()}")
+        with open('config.ini', 'w') as f:
+            config.write(f)
+        root.attributes('-topmost', config.get('main', 'OnTop'))
+
+    # Initialise windows directory selection and save within config
+    def get_file_past(self):
+        # Open dialog box to select file and saves location to config
+        self.path_past = filedialog.askdirectory(initialdir="/", title="Select Directory")
+        config.set('main', 'SaveLocation', self.path_past)
+        with open('config.ini', 'w') as past_file:
+            config.write(past_file)
+
+        # Updates file location box
+        self.folder_location = tk.StringVar(self.master, f"{config.get('main', 'SaveLocation')}")
+        self.directory_display.config(text=self.folder_location)
+        self.directory_display.grid(column=1, row=3, sticky='w')
 
 
 # Class to generate placeholder objects
@@ -296,86 +381,6 @@ class RemovableTint(tk.Frame):
     def delete_last(self):
         self.destroy()
         RemovableTint.instances.remove(self)
-
-
-class About:
-    def __init__(self, master):
-        self.master = master
-        self.frame = tk.Frame(self.master)
-        # Add content to about frame
-        self.AboutContent = tk.Label(self.master, text="Tool developed by Kieren Townley-Moss,"
-                                                       " Jake Broughton and "
-                                                       "Alex Todd")
-        self.github = tk.Label(self.master, text="Github", fg="blue", cursor="hand2")
-
-        self.AboutContent.grid(column=0, row=0, sticky='w')
-        self.github.grid(column=0, row=1, sticky='w')
-
-        self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
-
-    @staticmethod
-    def github_click(url):
-        webbrowser.open_new(url)
-
-
-class Settings:
-    on_top_var = tk.IntVar()
-    dark_mode = tk.IntVar()
-    dummy1 = tk.IntVar()
-    dummy2 = tk.IntVar()
-
-    def __init__(self, master):
-        self.master = master
-        self.frame = tk.Frame(self.master)
-        self.save_button = tk.Button(self.master, text="Save", width=10, command=self.update_settings)
-        self.path_past = None
-        self.topmost = None
-
-        self.label_frame = tk.LabelFrame(self.master, text="Visual")
-        self.hotkey_frame = tk.LabelFrame(self.master, text="Hotkeys")
-
-        self.on_top = tk.Checkbutton(self.label_frame, text="Keep window on top", variable=self.on_top_var)
-        self.dark_mode = tk.Checkbutton(self.label_frame, text="Dark Mode", variable=Settings.dark_mode)
-
-        self.hotkey1 = tk.Checkbutton(self.hotkey_frame, text="Dummy 1", variable=Settings.dummy1)
-        self.hotkey2 = tk.Checkbutton(self.hotkey_frame, text="Dummy 2", variable=Settings.dummy2)
-
-        # Create setting for File Location
-        self.directory_button = tk.Button(self.master, text="Select Save Location", command=self.get_file_past)
-        self.folder_location = tk.StringVar(self.master, f"{config.get('main', 'SaveLocation')}")
-        self.directory_display = tk.Entry(self.master, width=36, font="Calibri", textvariable=self.folder_location,
-                                          state="disabled")
-
-        # .label_frame.grid(column=0, row=0, sticky='w')
-        self.label_frame.grid(column=0, row=0, sticky='w', pady=5)
-        self.hotkey_frame.grid(column=0, row=1, sticky='w', pady=5)
-        self.on_top.grid(column=0, row=1, sticky='w')
-        self.dark_mode.grid(column=0, row=2, sticky='w')
-        self.hotkey1.grid(column=0, row=1, sticky='w')
-        self.hotkey2.grid(column=0, row=2, sticky='w')
-        self.directory_button.grid(column=0, row=3, sticky='w')
-        self.directory_display.grid(column=1, row=3, sticky='w')
-        self.save_button.grid(column=0, row=10, sticky='w')
-
-    @staticmethod
-    def update_settings():
-        print(Settings.on_top_var.get())
-        print(Settings.dark_mode.get())
-
-    # Initialise windows directory selection and save within config
-    def get_file_past(self):
-        # Open dialog box to select file and saves location to config
-        self.path_past = filedialog.askdirectory(initialdir="/", title="Select Directory")
-        config.set('main', 'SaveLocation', self.path_past)
-
-        with open('config.ini', 'w') as file:
-            config.write(file)
-
-        # TODO: Better way of updating file location box?
-        # Updates file location box
-        self.folder_location = tk.StringVar(self.master, f"{config.get('main', 'SaveLocation')}")
-        self.directory_display.config(text=self.folder_location)
-        self.directory_display.grid(column=1, row=3, sticky='w')
 
 
 # Add frame instance (dynamic addition of widgets)
