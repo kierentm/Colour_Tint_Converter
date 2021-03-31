@@ -57,6 +57,7 @@ config.read('config.ini')
 if not config.has_section('main'):
     config.add_section('main')
     config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
+    config.set('main', 'OnTop', '0')
     with open('config.ini', 'w') as f:
         config.write(f)
 
@@ -176,7 +177,7 @@ class About:
 
 
 class Settings:
-    on_top_var = tk.IntVar()
+    on_top_var = tk.IntVar(value=config.get('main', 'OnTop'))
     dark_mode = tk.IntVar()
     dummy1 = tk.IntVar()
     dummy2 = tk.IntVar()
@@ -212,10 +213,14 @@ class Settings:
         self.directory_display.grid(column=1, row=3, sticky='w')
         self.save_button.grid(column=0, row=10, sticky='w')
 
+        # Check config to apply settings
+        root.attributes('-topmost', config.get('main', 'OnTop'))
+
     def update_settings(self):
-        root.attributes('-topmost', Settings.on_top_var.get())
-        print(Settings.on_top_var.get())
-        print(Settings.dark_mode.get())
+        config.set('main', 'OnTop', f"{Settings.on_top_var.get()}")
+        with open('config.ini', 'w') as f:
+            config.write(f)
+        root.attributes('-topmost', config.get('main', 'OnTop'))
 
     # Initialise windows directory selection and save within config
     def getFilepast(self):
@@ -225,7 +230,6 @@ class Settings:
         with open('config.ini', 'w') as f:
             config.write(f)
 
-        # TODO: Better way of updating file location box?
         # Updates file location box
         self.folder_location = tk.StringVar(self.master, f"{config.get('main', 'SaveLocation')}")
         self.directory_display.config(text=self.folder_location)
