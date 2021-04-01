@@ -10,38 +10,44 @@ import pathlib
 
 
 # ---- Version 1.0 ----- #
-# TODO: Improve program icon
-# TODO: Create taskbar icon (to be implemented in exe)
+
+# Separate Work
+
+# TODO: Improve program icon [KTM]
+# TODO: Create taskbar icon (to be implemented in exe) [KTM]
 
 # TODO: Hide dummy and dark mode settings
 # TODO: Add colour picker hotkey
 # TODO: Write hotkeys in Hotkeys tab
 
-# TODO: Scroll bar
+# TODO: Scroll bar (High Risk)
 
-# TODO: "Freeze" screenshot on window (display screenshot on tracer window?)
+# TODO: "Freeze" screenshot on window (display screenshot on tracer window?) (High Risk)
 # TODO: Update screenshot cursor
+
+# TODO: Add version, date and license to about page
+# TODO: Change github link to github image [KTM]
+
+# Group Bonding Moment Stuff
 
 # TODO: Create readme and video
 
-# TODO: Add version, date and license to about page
-# TODO: Change github link to github image
 # TODO: Remove debugging prints
 # TODO: Refactor some names (eg. spin)
-# TODO: Remove redundant self. tags
+# TODO: Remove redundant self. tags (High Risk)
 # TODO: Add Comments
-# TODO: Optimise imports
-# TODO: Pack into exe binary files and use installer
+# TODO: Optimise imports (High Risk)
+# TODO: Pack into exe binary files and use installer (High Risk)
 
 # TODO: Github 1.0 release
 # TODO: Github about page
 
 # ---- Version 1.1 ----- #
-# TODO: Toggle Dark mode
-# TODO: Save session (json?)
-# TODO: Add group column and reorganize output file
-# TODO: Custom hotkeys
-# TODO: Live preview box for colour picker
+# TODO: Toggle Dark mode (High Risk)
+# TODO: Save session (json?) (High Risk)
+# TODO: Add group column and reorganize output file (High Risk)
+# TODO: Custom hotkeys (High Risk)
+# TODO: Live preview box for colour picker (High Risk)
 # TODO: Change default placeholder to 0.0
 
 
