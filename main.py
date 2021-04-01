@@ -32,6 +32,7 @@ import pathlib
 
 # TODO: Create readme and video
 
+# TODO: Refactor meme function names
 # TODO: Remove debugging prints
 # TODO: Refactor some names (eg. spin)
 # TODO: Remove redundant self. tags (High Risk)
