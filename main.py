@@ -8,6 +8,43 @@ import webbrowser
 from configparser import ConfigParser
 import pathlib
 
+
+# ---- Version 1.0 ----- #
+# TODO: Improve program icon
+# TODO: Create taskbar icon (to be implemented in exe)
+
+# TODO: Hide dummy and dark mode settings
+# TODO: Add colour picker hotkey
+# TODO: Write hotkeys in Hotkeys tab
+
+# TODO: Scroll bar
+
+# TODO: "Freeze" screenshot on window (display screenshot on tracer window?)
+# TODO: Update screenshot cursor
+
+# TODO: Create readme and video
+
+# TODO: Add version, date and license to about page
+# TODO: Change github link to github image
+# TODO: Remove debugging prints
+# TODO: Refactor some names (eg. spin)
+# TODO: Remove redundant self. tags
+# TODO: Add Comments
+# TODO: Optimise imports
+# TODO: Pack into exe binary files and use installer
+
+# TODO: Github 1.0 release
+# TODO: Github about page
+
+# ---- Version 1.1 ----- #
+# TODO: Toggle Dark mode
+# TODO: Save session (json?)
+# TODO: Add group column and reorganize output file
+# TODO: Custom hotkeys
+# TODO: Live preview box for colour picker
+# TODO: Change default placeholder to 0.0
+
+
 root = tk.Tk()
 
 p1 = tk.PhotoImage(file='Design Images/CTC.png')
@@ -59,14 +96,6 @@ if not config.has_section('main'):
     with open('config.ini', 'w') as file:
         config.write(file)
 
-# TODO: Toggle Dark mode
-
-# TODO: Add hotkeys (update all colours, toggle keep on top .etc)
-
-# TODO: Add Comments
-# TODO: Add program icon
-# TODO: Make text white when all three numbers are below 0.1 (practically black)
-
 plus_ico = tk.PhotoImage(file="UI_Images/Plus_Solo_1.png")
 pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Solo.png")
 export_ico = tk.PhotoImage(file="UI_Images/Txt_Solo.png")
@@ -114,9 +143,6 @@ class Home:
         file1.write(item_name + "\n\n")
         # colour_area = "Colours for the\n\n"
 
-        # TODO: figure out how to make it print the colour area when it changes
-        #  , not every single time (it will be an entry column soon)
-
         for i in RemovableTint.instances:
             # file1.write(colour_area.capitalize())
             file1.write(f"{i.colour_tint_name.get().capitalize()}\n")
@@ -142,7 +168,6 @@ class Home:
         print(event)
         x, y = event.x, event.y
         self.tracer_win.destroy()  # Destroys grey window
-
         self.image = self.image.crop((x - 1, y - 1, x + 1, y + 1))  # Crops image to 2 x 2 box
         self.image = self.image.convert('RGB')  # Converts to RGB8
         # self.image.save("screenshot.png")
@@ -272,7 +297,6 @@ class EntryWithPlaceholder(tk.Entry):
 class RemovableTint(tk.Frame):
     instances = []
 
-    # TODO: Refactor some names (eg. spin)
     # Passed in is screenshot from add_frame
     def __init__(self, parent_frame, r=0, g=0, b=0, is_screenshot=False):
         # Adds instance to list of instances
@@ -291,7 +315,6 @@ class RemovableTint(tk.Frame):
         self.b_contents = tk.StringVar()
         self.hex_contents = tk.StringVar()
 
-        # TODO: Remove redundant self. tags
         # Initialise all entry boxes and buttons
         tk.Frame.__init__(self, parent_frame, height=5, pady=1)
         self.hex_entry_var = tk.StringVar()
@@ -404,8 +427,6 @@ def on_key_press(event):
     # Print keypress for debugging
     # print(f"Key Press - char:{event.keycode}, readable: {event.char}")
 
-
-# TODO: Choose output file
 
 def main():
     Settings(settings_frame)
