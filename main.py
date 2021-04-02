@@ -4,6 +4,7 @@ import webbrowser
 from configparser import ConfigParser
 from tkinter import filedialog
 from tkinter import ttk, Toplevel
+import time
 
 import webcolors
 from PIL import ImageGrab, ImageTk
@@ -18,11 +19,8 @@ from convert import *
 # TODO: Create taskbar icon (to be implemented in exe) [KTM]
 
 # TODO: Add colour picker hotkey
-# TODO: Write hotkeys in Hotkeys tab
 
 # TODO: Scroll bar (High Risk)
-
-# TODO: "Freeze" screenshot on window (display screenshot on tracer window?) (High Risk)
 
 # TODO: Add version, date and license to about page
 # TODO: Change github link to github image [KTM]
@@ -50,7 +48,6 @@ from convert import *
 # TODO: Custom hotkeys (High Risk)
 # TODO: Live preview box for colour picker (High Risk)
 # TODO: Change default placeholder to 0.0
-# TODO: Minimise main window on screenshot then re-load after screenshot
 
 
 root = tk.Tk()
@@ -163,7 +160,8 @@ class Home:
 
     # ----------------------------- Screenshot Start ----------------------------- #
     def screenshot(self):
-        
+        root.withdraw()
+        time.sleep(0.2)
         self.image = ImageGrab.grab()  # Takes screenshot of whole screen
         # self.image.save("testimage.jpg")
 
@@ -193,6 +191,7 @@ class Home:
         lsrgb_tuple = RGBtoNLSRGB(rgb_tuple)  # Convert RBG8 to SRGB [0,1]
         lsrgb_tuple = [round(num, 3) for num in lsrgb_tuple]  # Round Tuple
         add_frame(lsrgb_tuple[0], lsrgb_tuple[1], lsrgb_tuple[2], True)  # Sends RBG values to add_frame
+        root.deiconify()
 
     # ------------------------------- Screenshot End ------------------------------- #
 
