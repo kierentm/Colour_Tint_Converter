@@ -1,13 +1,14 @@
+import pathlib
 import tkinter as tk
-from tkinter import ttk, Toplevel
-from tkinter import filedialog
-from convert import *
-from PIL import ImageGrab
-import webcolors
 import webbrowser
 from configparser import ConfigParser
-import pathlib
+from tkinter import filedialog
+from tkinter import ttk, Toplevel
 
+import webcolors
+from PIL import ImageGrab, ImageTk
+
+from convert import *
 
 # ---- Version 1.0 ----- #
 
@@ -49,10 +50,10 @@ import pathlib
 # TODO: Custom hotkeys (High Risk)
 # TODO: Live preview box for colour picker (High Risk)
 # TODO: Change default placeholder to 0.0
+# TODO: Minimise main window on screenshot then re-load after screenshot
 
 
 root = tk.Tk()
-
 p1 = tk.PhotoImage(file='Design Images/CTC.png')
 root.iconphoto(False, p1)
 
@@ -162,13 +163,24 @@ class Home:
 
     # ----------------------------- Screenshot Start ----------------------------- #
     def screenshot(self):
+        
         self.image = ImageGrab.grab()  # Takes screenshot of whole screen
+        # self.image.save("testimage.jpg")
+
+        img = ImageTk.PhotoImage(self.image)
+
         self.tracer_win = tk.Toplevel(self.master, cursor="cross")  # To make top level
         self.tracer_win.attributes("-fullscreen", True)  # Full screen
         self.tracer_win.overrideredirect(1)
-        self.tracer_win.attributes('-alpha', 0.3)  # Sets transparency
+        self.tracer_win.attributes('-alpha', 1)  # Sets transparency
         self.tracer_win.attributes('-topmost', True)  # Keeps on top
+        tracer_frame = tk.Frame(self.tracer_win)
         self.tracer_win.bind("<Button-1>", self.capture)  # Binds left click to run capture
+        screenshot_bg = tk.Label(self.tracer_win, image=img)
+        screenshot_bg.photo = img   # Anchors the image to the object
+        screenshot_bg.pack(fill="both", expand=True)
+
+        tracer_frame.pack()
 
     def capture(self, event):  # Auto pass in event details (clicking)
         print(event)
