@@ -23,7 +23,6 @@ import pathlib
 # TODO: Scroll bar (High Risk)
 
 # TODO: "Freeze" screenshot on window (display screenshot on tracer window?) (High Risk)
-# TODO: Update screenshot cursor
 
 # TODO: Add version, date and license to about page
 # TODO: Change github link to github image [KTM]
@@ -165,7 +164,7 @@ class Home:
     # ----------------------------- Screenshot Start ----------------------------- #
     def screenshot(self):
         self.image = ImageGrab.grab()  # Takes screenshot of whole screen
-        self.tracer_win = tk.Toplevel(self.master)  # To make top level
+        self.tracer_win = tk.Toplevel(self.master, cursor="cross")  # To make top level
         self.tracer_win.attributes("-fullscreen", True)  # Full screen
         self.tracer_win.overrideredirect(1)
         self.tracer_win.attributes('-alpha', 0.3)  # Sets transparency
