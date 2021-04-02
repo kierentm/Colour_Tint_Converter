@@ -16,7 +16,7 @@ import pathlib
 # TODO: Improve program icon [KTM]
 # TODO: Create taskbar icon (to be implemented in exe) [KTM]
 
-# TODO: Hide dummy and dark mode settings
+
 # TODO: Add colour picker hotkey
 # TODO: Write hotkeys in Hotkeys tab
 
@@ -220,11 +220,11 @@ class Settings:
         self.label_frame = tk.LabelFrame(self.master, text="Visual")
         self.hotkey_frame = tk.LabelFrame(self.master, text="Hotkeys")
 
-        self.on_top = tk.Checkbutton(self.label_frame, text="Keep window on top", variable=Settings.on_top_var)
-        self.dark_mode = tk.Checkbutton(self.label_frame, text="Dark Mode", variable=Settings.dark_mode)
-
-        self.hotkey1 = tk.Checkbutton(self.hotkey_frame, text="Dummy 1", variable=Settings.dummy1)
-        self.hotkey2 = tk.Checkbutton(self.hotkey_frame, text="Dummy 2", variable=Settings.dummy2)
+        # self.on_top = tk.Checkbutton(self.label_frame, text="Keep window on top", variable=Settings.on_top_var)
+        # self.dark_mode = tk.Checkbutton(self.label_frame, text="Dark Mode", variable=Settings.dark_mode)
+        #
+        # self.hotkey1 = tk.Checkbutton(self.hotkey_frame, text="Dummy 1", variable=Settings.dummy1)
+        # self.hotkey2 = tk.Checkbutton(self.hotkey_frame, text="Dummy 2", variable=Settings.dummy2)
 
         # Create setting for File Location
         self.directory_button = tk.Button(self.master, text="Select Save Location", command=self.get_file_past)
@@ -235,10 +235,10 @@ class Settings:
         # .label_frame.grid(column=0, row=0, sticky='w')
         self.label_frame.grid(column=0, row=0, sticky='w', pady=5)
         self.hotkey_frame.grid(column=0, row=1, sticky='w', pady=5)
-        self.on_top.grid(column=0, row=1, sticky='w')
-        self.dark_mode.grid(column=0, row=2, sticky='w')
-        self.hotkey1.grid(column=0, row=1, sticky='w')
-        self.hotkey2.grid(column=0, row=2, sticky='w')
+        # self.on_top.grid(column=0, row=1, sticky='w')
+        # self.dark_mode.grid(column=0, row=2, sticky='w')
+        # self.hotkey1.grid(column=0, row=1, sticky='w')
+        # self.hotkey2.grid(column=0, row=2, sticky='w')
         self.directory_button.grid(column=0, row=3, sticky='w')
         self.directory_display.grid(column=1, row=3, sticky='w')
         self.save_button.grid(column=0, row=10, sticky='w')
