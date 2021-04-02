@@ -16,7 +16,6 @@ import pathlib
 # TODO: Improve program icon [KTM]
 # TODO: Create taskbar icon (to be implemented in exe) [KTM]
 
-
 # TODO: Add colour picker hotkey
 # TODO: Write hotkeys in Hotkeys tab
 
@@ -200,6 +199,22 @@ class About:
         self.github.grid(column=0, row=1, sticky='w')
 
         self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
+
+    @staticmethod
+    def github_click(url):
+        webbrowser.open_new(url)
+
+
+class Hotkeys:
+    def __init__(self, master):
+        self.master = master
+        self.frame = tk.Frame(self.master)
+        # Add content to about frame
+        self.AboutContent = tk.Label(self.master, text="Enter   -   Insert new colour"
+                                                       "\n"
+                                                       "Esc     -   Delete last colour")
+
+        self.AboutContent.grid(column=0, row=0, sticky='w')
 
     @staticmethod
     def github_click(url):
@@ -438,6 +453,7 @@ def on_key_press(event):
 def main():
     Settings(settings_frame)
     About(about_frame)
+    Hotkeys(hotkeys_frame)
     Home(home_frame)
     root.mainloop()
 
