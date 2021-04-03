@@ -38,9 +38,9 @@ def main():
 
     # Add frames to tabs then pack
     tab_parent.add(home, text="Home")
+    tab_parent.add(settings, text="Settings")
     tab_parent.add(hotkeys, text="Hotkeys")
     tab_parent.add(about, text="About")
-    tab_parent.add(settings, text="Settings")
 
     tab_parent.pack(expand=1, fill="both")
 
@@ -62,7 +62,9 @@ class Home(tk.Frame):
 
     def __init__(self, parent, *args, **kwargs):
 
-        root.bind('<KeyPress>', self.on_key_press)
+        root.bind('<Return>', lambda event: self.RemovableEntry(self))
+        root.bind('<Escape>', lambda event: self.remove_entry())
+        root.bind('<Control-Return>', lambda event: self.screenshot())
 
         # --- Main frames --- #
         tk.Frame.__init__(self, parent, *args, **kwargs)
@@ -70,8 +72,8 @@ class Home(tk.Frame):
 
         # --- Controls --- #
         add_button = tk.Button(control_frame, text="Add", command=lambda: Home.RemovableEntry(self))
-        remove_button = tk.Button(control_frame, text="Remove", command=lambda: self.remove_entry())
-        picker = tk.Button(control_frame, text="Colour Pick", command=lambda: self.screenshot())
+        remove_button = tk.Button(control_frame, text="Remove", command=self.remove_entry)
+        picker = tk.Button(control_frame, text="Colour Pick", command=self.screenshot)
 
         # --- Pack Controls --- #
         add_button.pack(side="left")
@@ -111,6 +113,7 @@ class Home(tk.Frame):
         self.tracer_win.attributes('-topmost', True)  # Keeps on top
         tracer_frame = tk.Frame(self.tracer_win)
         self.tracer_win.bind("<Button-1>", self.capture)  # Binds left click to run capture
+        self.tracer_win.bind('<Button-3>', self.tracer_destroy)
         screenshot_bg = tk.Label(self.tracer_win, image=img)
         screenshot_bg.photo = img  # Anchors the image to the object
         screenshot_bg.pack(fill="both", expand=True)
@@ -133,20 +136,14 @@ class Home(tk.Frame):
                             is_screenshot=True)  # Sends RBG values to add_frame
         root.deiconify()
 
+    def tracer_destroy(self, event):
+        self.tracer_win.destroy()
+        root.deiconify()
+        #print("something to see what it does")
+
     def remove_entry(self):
         if not len(self.RemovableEntry.instances) == 0:
             Home.RemovableEntry.instances[-1].delete_last()
-
-    # Setting up global key binds
-    def on_key_press(self, event):
-        # Enter key
-        if event.keycode == 13:
-            self.RemovableEntry(self)
-        # Escape key
-        if event.keycode == 27:
-            # Delete last tint frame instance
-            Home.RemovableEntry.instances[-1].delete_last()
-            print(Home.RemovableEntry.instances)
 
     # ----------------------------- File write Start ----------------------------- #
     def file_write(self):
@@ -282,7 +279,6 @@ class Home(tk.Frame):
                     self.hex_box_value.set(hexvals.upper())
                     self.colour_preview.config({"background": self.hex_box.get()})  # Adds colour to side box
 
-                # TODO: add final conversion type
                 if conversion_type == "sRGB' [0,1]":
                     print("hello")
                     rgb_nonlin = tuple(map(float, get_entries))
@@ -309,20 +305,20 @@ class Home(tk.Frame):
             self.default_fg_color = self['fg']
             self.font = font
 
-            self.bind("<FocusIn>", self.foc_in)
-            self.bind("<FocusOut>", self.foc_out)
+            self.bind("<FocusIn>", lambda event: self.foc_in())
+            self.bind("<FocusOut>", lambda event: self.foc_out())
             self.put_placeholder()
 
         def put_placeholder(self):
             self.insert(0, self.placeholder)
             self['fg'] = self.placeholder_color
 
-        def foc_in(self, *args):
+        def foc_in(self):
             if self['fg'] == self.placeholder_color:
                 self.delete('0', 'end')
                 self['fg'] = self.default_fg_color
 
-        def foc_out(self, *args):
+        def foc_out(self):
             if not self.get():
                 self.put_placeholder()
 
@@ -351,12 +347,19 @@ class Hotkeys(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         # --- Main frames --- #
         tk.Frame.__init__(self, parent, *args, **kwargs)
-        # Add content to about frame
-        self.AboutContent = tk.Label(self, text="Enter   -   Insert new colour"
-                                                "\n"
-                                                "Esc     -   Delete last colour")
 
-        self.AboutContent.grid(column=0, row=0, sticky='w')
+        # Add content to about frame
+        tk.Label(self, text="Enter").grid(column=0, row=0, sticky='w')
+        tk.Label(self, text="-").grid(column=1, row=0, sticky='w')
+        tk.Label(self, text="Insert new colour").grid(column=2, row=0, sticky='w')
+
+        tk.Label(self, text="Escape").grid(column=0, row=1, sticky='w')
+        tk.Label(self, text="-").grid(column=1, row=1, sticky='w')
+        tk.Label(self, text="Delete last colour").grid(column=2, row=1, sticky='w')
+
+        tk.Label(self, text="Control + Enter").grid(column=0, row=2, sticky='w')
+        tk.Label(self, text="-").grid(column=1, row=2, sticky='w')
+        tk.Label(self, text="Colour Picker").grid(column=2, row=2, sticky='w')
 
     @staticmethod
     def github_click(url):

@@ -134,7 +134,7 @@ class Home:
         self.image = self.image.convert('RGB')  # Converts to RGB8
         # self.image.save("screenshot.png")
         rgb_tuple = self.image.getpixel((1, 1))  # Gets SRGB8 of centre pixel
-        lsrgb_tuple = RGBtoNLSRGB(rgb_tuple)  # Convert RBG8 to SRGB [0,1]
+        lsrgb_tuple = RGB8toLSRGB(rgb_tuple)  # Convert RBG8 to SRGB [0,1]
         lsrgb_tuple = [round(num, 3) for num in lsrgb_tuple]  # Round Tuple
         self.add_frame(lsrgb_tuple, True)  # Sends RBG values to add_frame
 
