@@ -1,5 +1,7 @@
 # Python Module to convert to sRGB
 
+# ------------- Functions for converting linear SRGB (SRGB[0,1]) -------------
+
 # Function to convert linear-srgb value to SRGB8
 def LSRGBtoSRGB8(lsrgb):
     rgb_list = []
@@ -17,6 +19,35 @@ def LSRGBtoSRGB8(lsrgb):
     # Returns int tuple for entry into webcolor function
     return tuple(rgb_list)
 
+# Converts SRGB8 values from colour picker to SRBG
+def RGB8toLSRGB(rgbt):
+    lsrgb_list = []
+    for rbg_val in rgbt:
+        nlsrgb = rbg_val / 255
+        if nlsrgb < 0.04045:
+            lsrgb = nlsrgb / 12.92
+            lsrgb_list.append(lsrgb)
+        else:
+            lsrgb = ((nlsrgb + 0.055) / 1.055) ** 2.4
+            lsrgb_list.append(lsrgb)
+    return tuple(lsrgb_list)
+
+# ------------- Functions for converting non-linear SRGB (SRGB'[0,1]) -------------
+
+def NLSRGBtoSRGB8(nlsrgb):
+    return tuple([int(256 * nl) for nl in nlsrgb])
+
+def RGB8toNLSRGB(srgb8):
+    return tuple([rgb / 255 for rgb in srgb8])
+
+# ------------- Tests to confirm entries are as expected or warn/adjust as required -------------
+
+# If greater than 1 return 1 (useful in print)
+def ifgreaterthan1(value):
+    if value > 0:
+        return 1
+    else:
+        return value
 
 # Tests if correct input is entered and returns false if incorrect
 def KierensStupidTest(value):
@@ -33,24 +64,3 @@ def KierensStupidTest(value):
             return True
     else:
         return True
-
-
-# Converts SRGB8 values from colour picker to SRBG
-def RGBtoNLSRGB(rgbt):
-    lsrgb_list = []
-    for rbg_val in rgbt:
-        nlsrgb = rbg_val / 255
-        if nlsrgb < 0.04045:
-            lsrgb = nlsrgb / 12.92
-            lsrgb_list.append(lsrgb)
-        else:
-            lsrgb = ((nlsrgb + 0.055) / 1.055) ** 2.4
-            lsrgb_list.append(lsrgb)
-    return tuple(lsrgb_list)
-
-# If greater than 1 return 1
-def ifgreaterthan1(value):
-    if value > 0:
-        return 1
-    else:
-        return value
