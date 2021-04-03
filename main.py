@@ -241,33 +241,43 @@ class Settings:
     def __init__(self, master):
         self.master = master
         self.frame = tk.Frame(self.master)
-        self.save_button = tk.Button(self.master, text="Save", width=10, command=self.update_settings)
 
-        self.label_frame = tk.LabelFrame(self.master, text="Visual")
-        self.hotkey_frame = tk.LabelFrame(self.master, text="Hotkeys")
+        # Create frame for main settings (not save button) and options
+        self.main_settings_frame = tk.Frame(self.master)
 
-        # self.on_top = tk.Checkbutton(self.label_frame, text="Keep window on top", variable=Settings.on_top_var)
+        self.save_button = tk.Button(self.main_settings_frame, text="Save", width=10, command=self.update_settings)
+        self.on_top = tk.Checkbutton(self.main_settings_frame, text="Keep window on top", variable=Settings.on_top_var)
+
+        # self.label_frame = tk.LabelFrame(self.master, text="Visual")
+        # self.hotkey_frame = tk.LabelFrame(self.master, text="Hotkeys")
+
         # self.dark_mode = tk.Checkbutton(self.label_frame, text="Dark Mode", variable=Settings.dark_mode)
-        #
         # self.hotkey1 = tk.Checkbutton(self.hotkey_frame, text="Dummy 1", variable=Settings.dummy1)
         # self.hotkey2 = tk.Checkbutton(self.hotkey_frame, text="Dummy 2", variable=Settings.dummy2)
 
-        # Create setting for File Location
-        self.directory_button = tk.Button(self.master, text="Select Save Location", command=self.get_file_past)
-        self.folder_location = tk.StringVar(self.master, f"{config.get('main', 'SaveLocation')}")
-        self.directory_display = tk.Entry(self.master, width=36, font="Calibri", textvariable=self.folder_location,
+        # Create setting for File Location and Frame
+        self.save_location_frame = tk.Frame(self.master)
+
+        self.directory_button = tk.Button(self.save_location_frame, text="Select Save Location", command=self.get_file_past)
+        self.folder_location = tk.StringVar(self.save_location_frame, f"{config.get('main', 'SaveLocation')}")
+        self.directory_display = tk.Entry(self.save_location_frame, width=42, font="Calibri", textvariable=self.folder_location,
                                           state="disabled")
 
         # .label_frame.grid(column=0, row=0, sticky='w')
-        self.label_frame.grid(column=0, row=0, sticky='w', pady=5)
-        self.hotkey_frame.grid(column=0, row=1, sticky='w', pady=5)
-        # self.on_top.grid(column=0, row=1, sticky='w')
+        # self.label_frame.grid(column=0, row=0, sticky='w', pady=5)
+        # self.hotkey_frame.grid(column=0, row=1, sticky='w', pady=5)
+
         # self.dark_mode.grid(column=0, row=2, sticky='w')
         # self.hotkey1.grid(column=0, row=1, sticky='w')
         # self.hotkey2.grid(column=0, row=2, sticky='w')
-        self.directory_button.grid(column=0, row=3, sticky='w')
-        self.directory_display.grid(column=1, row=3, sticky='w')
-        self.save_button.grid(column=0, row=10, sticky='w')
+
+        self.main_settings_frame.pack(side="top",  anchor="nw", fill=tk.X)
+        self.on_top.grid(column=0, row=0, sticky='w')
+        self.save_button.grid(column=0, row=1, sticky='w', pady=(0, 15))
+
+        self.save_location_frame.pack(side="top", anchor="nw", fill=tk.X)
+        self.directory_button.pack(side="left")
+        self.directory_display.pack(fill="both", side="left", expand=True)
 
         # Declare Settings Path Variable
         self.path_past = ""
@@ -291,9 +301,7 @@ class Settings:
             config.write(past_file)
 
         # Updates file location box
-        self.folder_location = tk.StringVar(self.master, f"{config.get('main', 'SaveLocation')}")
-        self.directory_display.config(text=self.folder_location)
-        self.directory_display.grid(column=1, row=3, sticky='w')
+        self.folder_location.set(f"{config.get('main', 'SaveLocation')}")
 
 
 # Class to generate placeholder objects
