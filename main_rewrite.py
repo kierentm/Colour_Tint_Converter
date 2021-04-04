@@ -175,18 +175,18 @@ class Home(tk.Frame):
             tk.Frame.__init__(self, parent, *args, **kwargs)
             Home.RemovableEntry.instances.append(self)
 
-            # ---- Each entry set up here ---- #
-            convert_types = [
-                "sRGB8 [0,255]",
-                "sRGB' [0,1]",
-                "sRGB [0,1]"
-            ]
-
-            self.type_drop_value = tk.StringVar(self)
-            self.type_drop_value.set(self.convert_type)
-
-            type_dropdown = tk.OptionMenu(self, self.type_drop_value, *convert_types)
-            type_dropdown.config(width=10)
+            # # ---- Each entry set up here ---- #
+            # convert_types = [
+            #     "sRGB8 [0,255]",
+            #     "sRGB' [0,1]",
+            #     "sRGB [0,1]"
+            # ]
+            #
+            # self.type_drop_value = tk.StringVar(self)
+            # self.type_drop_value.set(self.convert_type)
+            #
+            # type_dropdown = tk.OptionMenu(self, self.type_drop_value, *convert_types)
+            # type_dropdown.config(width=10)
 
             self.entry_name = Home.EntryWithPlaceholder(self, width=20, placeholder="Colour Name")
 
@@ -216,7 +216,7 @@ class Home(tk.Frame):
                 self.b_value.set(b)
 
             # ---- Pack ---- #
-            type_dropdown.pack(side="left", fill=tk.Y)
+            # type_dropdown.pack(side="left", fill=tk.Y)
             self.entry_name.pack(side="left", fill=tk.Y)
 
             self.r_entry.pack(side="left", fill=tk.Y)
@@ -233,7 +233,7 @@ class Home(tk.Frame):
             self.r_value.trace('w', self.value_change)
             self.g_value.trace('w', self.value_change)
             self.b_value.trace('w', self.value_change)
-            self.type_drop_value.trace('w', self.value_change)
+            #self.type_drop_value.trace('w', self.value_change)
 
             # ---- Trace Value Change to Update Hex ---- #
             self.entry_name.focus_set()
@@ -246,7 +246,7 @@ class Home(tk.Frame):
 
         def hex_convert(self):
             # ---- Fetch values ---- #
-            conversion_type = self.type_drop_value.get()
+            conversion_type = config.get('main', 'Convert_Type')
             entries = [self.r_entry, self.g_entry, self.b_entry]
             get_entries = [self.r_entry.get(), self.g_entry.get(), self.b_entry.get()]
 
