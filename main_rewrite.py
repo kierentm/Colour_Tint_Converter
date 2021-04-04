@@ -148,18 +148,18 @@ class Home(tk.Frame):
     # ----------------------------- File write Start ----------------------------- #
     def file_write(self):
         file1 = open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt", "w+")
-        item_name = "Item_Name"
-        file1.write(item_name + "\n\n")
+        # item_name = "Item_Name"
+        # file1.write(item_name + "\n\n")
         # colour_area = "Colours for the\n\n"
 
         for i in Home.RemovableEntry.instances:
             # file1.write(colour_area.capitalize())
             file1.write(f"{i.entry_name.get().capitalize()}\n")
             file1.write(f"Type: {i.convert_type}\n")
-            file1.write(f" R = {ifgreaterthan1(float(i.r_entry.get()))}\n")
-            file1.write(f" B = {ifgreaterthan1(float(i.g_entry.get()))}\n")
-            file1.write(f" G = {ifgreaterthan1(float(i.b_entry.get()))}\n")
-            file1.write(f"  {i.hex_box.get()}\n")
+            file1.write(f" R  = {ifgreaterthan1(float(i.r_entry.get()))}\n")
+            file1.write(f" B  = {ifgreaterthan1(float(i.g_entry.get()))}\n")
+            file1.write(f" G  = {ifgreaterthan1(float(i.b_entry.get()))}\n")
+            file1.write(f"Hex = {i.hex_box.get()}\n\n")
 
         file1.close()
         webbrowser.open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt")
@@ -168,8 +168,8 @@ class Home(tk.Frame):
     class RemovableEntry(tk.Frame):
         instances = []
 
-        def __init__(self, parent, convert_type="sRGB [0,1]", r=0, g=0, b=0, is_screenshot=False, *args, **kwargs):
-            self.convert_type = convert_type
+        def __init__(self, parent, r=0, g=0, b=0, is_screenshot=False, *args, **kwargs):
+            self.convert_type = config.get('main', 'Convert_Type')
 
             # ---- Setup ---- #
             tk.Frame.__init__(self, parent, *args, **kwargs)
