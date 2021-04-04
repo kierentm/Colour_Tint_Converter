@@ -139,7 +139,7 @@ class Home(tk.Frame):
     def tracer_destroy(self, event):
         self.tracer_win.destroy()
         root.deiconify()
-        #print("something to see what it does")
+        # print("something to see what it does")
 
     def remove_entry(self):
         if not len(self.RemovableEntry.instances) == 0:
@@ -152,13 +152,15 @@ class Home(tk.Frame):
         # file1.write(item_name + "\n\n")
         # colour_area = "Colours for the\n\n"
 
+        conversion_type = config.get('main', 'Convert_Type')
+
         for i in Home.RemovableEntry.instances:
             # file1.write(colour_area.capitalize())
             file1.write(f"{i.entry_name.get().capitalize()}\n")
             file1.write(f"Type: {i.convert_type}\n")
-            file1.write(f" R  = {ifgreaterthan1(float(i.r_entry.get()))}\n")
-            file1.write(f" B  = {ifgreaterthan1(float(i.g_entry.get()))}\n")
-            file1.write(f" G  = {ifgreaterthan1(float(i.b_entry.get()))}\n")
+            file1.write(f" R  = {ifgreaterthan1(float(i.r_entry.get()), conversion_type)}\n")
+            file1.write(f" B  = {ifgreaterthan1(float(i.g_entry.get()), conversion_type)}\n")
+            file1.write(f" G  = {ifgreaterthan1(float(i.b_entry.get()), conversion_type)}\n")
             file1.write(f"Hex = {i.hex_box.get()}\n\n")
 
         file1.close()
@@ -233,7 +235,7 @@ class Home(tk.Frame):
             self.r_value.trace('w', self.value_change)
             self.g_value.trace('w', self.value_change)
             self.b_value.trace('w', self.value_change)
-            #self.type_drop_value.trace('w', self.value_change)
+            # self.type_drop_value.trace('w', self.value_change)
 
             # ---- Trace Value Change to Update Hex ---- #
             self.entry_name.focus_set()

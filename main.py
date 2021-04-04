@@ -18,8 +18,7 @@ from convert import *
 # TODO: Improve program icon [KTM]
 # TODO: Create taskbar icon (to be implemented in exe) [KTM]
 
-# TODO: Add colour picker hotkey
-
+# TODO: Restart request after updating settings
 # TODO: Scroll bar (High Risk)
 
 # TODO: Add version, date and license to about page
@@ -147,12 +146,14 @@ class Home:
         file1.write(item_name + "\n\n")
         # colour_area = "Colours for the\n\n"
 
+        conversion_type = config.get('main', 'Convert_Type')
+
         for i in RemovableTint.instances:
             # file1.write(colour_area.capitalize())
             file1.write(f"{i.colour_tint_name.get().capitalize()}\n")
-            file1.write(f" R = {ifgreaterthan1(float(i.r_spin.get()))}\n")
-            file1.write(f" B = {ifgreaterthan1(float(i.g_spin.get()))}\n")
-            file1.write(f" G = {ifgreaterthan1(float(i.b_spin.get()))}\n")
+            file1.write(f" R = {ifgreaterthan1(float(i.r_spin.get()), conversion_type)}\n")
+            file1.write(f" B = {ifgreaterthan1(float(i.g_spin.get()), conversion_type)}\n")
+            file1.write(f" G = {ifgreaterthan1(float(i.b_spin.get()), conversion_type)}\n")
             file1.write(f"  {i.hex_spin.get()}\n")
 
         file1.close()

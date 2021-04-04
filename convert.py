@@ -43,11 +43,17 @@ def RGB8toNLSRGB(srgb8):
 # ------------- Tests to confirm entries are as expected or warn/adjust as required -------------
 
 # If greater than 1 return 1 (useful in print)
-def ifgreaterthan1(value):
-    if value > 0:
-        return 1
+def ifgreaterthan1(value, conv_type):
+    if not conv_type == "sRGB8 [0,255]":
+        if value > 1:
+            return 1.0
+        else:
+            return value
     else:
-        return value
+        if value > 255:
+            return 255
+        else:
+            return int(value)
 
 # Tests if correct input is entered and returns false if incorrect
 def KierensStupidTest(value, conv_type):
