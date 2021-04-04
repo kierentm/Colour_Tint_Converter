@@ -1,11 +1,11 @@
 import tkinter as tk
-from tkinter.messagebox import showinfo
 import sys
 import os
 
 # --- classes ---
 
-class App():
+
+class App:
 
     def __init__(self, master):
         self.master = master
@@ -31,7 +31,8 @@ class App():
         button_close = tk.Button(window, text="No", command=window.destroy)
         button_close.pack(fill='x')
 
-    def restart_program(self):
+    @staticmethod
+    def restart_program():
         """Restarts the current program.
         Note: this function does not return. Any cleanup action (like
         saving data) must be done before calling this function."""
@@ -39,6 +40,7 @@ class App():
         os.execl(python, python, *sys.argv)
 
 # --- main ---
+
 
 root = tk.Tk()
 app = App(root)

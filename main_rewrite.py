@@ -5,6 +5,8 @@ from configparser import ConfigParser
 from tkinter import filedialog
 from tkinter import ttk
 import time
+import sys
+import os
 
 import webcolors
 from PIL import ImageGrab, ImageTk
@@ -379,38 +381,41 @@ class Settings(tk.Frame):
         "sRGB' [0,1]",
         "sRGB [0,1]"
     ]
-
     convert_var = tk.StringVar(value=config.get('main', 'Convert_Type'))
 
     def __init__(self, parent, *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
 
+        self.restart_popup = None
+
+        # Check config to apply settings
+        root.attributes('-topmost', config.get('main', 'OnTop'))
+
         # Create frame for main settings (not save button) and options
         self.main_settings_frame = tk.Frame(self)
-
-        self.save_button = tk.Button(self.main_settings_frame, text="Save", width=10, command=self.update_settings)
         self.on_top = tk.Checkbutton(self.main_settings_frame, text="Keep window on top", variable=Settings.on_top_var)
+        self.on_top_var.trace('w', self.update_settings_main)
 
         # Create convert default type option
-
-        self.convert_options = tk.OptionMenu(self.main_settings_frame, Settings.convert_var, *Settings.convert_types)
+        self.convert_frame = tk.Frame(self)
+        self.convert_options = tk.OptionMenu(self.convert_frame, Settings.convert_var, *Settings.convert_types)
+        self.save_button = tk.Button(self.convert_frame, text="Save", width=10, command=self.restart_window)
 
         # Create setting for File Location and Frame
         self.save_location_frame = tk.Frame(self)
-
         self.directory_button = tk.Button(self.save_location_frame, text="Select Save Location",
                                           command=self.get_file_past)
         self.folder_location = tk.StringVar(self.save_location_frame, f"{config.get('main', 'SaveLocation')}")
         self.directory_display = tk.Entry(self.save_location_frame, width=42, font="Calibri",
-                                          textvariable=self.folder_location,
-                                          state="disabled")
+                                          textvariable=self.folder_location, state="disabled")
 
-        self.main_settings_frame.pack(side="top", anchor="nw", fill=tk.X)
+        # Packs frames
+        self.main_settings_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
         self.on_top.grid(column=0, row=0, sticky='w')
 
-        self.convert_options.grid(column=0, row=1, sticky='w')
-
-        self.save_button.grid(column=0, row=2, sticky='w', pady=(0, 15))
+        self.convert_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
+        self.convert_options.grid(column=0, row=0, sticky='w')
+        self.save_button.grid(column=1, row=0, sticky='w')
 
         self.save_location_frame.pack(side="top", anchor="nw", fill=tk.X)
         self.directory_button.pack(side="left")
@@ -419,16 +424,44 @@ class Settings(tk.Frame):
         # Declare Settings Path Variable
         self.path_past = ""
 
-        # Check config to apply settings
-        root.attributes('-topmost', config.get('main', 'OnTop'))
+    @staticmethod
+    def update_settings_main(*args):
+        root.attributes('-topmost', Settings.on_top_var.get())
+        config.set('main', 'OnTop', f"{Settings.on_top_var.get()}")
+        with open('config.ini', 'w') as conf:
+            config.write(conf)
+
+    def restart_window(self):
+        self.restart_popup = tk.Toplevel()
+        self.restart_popup.attributes('-topmost', True)
+
+        self.restart_popup.title("Warning")
+
+        question_label = tk.Label(self.restart_popup, fg="red",
+                                                text="----------------------- Warning -----------------------\n"
+                                                "Saving requires a program restart,\n"
+                                                "Please ensure you have exported required colour information,\n"
+                                                "Would you like to restart now?")
+        question_label.pack(side="top", fill='x')
+
+        button_bonus = tk.Button(self.restart_popup, text="Yes", command=self.update_convert_type_yes)
+        button_bonus.pack(fill='x')
+
+        button_close = tk.Button(self.restart_popup, text="No", command=self.update_convert_type_no)
+        button_close.pack(fill='x')
 
     @staticmethod
-    def update_settings():
-        config.set('main', 'OnTop', f"{Settings.on_top_var.get()}")
+    def update_convert_type_yes():
         config.set('main', 'Convert_Type', f"{Settings.convert_var.get()}")
         with open('config.ini', 'w') as f:
             config.write(f)
         root.attributes('-topmost', config.get('main', 'OnTop'))
+        python = sys.executable
+        os.execl(python, python, *sys.argv)
+
+    def update_convert_type_no(self):
+        self.convert_var.set(config.get('main', 'Convert_Type'))
+        self.restart_popup.destroy()
 
     # Initialise windows directory selection and save within config
     def get_file_past(self):
