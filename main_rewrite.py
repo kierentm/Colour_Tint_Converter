@@ -22,6 +22,7 @@ if not config.has_section('main'):
     config.add_section('main')
     config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
     config.set('main', 'OnTop', '0')
+    config.set('main', 'Convert_Type', 'sRGB [0,1]')
     with open('config.ini', 'w') as file:
         config.write(file)
 
