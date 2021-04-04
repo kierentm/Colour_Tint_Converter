@@ -18,8 +18,8 @@ from convert import *
 # TODO: Improve program icon [KTM]
 # TODO: Create taskbar icon (to be implemented in exe) [KTM]
 
-# TODO: Restart request after updating settings
-# TODO: Scroll bar (High Risk)
+# TODO: Remove escape from colour picker
+# TODO: Fix Kieren's Test
 
 # TODO: Add version, date and license to about page
 # TODO: Change github link to github image [KTM]
@@ -47,6 +47,7 @@ from convert import *
 # TODO: Custom hotkeys (High Risk)
 # TODO: Live preview box for colour picker (High Risk)
 # TODO: Change default placeholder to 0.0
+# TODO: Scroll bar (High Risk)
 
 
 root = tk.Tk()
