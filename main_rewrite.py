@@ -247,14 +247,14 @@ class Home(tk.Frame):
         def hex_convert(self):
             # ---- Fetch values ---- #
             conversion_type = self.type_drop_value.get()
-            # entries = [self.r_entry, self.g_entry, self.b_entry]
+            entries = [self.r_entry, self.g_entry, self.b_entry]
             get_entries = [self.r_entry.get(), self.g_entry.get(), self.b_entry.get()]
 
-            # for e in entries:
-            #     if KierensStupidTest(e.get()):
-            #         e.config(background="white")
-            #     else:
-            #         e.config(background="red")
+            for e in entries:
+                if KierensStupidTest(e.get(), conversion_type):
+                    e.config(background="white")
+                else:
+                    e.config(background="red")
 
             # If there is no empty box...
             if '' not in get_entries:
@@ -280,7 +280,6 @@ class Home(tk.Frame):
                     self.colour_preview.config({"background": self.hex_box.get()})  # Adds colour to side box
 
                 if conversion_type == "sRGB' [0,1]":
-                    print("hello")
                     rgb_nonlin = tuple(map(float, get_entries))
                     yeet = NLSRGBtoSRGB8(rgb_nonlin)
                     hexvals = webcolors.rgb_to_hex(yeet)
@@ -372,6 +371,14 @@ class Settings(tk.Frame):
     dummy1 = tk.IntVar()
     dummy2 = tk.IntVar()
 
+    convert_types = [
+        "sRGB8 [0,255]",
+        "sRGB' [0,1]",
+        "sRGB [0,1]"
+    ]
+
+    convert_var = tk.StringVar(value=config.get('main', 'Convert_Type'))
+
     def __init__(self, parent, *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
 
@@ -380,6 +387,10 @@ class Settings(tk.Frame):
 
         self.save_button = tk.Button(self.main_settings_frame, text="Save", width=10, command=self.update_settings)
         self.on_top = tk.Checkbutton(self.main_settings_frame, text="Keep window on top", variable=Settings.on_top_var)
+
+        # Create convert default type option
+
+        self.convert_options = tk.OptionMenu(self.main_settings_frame, Settings.convert_var, *Settings.convert_types)
 
         # Create setting for File Location and Frame
         self.save_location_frame = tk.Frame(self)
@@ -393,7 +404,10 @@ class Settings(tk.Frame):
 
         self.main_settings_frame.pack(side="top", anchor="nw", fill=tk.X)
         self.on_top.grid(column=0, row=0, sticky='w')
-        self.save_button.grid(column=0, row=1, sticky='w', pady=(0, 15))
+
+        self.convert_options.grid(column=0, row=1, sticky='w')
+
+        self.save_button.grid(column=0, row=2, sticky='w', pady=(0, 15))
 
         self.save_location_frame.pack(side="top", anchor="nw", fill=tk.X)
         self.directory_button.pack(side="left")
@@ -408,6 +422,7 @@ class Settings(tk.Frame):
     @staticmethod
     def update_settings():
         config.set('main', 'OnTop', f"{Settings.on_top_var.get()}")
+        config.set('main', 'Convert_Type', f"{Settings.convert_var.get()}")
         with open('config.ini', 'w') as f:
             config.write(f)
         root.attributes('-topmost', config.get('main', 'OnTop'))

@@ -50,11 +50,25 @@ def ifgreaterthan1(value):
         return value
 
 # Tests if correct input is entered and returns false if incorrect
-def KierensStupidTest(value):
-    if not value == "":
-        if not value == ".":
+def KierensStupidTest(value, conv_type):
+    if not conv_type == "sRGB8 [0,255]":
+        if not value == "":
+            if not value == ".":
+                try:
+                    if not 0 <= float(value) <= 1:
+                        return False
+                    else:
+                        return True
+                except ValueError:
+                    return False
+            else:
+                return True
+        else:
+            return True
+    else:
+        if not value == "":
             try:
-                if not 0 <= float(value) <= 1:
+                if not 0 <= int(value) <= 255:
                     return False
                 else:
                     return True
@@ -62,5 +76,3 @@ def KierensStupidTest(value):
                 return False
         else:
             return True
-    else:
-        return True
