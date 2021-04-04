@@ -13,10 +13,16 @@ from convert import *
 
 root = tk.Tk()
 root.geometry("450x500")
+p1 = tk.PhotoImage(file='Design Images/Logo2.png')
+root.iconphoto(False, p1)
+root.title("Colour Tint Converter")
+
 
 # Load Config and generate main if required
 config = ConfigParser()
 config.read('config.ini')
+
+
 
 if not config.has_section('main'):
     config.add_section('main')
@@ -55,7 +61,8 @@ class Home(tk.Frame):
     btn_fg = "#ffffff"  # button font colour
     btn_font = "Calibri", "16"
     bg_clr = "#2f3136"  # background colour
-
+    tab_bg_clr = "#45484f"
+    entry_bg = "#64666b"
     plus_ico = tk.PhotoImage(file="UI_Images/Plus_Solo_1.png")
     pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Solo.png")
     export_ico = tk.PhotoImage(file="UI_Images/Txt_Solo.png")
@@ -67,13 +74,19 @@ class Home(tk.Frame):
         root.bind('<Control-Return>', lambda event: self.screenshot())
 
         # --- Main frames --- #
-        tk.Frame.__init__(self, parent, *args, **kwargs)
-        control_frame = tk.Frame(self)
+        tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr)
+        control_frame = tk.Frame(self, bg=Home.tab_bg_clr)
 
         # --- Controls --- #
-        add_button = tk.Button(control_frame, text="Add", command=lambda: Home.RemovableEntry(self))
-        remove_button = tk.Button(control_frame, text="Remove", command=self.remove_entry)
-        picker = tk.Button(control_frame, text="Colour Pick", command=self.screenshot)
+        add_button = tk.Button(control_frame, image=Home.plus_ico, text="Add", bg=Home.btn_clr, fg=Home.btn_fg,
+                               activebackground=Home.btn_clr_act, command=lambda: Home.RemovableEntry(self),
+                               bd="3", height="22", compound="left", font=Home.btn_font)
+        remove_button = tk.Button(control_frame, image=Home.plus_ico, text="Remove", bg=Home.btn_clr, fg=Home.btn_fg,
+                               activebackground=Home.btn_clr_act, command=self.remove_entry,
+                               bd="3", height="22", compound="left", font=Home.btn_font)
+        picker = tk.Button(control_frame, image=Home.pipette_ico, text="Colour Pick", bg=Home.btn_clr, fg=Home.btn_fg,
+                               activebackground=Home.btn_clr_act, command=self.screenshot,
+                               bd="3", height="22", compound="left", font=Home.btn_font)
 
         # --- Pack Controls --- #
         add_button.pack(side="left")
@@ -81,10 +94,11 @@ class Home(tk.Frame):
         picker.pack(side="right")
 
         # --- Export --- #
-        self.export_frame = tk.Frame(self.master)
-        self.export_btn = tk.Button(self.export_frame, text="Export .txt",
-                                    compound="left", command=self.file_write)
-        self.export_name = self.EntryWithPlaceholder(self.export_frame, "Item Name")
+        self.export_frame = tk.Frame(self.master, bg=Home.bg_clr)
+        self.export_btn = tk.Button(self.export_frame, image=Home.export_ico, text="Export .txt", bg=Home.btn_clr, fg=Home.btn_fg,
+                               activebackground=Home.btn_clr_act, command=self.file_write,
+                               bd="3", height="22", compound="left", font=Home.btn_font)
+        self.export_name = self.EntryWithPlaceholder(self.export_frame, "Item Name", bg=Home.tab_bg_clr, fg=Home.btn_fg)
 
         # --- Pack Export --- #
         self.export_frame.pack(side="bottom", fill=tk.X)
@@ -174,7 +188,7 @@ class Home(tk.Frame):
             self.convert_type = config.get('main', 'Convert_Type')
 
             # ---- Setup ---- #
-            tk.Frame.__init__(self, parent, *args, **kwargs)
+            tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr)
             Home.RemovableEntry.instances.append(self)
 
             # # ---- Each entry set up here ---- #
