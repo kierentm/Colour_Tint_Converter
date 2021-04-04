@@ -20,6 +20,9 @@ from convert import *
 
 # TODO: Remove escape from colour picker
 # TODO: Fix Kieren's Test
+# TODO: Fix selecting new file location
+
+# TODO: colour picker implementation with then and it is think its called configuration type maybe
 
 # TODO: Add version, date and license to about page
 # TODO: Change github link to github image [KTM]
