@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter.messagebox import showinfo
+import sys
+import os
 
 # --- classes ---
 
@@ -8,26 +10,33 @@ class App():
     def __init__(self, master):
         self.master = master
 
-        button_bonus = tk.Button(master, text="Window", command=self.popup_window)
-        button_bonus.pack(fill='x')
+        question_label = tk.Label(master, text="There's a troll in the dungeon")
+        question_label.pack(side="top", fill='x')
 
-        button_showinfo = tk.Button(master, text="ShowInfo", command=self.popup_showinfo)
-        button_showinfo.pack(fill='x')
+        button_bonus = tk.Button(master, text="Restart", command=self.restart_window)
+        button_bonus.pack(fill='x')
 
         button_close = tk.Button(master, text="Close", command=master.destroy)
         button_close.pack(fill='x')
 
-    def popup_window(self):
+    def restart_window(self):
         window = tk.Toplevel()
 
-        label = tk.Label(window, text="Hello World!")
-        label.pack(fill='x', padx=50, pady=5)
+        question_label = tk.Label(window, text="Saving requires a program restart \n Would you like to restart now?")
+        question_label.pack(side="top", fill='x')
 
-        button_close = tk.Button(window, text="Close", command=window.destroy)
+        button_bonus = tk.Button(window, text="Yes", command=self.restart_program)
+        button_bonus.pack(fill='x')
+
+        button_close = tk.Button(window, text="No", command=window.destroy)
         button_close.pack(fill='x')
 
-    def popup_showinfo(self):
-        showinfo("ShowInfo", "Hello World!")
+    def restart_program(self):
+        """Restarts the current program.
+        Note: this function does not return. Any cleanup action (like
+        saving data) must be done before calling this function."""
+        python = sys.executable
+        os.execl(python, python, *sys.argv)
 
 # --- main ---
 
