@@ -222,15 +222,15 @@ class Home(tk.Frame):
 
             # ---- Pack ---- #
             # type_dropdown.pack(side="left", fill=tk.Y)
-            self.entry_name.pack(side="left", fill=tk.Y)
+            self.entry_name.pack(side="left", fill=tk.BOTH, expand=True)
 
             self.r_entry.pack(side="left", fill=tk.Y)
             self.g_entry.pack(side="left", fill=tk.Y)
             self.b_entry.pack(side="left", fill=tk.Y)
 
-            self.remove_button.pack(side="right")
-            self.colour_preview.pack(side="right", fill=tk.Y)
-            self.hex_box.pack(side="right", fill=tk.Y)
+            self.colour_preview.pack(side="left", fill=tk.Y)
+            self.hex_box.pack(side="left", fill=tk.Y)
+            self.remove_button.pack(side="left")
 
             self.pack(side="top", fill=tk.X)
 

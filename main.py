@@ -18,7 +18,8 @@ from convert import *
 # TODO: Improve program icon [KTM]
 # TODO: Create taskbar icon (to be implemented in exe) [KTM]
 
-# TODO: Restart request after updating settings
+# TODO: Remove escape from colour picker
+# TODO: Fix Kieren's Test
 
 # TODO: Add version, date and license to about page
 # TODO: Change github link to github image [KTM]
