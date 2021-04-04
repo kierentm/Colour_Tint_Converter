@@ -15,8 +15,10 @@ from convert import *
 
 # Separate Work
 
-# TODO: Improve program icon [KTM]
+
 # TODO: Create taskbar icon (to be implemented in exe) [KTM]
+# TODO: Add version, date and license to about page [KTM]
+# TODO: Change github link to github image [KTM]
 
 # TODO: Remove escape from colour picker
 # TODO: Fix Kieren's Test
@@ -24,8 +26,7 @@ from convert import *
 
 # TODO: colour picker implementation with then and it is think its called configuration type maybe
 
-# TODO: Add version, date and license to about page
-# TODO: Change github link to github image [KTM]
+
 
 # Group Bonding Moment Stuff
 
