@@ -132,7 +132,7 @@ class Home(tk.Frame):
         green = rounded[1]
         blue = rounded[2]
 
-        self.RemovableEntry(self, convert_type="sRGB8 [0,255]", r=red, g=green, b=blue,
+        self.RemovableEntry(self, r=red, g=green, b=blue,
                             is_screenshot=True)  # Sends RBG values to add_frame
         root.deiconify()
 
