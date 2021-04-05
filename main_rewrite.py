@@ -60,8 +60,6 @@ class Home(tk.Frame):
 
     colour_scheme = colour_mode(f"{config.get('main', 'Colour_Mode')}")
 
-    print(colour_scheme)
-
     btn_clr = colour_scheme[0]  # button colour
     btn_clr_act = colour_scheme[1]  # button colour when clicked
     btn_fg = colour_scheme[2]  # button font colour

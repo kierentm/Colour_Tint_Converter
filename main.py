@@ -20,12 +20,12 @@ from convert import *
 # TODO: Adjust layout of about page (donation message at very bottom and github centred) [KTM]
 # TODO: make settings buttons consistent with the rest of the app [KTM]
 
-# TODO: create light and dark mode setting using variables in Home [Alex]
+# TODO: Fix double restart bug when changing colour mode [Alex]
 
-# TODO: Remove escape from colour picker
-# TODO: colour picker implementation with then and it is think its called configuration type maybe
-# TODO: Fix ValueError with 285-287 and 306 (Better idea that current fix)
-# TODO: If using current fix resolve issue with (0, 0, 0) export
+# TODO: Remove escape from colour picker [Jake]
+# TODO: colour picker implementation with then and it is think its called configuration type maybe [Jake]
+# TODO: Fix ValueError with 285-287 and 306 (Better idea that current fix) [Jake]
+# TODO: If using current fix resolve issue with (0, 0, 0) export [Jake]
 
 
 # Group Bonding Moment Stuff
