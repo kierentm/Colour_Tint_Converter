@@ -150,7 +150,6 @@ class Home(tk.Frame):
         self.tracer_win.attributes('-topmost', True)  # Keeps on top
         tracer_frame = tk.Frame(self.tracer_win)
         self.tracer_win.bind("<Button-1>", self.capture)  # Binds left click to run capture
-        self.tracer_win.bind('<Button-3>', self.tracer_destroy)
         screenshot_bg = tk.Label(self.tracer_win, image=img)
         screenshot_bg.photo = img  # Anchors the image to the object
         screenshot_bg.pack(fill="both", expand=True)
@@ -164,19 +163,30 @@ class Home(tk.Frame):
         self.image = self.image.convert('RGB')  # Converts to RGB8
         # self.image.save("screenshot.png")
         rgb_tuple = self.image.getpixel((1, 1))  # Gets SRGB8 of centre pixel
-        rounded = [round(num, 3) for num in rgb_tuple]  # Round Tuple
+        # rounded = [round(num, 3) for num in rgb_tuple]  # Round Tuple
+        # red = rounded[0]
+        # green = rounded[1]
+        # blue = rounded[2]
+
+        conversion_type = config.get('main', 'Convert_Type')
+        if conversion_type == "sRGB [0,1]":
+            rgb_tuple = RGB8toLSRGB(rgb_tuple)
+            print(rgb_tuple)
+
+        if conversion_type == "sRGB' [0,1]":
+            rgb_tuple = RGB8toNLSRGB(rgb_tuple)
+            print(rgb_tuple)
+
+        if conversion_type == "sRGB8 [0,255]":
+            pass
+
+        rounded = [round(num, 2) for num in rgb_tuple]  # Round Tuple
         red = rounded[0]
         green = rounded[1]
         blue = rounded[2]
-
         self.RemovableEntry(self, r=red, g=green, b=blue,
                             is_screenshot=True)  # Sends RBG values to add_frame
         root.deiconify()
-
-    def tracer_destroy(self, event):
-        self.tracer_win.destroy()
-        root.deiconify()
-        # print("something to see what it does")
 
     def remove_entry(self):
         if not len(self.RemovableEntry.instances) == 0:
@@ -406,7 +416,6 @@ class About(tk.Frame):
         self.donationFrame.pack(side="bottom", pady="30")
         self.donationMessage.pack(side="left", padx="10")
         self.donationLink.pack(side="right")
-
 
     @staticmethod
     def github_click(url):
