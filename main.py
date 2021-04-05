@@ -23,13 +23,12 @@ from convert import *
 
 # TODO: create light and dark mode setting using variables in Home [Alex]
 
+
 # TODO: Remove escape from colour picker
 # TODO: Fix Kieren's Test
 # TODO: Fix selecting new file location
 
 # TODO: colour picker implementation with then and it is think its called configuration type maybe
-
-
 
 # Group Bonding Moment Stuff
 
