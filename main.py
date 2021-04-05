@@ -19,12 +19,8 @@ from convert import *
 # TODO: Create taskbar icon (possibly done but needs testing) [KTM]
 # TODO: Adjust layout of about page (donation message at very bottom and github centred) [KTM]
 # TODO: make settings buttons consistent with the rest of the app [KTM]
-# TODO: add small
 
 # TODO: create light and dark mode setting using variables in Home [Alex]
-
-
-# TODO: Colour setting
 
 # TODO: Remove escape from colour picker
 # TODO: colour picker implementation with then and it is think its called configuration type maybe
