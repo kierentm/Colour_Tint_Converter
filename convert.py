@@ -91,6 +91,7 @@ def colour_mode(conf_value):
         btn_font = "Calibri", "16"
         bg_clr = "#f5f5f5"  # background colour
         tab_bg_clr = "#f5f5f5"
+        tab_bg_clr_act = "#45484f"
         entry_bg = "#f5f5f5"
 
 
