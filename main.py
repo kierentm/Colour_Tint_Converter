@@ -18,10 +18,16 @@ from convert import *
 # TODO: Create taskbar icon (possibly done but needs testing) [KTM]
 # TODO: Make settings buttons consistent with the rest of the app [KTM]
 # TODO: Add colour schemes [KTM]
+# TODO: Make light mode less light [KTM]
+# TODO: Change remove icon from plus to minus [KTM]
 
 # TODO: Settings layout redo [Alex]
-# TODO: Restore default option within settings [Alex]
-# TODO: Restart button within settings [Alex]
+
+# TODO: Colour picker select background image when clicking
+# TODO: Stop keyboard inputs when colour picking
+# TODO: Change colour picker text to white on dark mode (align with theme settings)
+
+# TODO: Work out why border of program not showing on bottom and right of window
 
 # Group Bonding Moment Stuff
 
