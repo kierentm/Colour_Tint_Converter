@@ -327,7 +327,6 @@ class Home(tk.Frame):
                 # Conversion type sRGB [0,1]
                 if conversion_type == "sRGB [0,1]":
                     rgb_nonlin = get_entries_convert(get_entries, conversion_type)
-                    print(rgb_nonlin)
                     rgb_linear = LSRGBtoSRGB8(rgb_nonlin)
                     hexvals = webcolors.rgb_to_hex(rgb_linear)
                     self.hex_box_value.set(hexvals.upper())
@@ -335,17 +334,17 @@ class Home(tk.Frame):
 
                 # Conversion type sRGB [0,1]
                 if conversion_type == "sRGB8 [0,255]":
-                    r_nonlin = int(self.r_entry.get())
-                    g_nonlin = int(self.g_entry.get())
-                    b_nonlin = int(self.b_entry.get())
-                    rgb_nonlin = (r_nonlin, g_nonlin, b_nonlin)
-
+                    # r_nonlin = int(self.r_entry.get())
+                    # g_nonlin = int(self.g_entry.get())
+                    # b_nonlin = int(self.b_entry.get())
+                    # rgb_nonlin = (r_nonlin, g_nonlin, b_nonlin)
+                    rgb_nonlin = get_entries_convert(get_entries, conversion_type)
                     hexvals = webcolors.rgb_to_hex(rgb_nonlin)
                     self.hex_box_value.set(hexvals.upper())
                     self.colour_preview.config({"background": self.hex_box.get()})  # Adds colour to side box
 
                 if conversion_type == "sRGB' [0,1]":
-                    rgb_nonlin = tuple(map(float, get_entries))
+                    rgb_nonlin = get_entries_convert(get_entries, conversion_type)
                     yeet = NLSRGBtoSRGB8(rgb_nonlin)
                     hexvals = webcolors.rgb_to_hex(yeet)
                     self.hex_box_value.set(hexvals.upper())
@@ -409,13 +408,6 @@ class About(tk.Frame):
                                         fg=btn_fg)
         self.donationLink = tk.Label(self.donationFrame, text="Donate", fg="#538cc2", cursor="hand2", bg=bg_clr)
 
-        # self.AboutBigText.grid(column=0, row=0, sticky='w')
-        # self.AboutContent.grid(column=0, row=1, sticky='w')
-        # self.github.grid(column=0, row=2, sticky='w')
-        # self.twitter.grid(column=1, row=2, sticky='w')
-        # self.donationMessage.grid(column=0, row=3)
-        # self.donationLink.grid(column=1, row=5, sticky="e")
-
         self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
         self.twitter.bind("<Button-1>", lambda e: self.github_click("https://twitter.com/JakDevelopment"))
         self.donationLink.bind("<Button-1>", lambda e: self.github_click(
@@ -427,8 +419,8 @@ class About(tk.Frame):
         self.github.pack(side="left", padx="10")
         self.twitter.pack(side="right")
         self.donationFrame.pack(side="bottom", pady="30")
-        self.donationMessage.pack(side="left", padx="10")
-        self.donationLink.pack(side="right")
+        self.donationLink.pack(side="bottom")
+        self.donationMessage.pack(side="bottom", padx="10")
 
     @staticmethod
     def github_click(url):

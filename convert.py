@@ -45,15 +45,19 @@ def RGB8toNLSRGB(srgb8):
 # If greater than 1 return 1 (useful in print)
 def ifgreaterthan1(value, conv_type):
     if not conv_type == "sRGB8 [0,255]":
-        if value > 1:
+        if 1.0 < value:
             return 1.0
-        else:
+        elif 0.0 <= value < 1.0:
             return value
-    else:
-        if value > 255:
-            return 255
         else:
+            return 0.0
+    else:
+        if 255 < value:
+            return 255
+        elif 0 <= value < 255:
             return int(value)
+        else:
+            return 0
 
 # Tests if correct input is entered and returns false if incorrect
 def KierensStupidTest(value, conv_type):
