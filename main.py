@@ -17,23 +17,27 @@ from convert import *
 
 
 # TODO: Create taskbar icon (possibly done but needs testing) [KTM]
-# TODO: Adjust layout of about page (donation message at very bottom and github centred) [KTM]
-# TODO: make settings buttons consistent with the rest of the app [KTM]
-# TODO: add small
+# TODO: Make settings buttons consistent with the rest of the app [KTM]
+# TODO: Add colour schemes [KTM]
 
-# TODO: create light and dark mode setting using variables in Home [Alex]
+# TODO: Non-restart dark mode [Alex]
+# TODO: Settings layout redo [Alex]
+# TODO: Non-restart updates within settings if fixed [Alex]
+# TODO: Restore default option within settings [Alex]
+# TODO: Restart button within settings [Alex]
 
+# TODO: Remove escape from colour picker [Jake]
+# TODO: Colour picker implementation with configuration type [Jake]
+# TODO: Fix ValueError with 285-287 and 306 (feel free to remove current jank solution) [Jake]
+# TODO: Make live swap of configuration type possible? [Jake]
+# TODO: Change default placeholder to 0.0 (maybe achievable with rewrite proposed) [Jake]
 
-# TODO: Remove escape from colour picker
-# TODO: Fix Kieren's Test
-# TODO: Fix selecting new file location
-
-# TODO: colour picker implementation with then and it is think its called configuration type maybe
 
 # Group Bonding Moment Stuff
 
 # TODO: Create readme and video
 
+# TODO: Refactor convert.py name
 # TODO: Refactor meme function names
 # TODO: Remove sus comments
 # TODO: Remove debugging prints
@@ -47,12 +51,10 @@ from convert import *
 # TODO: Github about page
 
 # ---- Version 1.1 ----- #
-# TODO: Toggle Dark mode (High Risk)
 # TODO: Save session (json?) (High Risk)
 # TODO: Add group column and reorganize output file (High Risk)
 # TODO: Custom hotkeys (High Risk)
 # TODO: Live preview box for colour picker (High Risk)
-# TODO: Change default placeholder to 0.0
 # TODO: Scroll bar (High Risk)
 
 

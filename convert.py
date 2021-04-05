@@ -82,3 +82,33 @@ def KierensStupidTest(value, conv_type):
                 return False
         else:
             return True
+
+def colour_mode(conf_value):
+    if conf_value == 'Light Mode':
+        btn_clr = "#393a40"  # button colour
+        btn_clr_act = "#57a337"  # button colour when clicked
+        btn_fg = "#ffffff"  # button font colour
+        btn_font = "Calibri", "16"
+        bg_clr = "#ffffff"  # background colour
+        tab_bg_clr = "#45484f"
+        entry_bg = "#64666b"
+
+    elif conf_value == 'Dark Mode':
+        btn_clr = "#393a40"  # button colour
+        btn_clr_act = "#57a337"  # button colour when clicked
+        btn_fg = "#ffffff"  # button font colour
+        btn_font = "Calibri", "16"
+        bg_clr = "#2f3136"  # background colour
+        tab_bg_clr = "#45484f"
+        entry_bg = "#64666b"
+
+    colour_list = [btn_clr, btn_clr_act, btn_fg, btn_font, bg_clr, tab_bg_clr, entry_bg]
+    return tuple(colour_list)
+
+# Warning to confirm if functions file was run independently
+def main():
+    print("Have you run the correct file?")
+
+
+if __name__ == "__main__":
+    main()
