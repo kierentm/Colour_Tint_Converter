@@ -28,6 +28,7 @@ if not config.has_section('main'):
     config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
     config.set('main', 'OnTop', '0')
     config.set('main', 'Convert_Type', 'sRGB [0,1]')
+    config.set('main', 'Colour_Mode', 'Dark Mode')
     with open('config.ini', 'w') as file:
         config.write(file)
 
@@ -56,13 +57,16 @@ def main():
 
 class Home(tk.Frame):
     # ---- Style Setup ---- #
-    btn_clr = "#393a40"  # button colour
-    btn_clr_act = "#57a337"  # button colour when clicked
-    btn_fg = "#ffffff"  # button font colour
-    btn_font = "Calibri", "16"
-    bg_clr = "#2f3136"  # background colour
-    tab_bg_clr = "#45484f"
-    entry_bg = "#64666b"
+    colour_scheme = colour_mode(f"{config.get('main', 'Colour_Mode')}")
+
+    btn_clr = colour_scheme[0]  # button colour
+    btn_clr_act = colour_scheme[1]  # button colour when clicked
+    btn_fg = colour_scheme[2]  # button font colour
+    btn_font = colour_scheme[3]
+    bg_clr = colour_scheme[4]  # background colour
+    tab_bg_clr = colour_scheme[5]
+    entry_bg = colour_scheme[6]
+
     plus_ico = tk.PhotoImage(file="UI_Images/Plus_Solo_1.png")
     pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Solo.png")
     export_ico = tk.PhotoImage(file="UI_Images/Txt_Solo.png")
@@ -425,6 +429,12 @@ class Settings(tk.Frame):
     ]
     convert_var = tk.StringVar(value=config.get('main', 'Convert_Type'))
 
+    colour_modes = [
+        "Light Mode",
+        "Dark Mode"
+    ]
+    colour_var = tk.StringVar(value=config.get('main', 'Colour_Mode'))
+
     def __init__(self, parent, *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr)
 
@@ -443,6 +453,9 @@ class Settings(tk.Frame):
         self.convert_options = tk.OptionMenu(self.convert_frame, Settings.convert_var, *Settings.convert_types)
         self.save_button = tk.Button(self.convert_frame, text="Save", width=10, command=self.restart_window)
 
+        # Create colour scheme drop down
+        self.colour_scheme = tk.OptionMenu(self.convert_frame, Settings.colour_var, *Settings.colour_modes)
+
         # Create setting for File Location and Frame
         self.save_location_frame = tk.Frame(self, bg=Home.bg_clr)
         self.directory_button = tk.Button(self.save_location_frame, text="Select Save Location",
@@ -458,6 +471,7 @@ class Settings(tk.Frame):
         self.convert_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
         self.convert_options.grid(column=0, row=0, sticky='w')
         self.save_button.grid(column=1, row=0, sticky='w')
+        self.colour_scheme.grid(column=0, row=1, sticky='w')
 
         self.save_location_frame.pack(side="top", anchor="nw", fill=tk.X)
         self.directory_button.pack(side="left")
@@ -495,6 +509,7 @@ class Settings(tk.Frame):
     @staticmethod
     def update_convert_type_yes():
         config.set('main', 'Convert_Type', f"{Settings.convert_var.get()}")
+        config.set('main', 'Colour_Mode', f"{Settings.colour_var.get()}")
         with open('config.ini', 'w') as f:
             config.write(f)
         root.attributes('-topmost', config.get('main', 'OnTop'))
@@ -503,6 +518,7 @@ class Settings(tk.Frame):
 
     def update_convert_type_no(self):
         self.convert_var.set(config.get('main', 'Convert_Type'))
+        self.colour_var.set(config.get('main', 'Colour_Mode'))
         self.restart_popup.destroy()
 
     # Initialise windows directory selection and save within config
