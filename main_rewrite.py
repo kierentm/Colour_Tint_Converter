@@ -57,7 +57,6 @@ def main():
 
 class Home(tk.Frame):
     # ---- Style Setup ---- #
-
     colour_scheme = colour_mode(f"{config.get('main', 'Colour_Mode')}")
 
     btn_clr = colour_scheme[0]  # button colour
