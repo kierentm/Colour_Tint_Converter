@@ -52,7 +52,6 @@ twitter_ico = tk.PhotoImage(file="UI_Images/Twitter_Solo.png")
 
 
 def main():
-
     style = ttk.Style()
 
     style.theme_create("Theme1", parent="alt", settings={
@@ -252,7 +251,8 @@ class Home(tk.Frame):
             # type_dropdown = tk.OptionMenu(self, self.type_drop_value, *convert_types)
             # type_dropdown.config(width=10)
 
-            self.entry_name = Home.EntryWithPlaceholder(self, width=20, placeholder="Colour Name", bg=entry_bg, fg=btn_fg)
+            self.entry_name = Home.EntryWithPlaceholder(self, width=20, placeholder="Colour Name", bg=entry_bg,
+                                                        fg=btn_fg)
 
             self.r_value = tk.StringVar()
             self.g_value = tk.StringVar()
@@ -403,9 +403,10 @@ class About(tk.Frame):
         self.twitter = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=Home.twitter_ico, bg=bg_clr)
 
         self.donationMessage = tk.Label(self.donationFrame, text="Colour Tint Converter is 100% free\n"
-                                                   "You can use the app however you wish\n"
-                                                   "If you like the app, please donate :)", bg=bg_clr,
-                                        fg=btn_fg)
+                                                                 "You can use the app however you wish\n"
+                                                                 "If you like the app, please donate :)",
+                                        bg=bg_clr, fg=btn_fg)
+
         self.donationLink = tk.Label(self.donationFrame, text="Donate", fg="#538cc2", cursor="hand2", bg=bg_clr)
 
         self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
@@ -488,17 +489,18 @@ class Settings(tk.Frame):
         self.convert_options = tk.OptionMenu(self.convert_frame, Settings.convert_var, *Settings.convert_types)
 
         self.convert_options.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12")
-        self.convert_options["menu"].config(bg=btn_clr,fg=btn_fg)
+        self.convert_options["menu"].config(bg=btn_clr, fg=btn_fg)
         self.save_button = tk.Button(self.convert_frame, text="Save", width=10, command=self.restart_window,
                                      bg=bg_clr, fg=btn_fg)
 
         # Create colour scheme drop down
         self.colour_scheme = tk.OptionMenu(self.convert_frame, Settings.colour_var, *Settings.colour_modes)
         self.colour_scheme.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12")
-        self.colour_scheme["menu"].config(bg=btn_clr,fg=btn_fg)
-                                                                    # Create a restore button
-        self.restore_btn = tk.Button(self, text="Restore to Default Settings", command=self.restore)
+        self.colour_scheme["menu"].config(bg=btn_clr, fg=btn_fg)
 
+        # Create a restore button
+        self.restore_btn = tk.Button(self, text="Restore to Default Settings", command=self.restore,
+                                     bg=bg_clr, fg=btn_fg)
 
         # Create setting for File Location and Frame
         self.save_location_frame = tk.Frame(self, bg=bg_clr)
