@@ -67,6 +67,7 @@ class Home(tk.Frame):
     pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Solo.png")
     export_ico = tk.PhotoImage(file="UI_Images/Txt_Solo.png")
     git_ico = tk.PhotoImage(file="UI_Images/Github_Solo.png")
+    twitter_ico = tk.PhotoImage(file="UI_Images/Twitter_Solo.png")
 
     def __init__(self, parent, *args, **kwargs):
 
@@ -95,7 +96,7 @@ class Home(tk.Frame):
         picker.pack(side="right")
 
         # --- Export --- #
-        self.export_frame = tk.Frame(self.master, bg=Home.bg_clr)
+        self.export_frame = tk.Frame(self, bg=Home.bg_clr)
         self.export_btn = tk.Button(self.export_frame, image=Home.export_ico, text="Export .txt", bg=Home.btn_clr,
                                     fg=Home.btn_fg,
                                     activebackground=Home.btn_clr_act, command=self.file_write,
@@ -355,6 +356,7 @@ class About(tk.Frame):
 
                                      , bg=Home.bg_clr, fg=Home.btn_fg)
         self.github = tk.Label(self, text="Github", cursor="hand2", image=Home.git_ico, bg=Home.bg_clr)
+        self.twitter = tk.Label(self, text="Github", cursor="hand2", image=Home.twitter_ico, bg=Home.bg_clr)
         self.donationMessage = tk.Label(self, text="Colour Tint Converter is 100% free.\n"
                                                    "You can use the app however you wish\n"
                                                    "If you like the app, please donate :)", bg=Home.bg_clr,
@@ -364,18 +366,22 @@ class About(tk.Frame):
         # self.AboutBigText.grid(column=0, row=0, sticky='w')
         # self.AboutContent.grid(column=0, row=1, sticky='w')
         # self.github.grid(column=0, row=2, sticky='w')
+        # self.twitter.grid(column=1, row=2, sticky='w')
         # self.donationMessage.grid(column=0, row=3)
         # self.donationLink.grid(column=1, row=5, sticky="e")
+
+        self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
+        self.twitter.bind("<Button-1>", lambda e: self.github_click("https://twitter.com/JakDevelopment"))
+        self.donationLink.bind("<Button-1>", lambda e: self.github_click(
+            "https://www.johnchow.com/wp-content/uploads/2015/09/paypal-me-688x429.jpg"))
 
         self.AboutBigText.pack(side="top")
         self.AboutContent.pack(side="top")
         self.github.pack(side="top")
         self.donationMessage.pack(side="top")
+        self.twitter.pack(side="top")
         self.donationLink.pack(side="top")
 
-        self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
-        self.donationLink.bind("<Button-1>", lambda e: self.github_click(
-            "https://www.johnchow.com/wp-content/uploads/2015/09/paypal-me-688x429.jpg"))
 
     @staticmethod
     def github_click(url):
