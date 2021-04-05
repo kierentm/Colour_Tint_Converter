@@ -15,7 +15,6 @@ from convert import *
 
 # Separate Work
 
-
 # TODO: Create taskbar icon (to be implemented in exe) [KTM]
 # TODO: Add version, date and license to about page [KTM]
 # TODO: Change github link to github image [KTM]
@@ -25,8 +24,6 @@ from convert import *
 # TODO: Fix selecting new file location
 
 # TODO: colour picker implementation with then and it is think its called configuration type maybe
-
-
 
 # Group Bonding Moment Stuff
 

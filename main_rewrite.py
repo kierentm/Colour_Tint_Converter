@@ -494,9 +494,10 @@ class Settings(tk.Frame):
     def get_file_past(self):
         # Open dialog box to select file and saves location to config
         self.path_past = filedialog.askdirectory(initialdir="/", title="Select Directory")
-        config.set('main', 'SaveLocation', self.path_past)
-        with open('config.ini', 'w') as past_file:
-            config.write(past_file)
+        if self.path_past:
+            config.set('main', 'SaveLocation', self.path_past)
+            with open('config.ini', 'w') as past_file:
+                config.write(past_file)
 
         # Updates file location box
         self.folder_location.set(f"{config.get('main', 'SaveLocation')}")
