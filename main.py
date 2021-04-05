@@ -16,9 +16,12 @@ from convert import *
 # Separate Work
 
 
-# TODO: Create taskbar icon (to be implemented in exe) [KTM]
-# TODO: Add version, date and license to about page [KTM]
-# TODO: Change github link to github image [KTM]
+# TODO: Create taskbar icon (possibly done but needs testing) [KTM]
+# TODO: Adjust layout of about page (donation message at very bottom and github centred) [KTM]
+# TODO: make settings buttons consistent with the rest of the app [KTM]
+# TODO: add small
+
+# TODO: create light and dark mode setting using variables in Home [Alex]
 
 # TODO: Remove escape from colour picker
 # TODO: Fix Kieren's Test
