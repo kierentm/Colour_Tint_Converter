@@ -19,11 +19,13 @@ from convert import *
 # TODO: Add version, date and license to about page [KTM]
 # TODO: Change github link to github image [KTM]
 
-# TODO: Remove escape from colour picker
-# TODO: Fix Kieren's Test
-# TODO: Fix selecting new file location
+# TODO: Colour setting
 
+# TODO: Remove escape from colour picker
 # TODO: colour picker implementation with then and it is think its called configuration type maybe
+# TODO: Fix ValueError with 285-287 and 306 (Better idea that current fix)
+# TODO: If using current fix resolve issue with (0, 0, 0) export
+
 
 # Group Bonding Moment Stuff
 

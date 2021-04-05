@@ -82,3 +82,11 @@ def KierensStupidTest(value, conv_type):
                 return False
         else:
             return True
+
+# Warning to confirm if functions file was run independently
+def main():
+    print("Have you run the correct file?")
+
+
+if __name__ == "__main__":
+    main()

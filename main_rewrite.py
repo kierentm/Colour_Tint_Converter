@@ -19,12 +19,9 @@ p1 = tk.PhotoImage(file='Design Images/Logo2.png')
 root.iconphoto(False, p1)
 root.title("Colour Tint Converter")
 
-
 # Load Config and generate main if required
 config = ConfigParser()
 config.read('config.ini')
-
-
 
 if not config.has_section('main'):
     config.add_section('main')
@@ -86,11 +83,11 @@ class Home(tk.Frame):
                                activebackground=Home.btn_clr_act, command=lambda: Home.RemovableEntry(self),
                                bd="3", height="22", compound="left", font=Home.btn_font)
         remove_button = tk.Button(control_frame, image=Home.plus_ico, text="Remove", bg=Home.btn_clr, fg=Home.btn_fg,
-                               activebackground=Home.btn_clr_act, command=self.remove_entry,
-                               bd="3", height="22", compound="left", font=Home.btn_font)
+                                  activebackground=Home.btn_clr_act, command=self.remove_entry,
+                                  bd="3", height="22", compound="left", font=Home.btn_font)
         picker = tk.Button(control_frame, image=Home.pipette_ico, text="Colour Pick", bg=Home.btn_clr, fg=Home.btn_fg,
-                               activebackground=Home.btn_clr_act, command=self.screenshot,
-                               bd="3", height="22", compound="left", font=Home.btn_font)
+                           activebackground=Home.btn_clr_act, command=self.screenshot,
+                           bd="3", height="22", compound="left", font=Home.btn_font)
 
         # --- Pack Controls --- #
         add_button.pack(side="left")
@@ -99,9 +96,10 @@ class Home(tk.Frame):
 
         # --- Export --- #
         self.export_frame = tk.Frame(self.master, bg=Home.bg_clr)
-        self.export_btn = tk.Button(self.export_frame, image=Home.export_ico, text="Export .txt", bg=Home.btn_clr, fg=Home.btn_fg,
-                               activebackground=Home.btn_clr_act, command=self.file_write,
-                               bd="3", height="22", compound="left", font=Home.btn_font)
+        self.export_btn = tk.Button(self.export_frame, image=Home.export_ico, text="Export .txt", bg=Home.btn_clr,
+                                    fg=Home.btn_fg,
+                                    activebackground=Home.btn_clr_act, command=self.file_write,
+                                    bd="3", height="22", compound="left", font=Home.btn_font)
         self.export_name = self.EntryWithPlaceholder(self.export_frame, "Item Name", bg=Home.tab_bg_clr, fg=Home.btn_fg)
 
         # --- Pack Export --- #
@@ -282,7 +280,10 @@ class Home(tk.Frame):
                 # Use conversion type...
                 # Conversion type sRGB [0,1]
                 if conversion_type == "sRGB [0,1]":
-                    rgb_nonlin = tuple(map(float, get_entries))
+                    try:
+                        rgb_nonlin = tuple(map(float, get_entries))
+                    except ValueError:
+                        rgb_nonlin = (0, 0, 0)
                     rgb_linear = LSRGBtoSRGB8(rgb_nonlin)
                     hexvals = webcolors.rgb_to_hex(rgb_linear)
                     self.hex_box_value.set(hexvals.upper())
@@ -347,27 +348,34 @@ class About(tk.Frame):
         # --- Main frames --- #
         tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr, bd="10")
         # Add content to about frame
-        self.AboutBigText = tk.Label(self, text= "Colour Tint Converter\n", font="bold, 20", bg=Home.bg_clr, fg=Home.btn_fg)
-        self.AboutContent = tk.Label(self, text="Tool developed by Kieren Townley-Moss, Jake Broughton"
-                                                " and Alex Todd\n\n Version 1.0.0.1 \n\n Copyright©2021 \n\n "
+        self.AboutBigText = tk.Label(self, text="Colour Tint Converter\n", font="bold, 20", bg=Home.bg_clr,
+                                     fg=Home.btn_fg)
+        self.AboutContent = tk.Label(self, text="Tool developed by Kieren Townley-Moss, Jake Broughton "
+                                                "and Alex Todd\n\n Version 1.0.0.1 \n\n Copyright©2021 \n\n"
 
                                      , bg=Home.bg_clr, fg=Home.btn_fg)
         self.github = tk.Label(self, text="Github", cursor="hand2", image=Home.git_ico, bg=Home.bg_clr)
         self.donationMessage = tk.Label(self, text="Colour Tint Converter is 100% free.\n"
-                                    "You can use the app however you wish\n"
-                                     "If you like the app, please donate :) ", bg=Home.bg_clr,
-                                     fg=Home.btn_fg)
-        self.donationLink = tk.Label(self, text="Donate",fg="#538cc2", cursor="hand2", bg=Home.bg_clr)
+                                                   "You can use the app however you wish\n"
+                                                   "If you like the app, please donate :)", bg=Home.bg_clr,
+                                        fg=Home.btn_fg)
+        self.donationLink = tk.Label(self, text="Donate", fg="#538cc2", cursor="hand2", bg=Home.bg_clr)
 
-        self.AboutBigText.grid(column=0, row=0, sticky='w')
-        self.AboutContent.grid(column=0, row=1, sticky='w')
-        self.github.grid(column=0, row=2, sticky='w')
-        self.donationMessage.grid(column=0, row=3)
-        self.donationLink.grid(column=1, row=5, sticky="e")
+        # self.AboutBigText.grid(column=0, row=0, sticky='w')
+        # self.AboutContent.grid(column=0, row=1, sticky='w')
+        # self.github.grid(column=0, row=2, sticky='w')
+        # self.donationMessage.grid(column=0, row=3)
+        # self.donationLink.grid(column=1, row=5, sticky="e")
+
+        self.AboutBigText.pack(side="top")
+        self.AboutContent.pack(side="top")
+        self.github.pack(side="top")
+        self.donationMessage.pack(side="top")
+        self.donationLink.pack(side="top")
 
         self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
-        self.donationLink.bind("<Button-1>", lambda e: self.github_click
-        ("https://www.johnchow.com/wp-content/uploads/2015/09/paypal-me-688x429.jpg"))
+        self.donationLink.bind("<Button-1>", lambda e: self.github_click(
+            "https://www.johnchow.com/wp-content/uploads/2015/09/paypal-me-688x429.jpg"))
 
     @staticmethod
     def github_click(url):
@@ -465,10 +473,10 @@ class Settings(tk.Frame):
         self.restart_popup.title("Warning")
 
         question_label = tk.Label(self.restart_popup, fg="red",
-                                                text="----------------------- Warning -----------------------\n"
-                                                "Saving requires a program restart,\n"
-                                                "Please ensure you have exported required colour information,\n"
-                                                "Would you like to restart now?")
+                                  text="----------------------- Warning -----------------------\n"
+                                       "Saving requires a program restart,\n"
+                                       "Please ensure you have exported required colour information,\n"
+                                       "Would you like to restart now?")
         question_label.pack(side="top", fill='x')
 
         button_bonus = tk.Button(self.restart_popup, text="Yes", command=self.update_convert_type_yes)
