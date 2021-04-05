@@ -19,10 +19,10 @@ p1 = tk.PhotoImage(file='Design Images/Logo2.png')
 root.iconphoto(False, p1)
 root.title("Colour Tint Converter")
 root.configure(bg="#000000")
+
 # Load Config and generate main if required
 config = ConfigParser()
 config.read('config.ini')
-
 
 if not config.has_section('main'):
     config.add_section('main')
@@ -486,6 +486,7 @@ class Settings(tk.Frame):
         # Create convert default type option
         self.convert_frame = tk.Frame(self, bg=bg_clr)
         self.convert_options = tk.OptionMenu(self.convert_frame, Settings.convert_var, *Settings.convert_types)
+
         self.convert_options.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12")
         self.convert_options["menu"].config(bg=btn_clr,fg=btn_fg)
         self.save_button = tk.Button(self.convert_frame, text="Save", width=10, command=self.restart_window,
@@ -495,6 +496,9 @@ class Settings(tk.Frame):
         self.colour_scheme = tk.OptionMenu(self.convert_frame, Settings.colour_var, *Settings.colour_modes)
         self.colour_scheme.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12")
         self.colour_scheme["menu"].config(bg=btn_clr,fg=btn_fg)
+                                                                    # Create a restore button
+        self.restore_btn = tk.Button(self, text="Restore to Default Settings", command=self.restore)
+
 
         # Create setting for File Location and Frame
         self.save_location_frame = tk.Frame(self, bg=bg_clr)
@@ -514,9 +518,11 @@ class Settings(tk.Frame):
         self.save_button.grid(column=1, row=0, sticky='w')
         self.colour_scheme.grid(column=0, row=1, sticky='w')
 
-        self.save_location_frame.pack(side="top", anchor="nw", fill=tk.X)
+        self.save_location_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
         self.directory_button.pack(side="left")
         self.directory_display.pack(fill="both", side="left", expand=True)
+
+        self.restore_btn.pack(side="top", anchor="nw")
 
         # Declare Settings Path Variable
         self.path_past = ""
@@ -573,6 +579,15 @@ class Settings(tk.Frame):
 
         # Updates file location box
         self.folder_location.set(f"{config.get('main', 'SaveLocation')}")
+
+    @staticmethod
+    def restore():
+        config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
+        config.set('main', 'OnTop', '0')
+        config.set('main', 'Convert_Type', 'sRGB [0,1]')
+        config.set('main', 'Colour_Mode', 'Dark Mode')
+        with open('config.ini', 'w') as restore_conf:
+            config.write(restore_conf)
 
 
 if __name__ == '__main__':
