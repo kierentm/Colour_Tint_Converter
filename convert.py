@@ -108,6 +108,26 @@ def colour_mode(conf_value):
     colour_list = [btn_clr, btn_clr_act, btn_fg, btn_font, bg_clr, tab_bg_clr, entry_bg, tab_bg_clr_act]
     return tuple(colour_list)
 
+def get_entries_convert(get_entries, conv_type):
+    converted_get_entries = []
+    if conv_type == 'sRGB8 [0,255]':
+        for entry in get_entries:
+            try:
+                int_entry = int(entry)
+            except ValueError:
+                int_entry = 0
+            converted_get_entries.append(int_entry)
+    else:
+        for entry in get_entries:
+            try:
+                flt_entry = float(entry)
+            except ValueError:
+                flt_entry = 0.0
+            converted_get_entries.append(flt_entry)
+    return tuple(converted_get_entries)
+
+
+
 # Warning to confirm if functions file was run independently
 def main():
     print("Have you run the correct file?")

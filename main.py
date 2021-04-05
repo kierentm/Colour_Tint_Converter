@@ -15,23 +15,15 @@ from convert import *
 
 # Separate Work
 
-
 # TODO: Create taskbar icon (possibly done but needs testing) [KTM]
 # TODO: Make settings buttons consistent with the rest of the app [KTM]
 # TODO: Add colour schemes [KTM]
 
-# TODO: Non-restart dark mode [Alex]
 # TODO: Settings layout redo [Alex]
-# TODO: Non-restart updates within settings if fixed [Alex]
 # TODO: Restore default option within settings [Alex]
 # TODO: Restart button within settings [Alex]
 
-# TODO: Remove escape from colour picker [Jake]
-# TODO: Colour picker implementation with configuration type [Jake]
 # TODO: Fix ValueError with 285-287 and 306 (feel free to remove current jank solution) [Jake]
-# TODO: Make live swap of configuration type possible? [Jake]
-# TODO: Change default placeholder to 0.0 (maybe achievable with rewrite proposed) [Jake]
-
 
 # Group Bonding Moment Stuff
 
@@ -56,6 +48,7 @@ from convert import *
 # TODO: Custom hotkeys (High Risk)
 # TODO: Live preview box for colour picker (High Risk)
 # TODO: Scroll bar (High Risk)
+# TODO: Change default placeholder to 0.0 (High Risk)
 
 
 root = tk.Tk()

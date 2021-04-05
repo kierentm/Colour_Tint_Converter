@@ -311,10 +311,8 @@ class Home(tk.Frame):
                 # Use conversion type...
                 # Conversion type sRGB [0,1]
                 if conversion_type == "sRGB [0,1]":
-                    try:
-                        rgb_nonlin = tuple(map(float, get_entries))
-                    except ValueError:
-                        rgb_nonlin = (0, 0, 0)
+                    rgb_nonlin = get_entries_convert(get_entries, conversion_type)
+                    print(rgb_nonlin)
                     rgb_linear = LSRGBtoSRGB8(rgb_nonlin)
                     hexvals = webcolors.rgb_to_hex(rgb_linear)
                     self.hex_box_value.set(hexvals.upper())
