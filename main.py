@@ -23,8 +23,6 @@ from convert import *
 # TODO: Restore default option within settings [Alex]
 # TODO: Restart button within settings [Alex]
 
-# TODO: Fix ValueError with 285-287 and 306 (feel free to remove current jank solution) [Jake]
-
 # Group Bonding Moment Stuff
 
 # TODO: Create readme and video

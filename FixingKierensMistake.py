@@ -33,14 +33,25 @@ if not config.has_section('main'):
     with open('config.ini', 'w') as file:
         config.write(file)
 
+colour_scheme = colour_mode(f"{config.get('main', 'Colour_Mode')}")
+# ---- Style Setup ---- #
+btn_clr = colour_scheme[0]  # button colour
+btn_clr_act = colour_scheme[1]  # button colour when clicked
+btn_fg = colour_scheme[2]  # button font colour
+btn_font = colour_scheme[3]
+bg_clr = colour_scheme[4]  # background colour
+tab_bg_clr = colour_scheme[5]
+tab_bg_clr_act = colour_scheme[7]
+entry_bg = colour_scheme[6]
+
+plus_ico = tk.PhotoImage(file="UI_Images/Plus_Solo_1.png")
+pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Solo.png")
+export_ico = tk.PhotoImage(file="UI_Images/Txt_Solo.png")
+git_ico = tk.PhotoImage(file="UI_Images/Github_Solo.png")
+twitter_ico = tk.PhotoImage(file="UI_Images/Twitter_Solo.png")
+
 
 def main():
-
-    colour_scheme = colour_mode(f"{config.get('main', 'Colour_Mode')}")
-
-    btn_fg = colour_scheme[2]  # button font colour
-    tab_bg_clr = colour_scheme[5]
-    tab_bg_clr_act = colour_scheme[7]
 
     style = ttk.Style()
 
@@ -75,7 +86,6 @@ def main():
 
 
 class Home(tk.Frame):
-
     colour_scheme = colour_mode(f"{config.get('main', 'Colour_Mode')}")
     # ---- Style Setup ---- #
     btn_clr = colour_scheme[0]  # button colour
@@ -100,19 +110,19 @@ class Home(tk.Frame):
         root.bind('<Control-Return>', lambda event: self.screenshot())
 
         # --- Main frames --- #
-        tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr)
-        control_frame = tk.Frame(self, bg=Home.tab_bg_clr)
+        tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr)
+        control_frame = tk.Frame(self, bg=tab_bg_clr)
 
         # --- Controls --- #
-        add_button = tk.Button(control_frame, image=Home.plus_ico, text="Add", bg=Home.btn_clr, fg=Home.btn_fg,
-                               activebackground=Home.btn_clr_act, command=lambda: Home.RemovableEntry(self),
-                               bd="3", height="22", compound="left", font=Home.btn_font)
-        remove_button = tk.Button(control_frame, image=Home.plus_ico, text="Remove", bg=Home.btn_clr, fg=Home.btn_fg,
-                                  activebackground=Home.btn_clr_act, command=self.remove_entry,
-                                  bd="3", height="22", compound="left", font=Home.btn_font)
-        picker = tk.Button(control_frame, image=Home.pipette_ico, text="Colour Pick", bg=Home.btn_clr, fg=Home.btn_fg,
-                           activebackground=Home.btn_clr_act, command=self.screenshot,
-                           bd="3", height="22", compound="left", font=Home.btn_font)
+        add_button = tk.Button(control_frame, image=Home.plus_ico, text="Add", bg=btn_clr, fg=btn_fg,
+                               activebackground=btn_clr_act, command=lambda: Home.RemovableEntry(self),
+                               bd="3", height="22", compound="left", font=btn_font)
+        remove_button = tk.Button(control_frame, image=Home.plus_ico, text="Remove", bg=btn_clr, fg=btn_fg,
+                                  activebackground=btn_clr_act, command=self.remove_entry,
+                                  bd="3", height="22", compound="left", font=btn_font)
+        picker = tk.Button(control_frame, image=Home.pipette_ico, text="Colour Pick", bg=btn_clr, fg=btn_fg,
+                           activebackground=btn_clr_act, command=self.screenshot,
+                           bd="3", height="22", compound="left", font=btn_font)
 
         # --- Pack Controls --- #
         add_button.pack(side="left")
@@ -120,12 +130,12 @@ class Home(tk.Frame):
         picker.pack(side="right")
 
         # --- Export --- #
-        self.export_frame = tk.Frame(self, bg=Home.bg_clr)
-        self.export_btn = tk.Button(self.export_frame, image=Home.export_ico, text="Export .txt", bg=Home.btn_clr,
-                                    fg=Home.btn_fg,
-                                    activebackground=Home.btn_clr_act, command=self.file_write,
-                                    bd="3", relief="raised", height="22", compound="left", font=Home.btn_font)
-        self.export_name = self.EntryWithPlaceholder(self.export_frame, "Item Name", bg=Home.entry_bg, fg=Home.btn_fg,
+        self.export_frame = tk.Frame(self, bg=bg_clr)
+        self.export_btn = tk.Button(self.export_frame, image=Home.export_ico, text="Export .txt", bg=btn_clr,
+                                    fg=btn_fg,
+                                    activebackground=btn_clr_act, command=self.file_write,
+                                    bd="3", relief="raised", height="22", compound="left", font=btn_font)
+        self.export_name = self.EntryWithPlaceholder(self.export_frame, "Item Name", bg=entry_bg, fg=btn_fg,
                                                      bd="3", relief="raised")
 
         # --- Pack Export --- #
@@ -226,7 +236,7 @@ class Home(tk.Frame):
             self.convert_type = config.get('main', 'Convert_Type')
 
             # ---- Setup ---- #
-            tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr)
+            tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr)
             Home.RemovableEntry.instances.append(self)
 
             # # ---- Each entry set up here ---- #
@@ -242,22 +252,22 @@ class Home(tk.Frame):
             # type_dropdown = tk.OptionMenu(self, self.type_drop_value, *convert_types)
             # type_dropdown.config(width=10)
 
-            self.entry_name = Home.EntryWithPlaceholder(self, width=20, placeholder="Colour Name", bg=Home.entry_bg, fg=Home.btn_fg)
+            self.entry_name = Home.EntryWithPlaceholder(self, width=20, placeholder="Colour Name", bg=entry_bg, fg=btn_fg)
 
             self.r_value = tk.StringVar()
             self.g_value = tk.StringVar()
             self.b_value = tk.StringVar()
             self.hex_box_value = tk.StringVar()
 
-            self.r_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.r_value, bg=Home.entry_bg, fg=Home.btn_fg)
-            self.g_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.g_value, bg=Home.entry_bg, fg=Home.btn_fg)
-            self.b_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.b_value, bg=Home.entry_bg, fg=Home.btn_fg)
+            self.r_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.r_value, bg=entry_bg, fg=btn_fg)
+            self.g_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.g_value, bg=entry_bg, fg=btn_fg)
+            self.b_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.b_value, bg=entry_bg, fg=btn_fg)
 
-            self.hex_box = tk.Entry(self, width=10, textvariable=self.hex_box_value, bg=Home.entry_bg, fg=Home.btn_fg)
+            self.hex_box = tk.Entry(self, width=10, textvariable=self.hex_box_value, bg=entry_bg, fg=btn_fg)
 
             self.colour_preview = tk.Entry(self, width=4)
 
-            self.remove_button = tk.Button(self, text="X", bg=Home.entry_bg, fg=Home.btn_fg, command=lambda: self.remove())
+            self.remove_button = tk.Button(self, text="X", bg=entry_bg, fg=btn_fg, command=lambda: self.remove())
 
             # ---- Remove placeholder functionality if it's a screenshot ---- #
             if is_screenshot:
@@ -306,7 +316,7 @@ class Home(tk.Frame):
 
             for e in entries:
                 if KierensStupidTest(e.get(), conversion_type):
-                    e.config(background=Home.entry_bg)
+                    e.config(background=entry_bg)
                 else:
                     e.config(background="red")
 
@@ -380,24 +390,24 @@ class Home(tk.Frame):
 class About(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         # --- Main frames --- #
-        tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr, bd="10")
+        tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr, bd="10")
         # Add content to about frame
-        self.AboutBigText = tk.Label(self, text="Colour Tint Converter\n", font="bold, 20", bg=Home.bg_clr,
-                                     fg=Home.btn_fg)
+        self.AboutBigText = tk.Label(self, text="Colour Tint Converter\n", font="bold, 20", bg=bg_clr,
+                                     fg=btn_fg)
         self.AboutContent = tk.Label(self, text="Tool developed by Kieren Townley-Moss, Jake Broughton "
                                                 "and Alex Todd\n\n Version 1.0.23 \n\n Copyright©2021 \n\n"
 
-                                     , bg=Home.bg_clr, fg=Home.btn_fg)
-        self.aboutLinks = tk.Frame(self, bg=Home.bg_clr)
-        self.donationFrame = tk.Frame(self, bg=Home.bg_clr)
-        self.github = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=Home.git_ico, bg=Home.bg_clr)
-        self.twitter = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=Home.twitter_ico, bg=Home.bg_clr)
+                                     , bg=bg_clr, fg=btn_fg)
+        self.aboutLinks = tk.Frame(self, bg=bg_clr)
+        self.donationFrame = tk.Frame(self, bg=bg_clr)
+        self.github = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=Home.git_ico, bg=bg_clr)
+        self.twitter = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=Home.twitter_ico, bg=bg_clr)
 
         self.donationMessage = tk.Label(self.donationFrame, text="Colour Tint Converter is 100% free\n"
                                                    "You can use the app however you wish\n"
-                                                   "If you like the app, please donate :)", bg=Home.bg_clr,
-                                        fg=Home.btn_fg)
-        self.donationLink = tk.Label(self.donationFrame, text="Donate", fg="#538cc2", cursor="hand2", bg=Home.bg_clr)
+                                                   "If you like the app, please donate :)", bg=bg_clr,
+                                        fg=btn_fg)
+        self.donationLink = tk.Label(self.donationFrame, text="Donate", fg="#538cc2", cursor="hand2", bg=bg_clr)
 
         # self.AboutBigText.grid(column=0, row=0, sticky='w')
         # self.AboutContent.grid(column=0, row=1, sticky='w')
@@ -428,20 +438,20 @@ class About(tk.Frame):
 class Hotkeys(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         # --- Main frames --- #
-        tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr)
+        tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr)
 
         # Add content to about frame
-        tk.Label(self, text="Enter", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=0, row=0, sticky='w')
-        tk.Label(self, text="-", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=1, row=0, sticky='w')
-        tk.Label(self, text="Insert new colour", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=2, row=0, sticky='w')
+        tk.Label(self, text="Enter", fg=btn_fg, bg=bg_clr).grid(column=0, row=0, sticky='w')
+        tk.Label(self, text="-", fg=btn_fg, bg=bg_clr).grid(column=1, row=0, sticky='w')
+        tk.Label(self, text="Insert new colour", fg=btn_fg, bg=bg_clr).grid(column=2, row=0, sticky='w')
 
-        tk.Label(self, text="Escape", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=0, row=1, sticky='w')
-        tk.Label(self, text="-", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=1, row=1, sticky='w')
-        tk.Label(self, text="Delete last colour", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=2, row=1, sticky='w')
+        tk.Label(self, text="Escape", fg=btn_fg, bg=bg_clr).grid(column=0, row=1, sticky='w')
+        tk.Label(self, text="-", fg=btn_fg, bg=bg_clr).grid(column=1, row=1, sticky='w')
+        tk.Label(self, text="Delete last colour", fg=btn_fg, bg=bg_clr).grid(column=2, row=1, sticky='w')
 
-        tk.Label(self, text="Control + Enter", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=0, row=2, sticky='w')
-        tk.Label(self, text="-", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=1, row=2, sticky='w')
-        tk.Label(self, text="Colour Picker", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=2, row=2, sticky='w')
+        tk.Label(self, text="Control + Enter", fg=btn_fg, bg=bg_clr).grid(column=0, row=2, sticky='w')
+        tk.Label(self, text="-", fg=btn_fg, bg=bg_clr).grid(column=1, row=2, sticky='w')
+        tk.Label(self, text="Colour Picker", fg=btn_fg, bg=bg_clr).grid(column=2, row=2, sticky='w')
 
     @staticmethod
     def github_click(url):
@@ -468,7 +478,7 @@ class Settings(tk.Frame):
     colour_var = tk.StringVar(value=config.get('main', 'Colour_Mode'))
 
     def __init__(self, parent, *args, **kwargs):
-        tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr)
+        tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr)
 
         self.restart_popup = None
 
@@ -476,13 +486,13 @@ class Settings(tk.Frame):
         root.attributes('-topmost', config.get('main', 'OnTop'))
 
         # Create frame for main settings (not save button) and options
-        self.main_settings_frame = tk.Frame(self, bg=Home.bg_clr)
+        self.main_settings_frame = tk.Frame(self, bg=bg_clr)
         self.on_top = tk.Checkbutton(self.main_settings_frame, text="Keep window on top", variable=Settings.on_top_var,
                                      width="20")
         self.on_top_var.trace('w', self.update_settings_main)
 
         # Create convert default type option
-        self.convert_frame = tk.Frame(self, bg=Home.bg_clr)
+        self.convert_frame = tk.Frame(self, bg=bg_clr)
         self.convert_options = tk.OptionMenu(self.convert_frame, Settings.convert_var, *Settings.convert_types)
         self.save_button = tk.Button(self.convert_frame, text="Save", width=10, command=self.restart_window)
 
@@ -490,13 +500,13 @@ class Settings(tk.Frame):
         self.colour_scheme = tk.OptionMenu(self.convert_frame, Settings.colour_var, *Settings.colour_modes)
 
         # Create setting for File Location and Frame
-        self.save_location_frame = tk.Frame(self, bg=Home.bg_clr)
+        self.save_location_frame = tk.Frame(self, bg=bg_clr)
         self.directory_button = tk.Button(self.save_location_frame, text="Select Save Location",
                                           command=self.get_file_past)
         self.folder_location = tk.StringVar(self.save_location_frame, f"{config.get('main', 'SaveLocation')}")
         self.directory_display = tk.Entry(self.save_location_frame, width=42, font="Calibri, 9",
                                           textvariable=self.folder_location, state="disabled",
-                                          disabledbackground=Home.entry_bg, disabledforeground=Home.btn_fg)
+                                          disabledbackground=entry_bg, disabledforeground=btn_fg)
 
         # Packs frames
         self.main_settings_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
