@@ -100,13 +100,14 @@ class Home(tk.Frame):
         self.export_btn = tk.Button(self.export_frame, image=Home.export_ico, text="Export .txt", bg=Home.btn_clr,
                                     fg=Home.btn_fg,
                                     activebackground=Home.btn_clr_act, command=self.file_write,
-                                    bd="3", height="22", compound="left", font=Home.btn_font)
-        self.export_name = self.EntryWithPlaceholder(self.export_frame, "Item Name", bg=Home.tab_bg_clr, fg=Home.btn_fg)
+                                    bd="3", relief="raised", height="22", compound="left", font=Home.btn_font)
+        self.export_name = self.EntryWithPlaceholder(self.export_frame, "Item Name", bg=Home.tab_bg_clr, fg=Home.btn_fg,
+                                                     bd="3", relief="raised")
 
         # --- Pack Export --- #
         self.export_frame.pack(side="bottom", fill=tk.X)
         self.export_btn.pack(side="right")
-        self.export_name.pack(fill="both", side="left", expand=True)
+        self.export_name.pack(fill=tk.BOTH, side="left", expand=True)
 
         # --- Pack frames --- #
         control_frame.pack(side="top", fill=tk.X, pady=(0, 5))
@@ -352,7 +353,7 @@ class About(tk.Frame):
         self.AboutBigText = tk.Label(self, text="Colour Tint Converter\n", font="bold, 20", bg=Home.bg_clr,
                                      fg=Home.btn_fg)
         self.AboutContent = tk.Label(self, text="Tool developed by Kieren Townley-Moss, Jake Broughton "
-                                                "and Alex Todd\n\n Version 1.0.0.1 \n\n Copyright©2021 \n\n"
+                                                "and Alex Todd\n\n Version 1.0.23 \n\n Copyright©2021 \n\n"
 
                                      , bg=Home.bg_clr, fg=Home.btn_fg)
         self.github = tk.Label(self, text="Github", cursor="hand2", image=Home.git_ico, bg=Home.bg_clr)
@@ -373,7 +374,7 @@ class About(tk.Frame):
         self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
         self.twitter.bind("<Button-1>", lambda e: self.github_click("https://twitter.com/JakDevelopment"))
         self.donationLink.bind("<Button-1>", lambda e: self.github_click(
-            "https://www.johnchow.com/wp-content/uploads/2015/09/paypal-me-688x429.jpg"))
+            "https://streamelements.com/beardo1557/tip"))
 
         self.AboutBigText.pack(side="top")
         self.AboutContent.pack(side="top")
