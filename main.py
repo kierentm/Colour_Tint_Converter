@@ -23,6 +23,8 @@ from convert import *
 # TODO: Non-restart dark mode [Alex]
 # TODO: Settings layout redo [Alex]
 # TODO: Non-restart updates within settings if fixed [Alex]
+# TODO: Restore default option within settings [Alex]
+# TODO: Restart button within settings [Alex]
 
 # TODO: Remove escape from colour picker [Jake]
 # TODO: Colour picker implementation with configuration type [Jake]
