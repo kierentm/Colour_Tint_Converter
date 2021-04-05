@@ -480,21 +480,26 @@ class Settings(tk.Frame):
         # Create frame for main settings (not save button) and options
         self.main_settings_frame = tk.Frame(self, bg=bg_clr)
         self.on_top = tk.Checkbutton(self.main_settings_frame, text="Keep window on top", variable=Settings.on_top_var,
-                                     width="20")
+                                     width="20", bg=bg_clr, fg=btn_fg, selectcolor="black", activebackground=bg_clr)
         self.on_top_var.trace('w', self.update_settings_main)
 
         # Create convert default type option
         self.convert_frame = tk.Frame(self, bg=bg_clr)
         self.convert_options = tk.OptionMenu(self.convert_frame, Settings.convert_var, *Settings.convert_types)
-        self.save_button = tk.Button(self.convert_frame, text="Save", width=10, command=self.restart_window)
+        self.convert_options.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12")
+        self.convert_options["menu"].config(bg=btn_clr,fg=btn_fg)
+        self.save_button = tk.Button(self.convert_frame, text="Save", width=10, command=self.restart_window,
+                                     bg=bg_clr, fg=btn_fg)
 
         # Create colour scheme drop down
         self.colour_scheme = tk.OptionMenu(self.convert_frame, Settings.colour_var, *Settings.colour_modes)
+        self.colour_scheme.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12")
+        self.colour_scheme["menu"].config(bg=btn_clr,fg=btn_fg)
 
         # Create setting for File Location and Frame
         self.save_location_frame = tk.Frame(self, bg=bg_clr)
         self.directory_button = tk.Button(self.save_location_frame, text="Select Save Location",
-                                          command=self.get_file_past)
+                                          command=self.get_file_past, bg=bg_clr, fg=btn_fg)
         self.folder_location = tk.StringVar(self.save_location_frame, f"{config.get('main', 'SaveLocation')}")
         self.directory_display = tk.Entry(self.save_location_frame, width=42, font="Calibri, 9",
                                           textvariable=self.folder_location, state="disabled",
