@@ -69,6 +69,7 @@ class Home(tk.Frame):
     plus_ico = tk.PhotoImage(file="UI_Images/Plus_Solo_1.png")
     pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Solo.png")
     export_ico = tk.PhotoImage(file="UI_Images/Txt_Solo.png")
+    git_ico = tk.PhotoImage(file="UI_Images/Github_Solo.png")
 
     def __init__(self, parent, *args, **kwargs):
 
@@ -344,17 +345,29 @@ class Home(tk.Frame):
 class About(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         # --- Main frames --- #
-        tk.Frame.__init__(self, parent, *args, **kwargs)
+        tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr, bd="10")
         # Add content to about frame
-        self.AboutContent = tk.Label(self, text="Tool developed by Kieren Townley-Moss,"
-                                                " Jake Broughton and "
-                                                "Alex Todd")
-        self.github = tk.Label(self, text="Github", fg="blue", cursor="hand2")
+        self.AboutBigText = tk.Label(self, text= "Colour Tint Converter\n", font="bold, 20", bg=Home.bg_clr, fg=Home.btn_fg)
+        self.AboutContent = tk.Label(self, text="Tool developed by Kieren Townley-Moss, Jake Broughton"
+                                                " and Alex Todd\n\n Version 1.0.0.1 \n\n Copyright©2021 \n\n "
 
-        self.AboutContent.grid(column=0, row=0, sticky='w')
-        self.github.grid(column=0, row=1, sticky='w')
+                                     , bg=Home.bg_clr, fg=Home.btn_fg)
+        self.github = tk.Label(self, text="Github", cursor="hand2", image=Home.git_ico, bg=Home.bg_clr)
+        self.donationMessage = tk.Label(self, text="Colour Tint Converter is 100% free.\n"
+                                    "You can use the app however you wish\n"
+                                     "If you like the app, please donate :) ", bg=Home.bg_clr,
+                                     fg=Home.btn_fg)
+        self.donationLink = tk.Label(self, text="Donate",fg="#538cc2", cursor="hand2", bg=Home.bg_clr)
+
+        self.AboutBigText.grid(column=0, row=0, sticky='w')
+        self.AboutContent.grid(column=0, row=1, sticky='w')
+        self.github.grid(column=0, row=2, sticky='w')
+        self.donationMessage.grid(column=0, row=3)
+        self.donationLink.grid(column=1, row=5, sticky="e")
 
         self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
+        self.donationLink.bind("<Button-1>", lambda e: self.github_click
+        ("https://www.johnchow.com/wp-content/uploads/2015/09/paypal-me-688x429.jpg"))
 
     @staticmethod
     def github_click(url):
@@ -364,20 +377,20 @@ class About(tk.Frame):
 class Hotkeys(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         # --- Main frames --- #
-        tk.Frame.__init__(self, parent, *args, **kwargs)
+        tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr)
 
         # Add content to about frame
-        tk.Label(self, text="Enter").grid(column=0, row=0, sticky='w')
-        tk.Label(self, text="-").grid(column=1, row=0, sticky='w')
-        tk.Label(self, text="Insert new colour").grid(column=2, row=0, sticky='w')
+        tk.Label(self, text="Enter", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=0, row=0, sticky='w')
+        tk.Label(self, text="-", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=1, row=0, sticky='w')
+        tk.Label(self, text="Insert new colour", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=2, row=0, sticky='w')
 
-        tk.Label(self, text="Escape").grid(column=0, row=1, sticky='w')
-        tk.Label(self, text="-").grid(column=1, row=1, sticky='w')
-        tk.Label(self, text="Delete last colour").grid(column=2, row=1, sticky='w')
+        tk.Label(self, text="Escape", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=0, row=1, sticky='w')
+        tk.Label(self, text="-", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=1, row=1, sticky='w')
+        tk.Label(self, text="Delete last colour", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=2, row=1, sticky='w')
 
-        tk.Label(self, text="Control + Enter").grid(column=0, row=2, sticky='w')
-        tk.Label(self, text="-").grid(column=1, row=2, sticky='w')
-        tk.Label(self, text="Colour Picker").grid(column=2, row=2, sticky='w')
+        tk.Label(self, text="Control + Enter", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=0, row=2, sticky='w')
+        tk.Label(self, text="-", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=1, row=2, sticky='w')
+        tk.Label(self, text="Colour Picker", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=2, row=2, sticky='w')
 
     @staticmethod
     def github_click(url):
@@ -398,7 +411,7 @@ class Settings(tk.Frame):
     convert_var = tk.StringVar(value=config.get('main', 'Convert_Type'))
 
     def __init__(self, parent, *args, **kwargs):
-        tk.Frame.__init__(self, parent, *args, **kwargs)
+        tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr)
 
         self.restart_popup = None
 
@@ -406,17 +419,17 @@ class Settings(tk.Frame):
         root.attributes('-topmost', config.get('main', 'OnTop'))
 
         # Create frame for main settings (not save button) and options
-        self.main_settings_frame = tk.Frame(self)
+        self.main_settings_frame = tk.Frame(self, bg=Home.bg_clr)
         self.on_top = tk.Checkbutton(self.main_settings_frame, text="Keep window on top", variable=Settings.on_top_var)
         self.on_top_var.trace('w', self.update_settings_main)
 
         # Create convert default type option
-        self.convert_frame = tk.Frame(self)
+        self.convert_frame = tk.Frame(self, bg=Home.bg_clr)
         self.convert_options = tk.OptionMenu(self.convert_frame, Settings.convert_var, *Settings.convert_types)
         self.save_button = tk.Button(self.convert_frame, text="Save", width=10, command=self.restart_window)
 
         # Create setting for File Location and Frame
-        self.save_location_frame = tk.Frame(self)
+        self.save_location_frame = tk.Frame(self, bg=Home.bg_clr)
         self.directory_button = tk.Button(self.save_location_frame, text="Select Save Location",
                                           command=self.get_file_past)
         self.folder_location = tk.StringVar(self.save_location_frame, f"{config.get('main', 'SaveLocation')}")
