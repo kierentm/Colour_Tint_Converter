@@ -25,9 +25,8 @@ from convert import *
 
 # TODO: Settings layout redo [Alex]
 
-# TODO: Colour picker select background image when clicking
+# TODO: Colour picker select background (under screenshot) image/text when clicking
 # TODO: Stop keyboard inputs when colour picking
-# TODO: Change colour picker text to white on dark mode (align with theme settings)
 
 # TODO: Work out why border of program not showing on bottom and right of window
 
