@@ -144,7 +144,7 @@ class Home(tk.Frame):
 
         # --- Main frames --- #
         tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr)
-        control_frame = tk.Frame(self, bg=tab_bg_clr)
+        control_frame = tk.Frame(self, bg=tab_bg_clr, padx=5, pady=5)
 
         # --- Controls --- #
         add_button = tk.Button(control_frame, image=plus_ico, text="Add", bg=btn_clr, fg=btn_fg,
@@ -158,12 +158,12 @@ class Home(tk.Frame):
                            bd="3", height="22", compound="left", font=btn_font)
 
         # --- Pack Controls --- #
-        add_button.pack(side="left")
-        remove_button.pack(side="left")
-        picker.pack(side="right")
+        add_button.pack(fill="x", side="left", expand=1)
+        remove_button.pack(fill="x", side="left", expand=1)
+        picker.pack(fill="x", side="left", expand=1)
 
         # --- Export --- #
-        self.export_frame = tk.Frame(self, bg=bg_clr)
+        self.export_frame = tk.Frame(self, bg=bg_clr, padx=5, pady=5)
         self.export_btn = tk.Button(self.export_frame, image=export_ico, text="Export .txt", bg=btn_clr,
                                     fg=btn_fg,
                                     activebackground=btn_clr_act, command=self.file_write,
