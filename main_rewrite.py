@@ -15,7 +15,7 @@ from convert import *
 
 root = tk.Tk()
 root.geometry("450x500")
-p1 = tk.PhotoImage(file='Design Images/Logo2.png')
+p1 = tk.PhotoImage(file='UI_Images/CTC_Logo.png')
 root.iconphoto(False, p1)
 root.title("Colour Tint Converter")
 root.configure(bg="#000000")
@@ -87,11 +87,11 @@ class Home(tk.Frame):
     tab_bg_clr_act = colour_scheme[7]
     entry_bg = colour_scheme[6]
 
-    plus_ico = tk.PhotoImage(file="UI_Images/Plus_Solo_1.png")
-    pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Solo.png")
-    export_ico = tk.PhotoImage(file="UI_Images/Txt_Solo.png")
-    git_ico = tk.PhotoImage(file="UI_Images/Github_Solo.png")
-    twitter_ico = tk.PhotoImage(file="UI_Images/Twitter_Solo.png")
+    plus_ico = tk.PhotoImage(file="UI_Images/Plus_Ico_Dark_Mode.png")
+    pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Ico_Dark_Mode.png")
+    export_ico = tk.PhotoImage(file="UI_Images/Txt_Ico_Dark_Mode.png")
+    git_ico = tk.PhotoImage(file="UI_Images/Github_Ico_Dark_Mode.png")
+    twitter_ico = tk.PhotoImage(file="UI_Images/Twitter_Ico_Dark_Mode.png")
 
     def __init__(self, parent, *args, **kwargs):
 
