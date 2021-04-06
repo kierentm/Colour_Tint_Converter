@@ -20,8 +20,6 @@ from convert import *
 # TODO: Make further adjustments to light and dark colours as needed [KTM]
 # TODO: Make light mode less light [KTM]
 
-# TODO: Settings layout redo [Alex]
-
 # TODO: Work out why border of program not showing on bottom and right of window (theme issue but can't work out why)
 
 # Group Bonding Moment Stuff

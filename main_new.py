@@ -78,8 +78,9 @@ if not config.has_section('main'):
     with open('config.ini', 'w') as file:
         config.write(file)
 
-colour_scheme = f'{config.get("main", "Colour_Mode")}'
 # ---- Style Setup ---- #
+colour_scheme = f'{config.get("main", "Colour_Mode")}'
+
 btn_clr = f'{config.get(f"{colour_scheme}", "btn_clr")}'  # button colour
 btn_clr_act = f'{config.get(f"{colour_scheme}", "btn_clr_act")}'  # button colour when clicked
 btn_fg = f'{config.get(f"{colour_scheme}", "btn_fg")}'  # button font colour
@@ -429,7 +430,6 @@ class About(tk.Frame):
                                      fg=btn_fg)
         self.AboutContent = tk.Label(self, text="Tool developed by Kieren Townley-Moss, Jake Broughton "
                                                 "and Alex Todd\n\n Version 1.0.23 \n\n Copyright©2021 \n\n"
-
                                      , bg=bg_clr, fg=btn_fg)
         self.aboutLinks = tk.Frame(self, bg=bg_clr)
         self.donationFrame = tk.Frame(self, bg=bg_clr)
@@ -442,9 +442,10 @@ class About(tk.Frame):
                                         bg=bg_clr, fg=btn_fg)
 
         self.donationLink = tk.Label(self.donationFrame, text="Donate", fg="#538cc2", cursor="hand2", bg=bg_clr)
+        self.ContactUs = tk.Label(self, text="Contact us at : kajdevelopmentofficial@gmail.com", bg=bg_clr, fg=btn_fg)
 
         self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
-        self.twitter.bind("<Button-1>", lambda e: self.github_click("https://twitter.com/JakDevelopment"))
+        self.twitter.bind("<Button-1>", lambda e: self.github_click("https://twitter.com/KajDevelopment"))
         self.donationLink.bind("<Button-1>", lambda e: self.github_click(
             "https://streamelements.com/beardo1557/tip"))
 
@@ -455,6 +456,7 @@ class About(tk.Frame):
         self.twitter.pack(side="right")
         self.donationFrame.pack(side="bottom", pady="30")
         self.donationLink.pack(side="bottom")
+        self.ContactUs.pack(side="bottom")
         self.donationMessage.pack(side="bottom", padx="10")
 
     @staticmethod
@@ -550,32 +552,18 @@ class Settings(tk.Frame):
         # Packs frames left
         self.main_settings_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
         self.on_top.pack(side="left")
+        # self.on_top.place()
 
-        self.convert_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15), padx=4)
+        self.convert_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15), padx=6)
         self.convert_options.pack(side="left")
         self.colour_scheme.pack(side="left")
         self.save_button.pack(side="left")
 
-        self.save_location_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15), padx=4)
+        self.save_location_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15), padx=6)
         self.directory_button.pack(side="left")
         self.directory_display.pack(fill="both", side="left", expand=True)
 
-        self.restore_btn.pack(side="top", anchor="nw", padx=4)
-
-        # # Packs frames centre
-        # self.main_settings_frame.pack(side="top", fill=tk.X, pady=(0, 15))
-        # self.on_top.pack()
-        #
-        # self.convert_frame.pack(side="top", pady=(0, 15))
-        # self.convert_options.pack(side="left")
-        # self.colour_scheme.pack(side="left")
-        # self.save_button.pack(side="left")
-        #
-        # self.save_location_frame.pack(side="top", fill=tk.X, pady=(0, 15), padx=(10, 10))
-        # self.directory_button.pack(side="left")
-        # self.directory_display.pack(fill="both", side="left", expand=True)
-        #
-        # self.restore_btn.pack(side="top")
+        self.restore_btn.pack(side="top", anchor="nw", padx=6)
 
         # Declare Settings Path Variable
         self.path_past = ""
