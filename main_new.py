@@ -52,6 +52,8 @@ if not config.has_section('main'):
     config.set('dark_mode', 'git_ico', 'UI_Images/Github_Ico_Dark_Mode.png')
     config.set('dark_mode', 'twitter_ico', 'UI_Images/Twitter_Ico_Dark_Mode.png')
 
+    config.set('dark_mode', 'option_menu_mode', 'Dark Mode')
+
     # Adds light mode config section
     config.add_section('light_mode')
     config.set('light_mode', 'btn_clr', '#f0f0f0')
@@ -70,6 +72,8 @@ if not config.has_section('main'):
     config.set('light_mode', 'export_ico', 'UI_Images/Txt_Ico_Light_Mode.png')
     config.set('light_mode', 'git_ico', 'UI_Images/Github_Ico_Light_Mode.png')
     config.set('light_mode', 'twitter_ico', 'UI_Images/Twitter_Ico_Light_Mode.png')
+
+    config.set('light_mode', 'option_menu_mode', 'Light Mode')
 
     with open('config.ini', 'w') as file:
         config.write(file)
@@ -495,10 +499,10 @@ class Settings(tk.Frame):
     convert_var = tk.StringVar(value=config.get('main', 'Convert_Type'))
 
     colour_modes = [
-        "light_mode",
-        "dark_mode"
+        "Light Mode",
+        "Dark Mode"
     ]
-    colour_var = tk.StringVar(value=config.get('main', 'Colour_Mode'))
+    colour_var = tk.StringVar(value=config.get(f"{config.get('main', 'Colour_Mode')}", "option_menu_mode"))
 
     def __init__(self, parent, *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr)
@@ -512,25 +516,23 @@ class Settings(tk.Frame):
         # Create frame for main settings (not save button) and options
         self.main_settings_frame = tk.Frame(self, bg=bg_clr)
         self.on_top = tk.Checkbutton(self.main_settings_frame, text="Keep window on top", variable=Settings.on_top_var,
-                                     width="20", bg=bg_clr, fg=btn_fg, selectcolor=bg_clr, activebackground=bg_clr)
+                                     width="20", bg=bg_clr, fg=btn_fg, selectcolor=bg_clr, activebackground=bg_clr,
+                                     activeforeground=btn_fg)
         self.on_top_var.trace('w', self.update_settings_main)
 
         # Create convert default type option
         self.convert_frame = tk.Frame(self, bg=bg_clr)
         self.convert_options = tk.OptionMenu(self.convert_frame, Settings.convert_var, *Settings.convert_types)
-        self.convert_options.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12")
+        self.convert_options.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12",
+                                    highlightthickness=0)
         self.convert_options["menu"].config(bg=btn_clr, fg=btn_fg)
         self.save_button = tk.Button(self.convert_frame, text="Save", width=10, command=self.restart_window,
                                      bg=bg_clr, fg=btn_fg)
 
         # Create colour scheme drop down
         self.colour_scheme = tk.OptionMenu(self.convert_frame, Settings.colour_var, *Settings.colour_modes)
-        self.colour_scheme.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12")
+        self.colour_scheme.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12", highlightthickness=0)
         self.colour_scheme["menu"].config(bg=btn_clr, fg=btn_fg)
-
-        # Create a restore button
-        self.restore_btn = tk.Button(self, text="Restore to Default Settings", command=self.restore_warning,
-                                     bg=bg_clr, fg=btn_fg)
 
         # Create setting for File Location and Frame
         self.save_location_frame = tk.Frame(self, bg=bg_clr)
@@ -541,20 +543,39 @@ class Settings(tk.Frame):
                                           textvariable=self.folder_location, state="disabled",
                                           disabledbackground=entry_bg, disabledforeground=btn_fg)
 
-        # Packs frames
+        # Create a restore button
+        self.restore_btn = tk.Button(self, text="Restore to Default Settings", command=self.restore_warning,
+                                     bg=bg_clr, fg=btn_fg)
+
+        # Packs frames left
         self.main_settings_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
-        self.on_top.grid(column=0, row=0, sticky='w')
+        self.on_top.pack(side="left")
 
-        self.convert_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
-        self.convert_options.grid(column=0, row=0, sticky='w')
-        self.colour_scheme.grid(column=1, row=0, sticky='w')
-        self.save_button.grid(column=2, row=0, sticky='w')
+        self.convert_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15), padx=4)
+        self.convert_options.pack(side="left")
+        self.colour_scheme.pack(side="left")
+        self.save_button.pack(side="left")
 
-        self.save_location_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
+        self.save_location_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15), padx=4)
         self.directory_button.pack(side="left")
         self.directory_display.pack(fill="both", side="left", expand=True)
 
-        self.restore_btn.pack(side="top", anchor="nw")
+        self.restore_btn.pack(side="top", anchor="nw", padx=4)
+
+        # # Packs frames centre
+        # self.main_settings_frame.pack(side="top", fill=tk.X, pady=(0, 15))
+        # self.on_top.pack()
+        #
+        # self.convert_frame.pack(side="top", pady=(0, 15))
+        # self.convert_options.pack(side="left")
+        # self.colour_scheme.pack(side="left")
+        # self.save_button.pack(side="left")
+        #
+        # self.save_location_frame.pack(side="top", fill=tk.X, pady=(0, 15), padx=(10, 10))
+        # self.directory_button.pack(side="left")
+        # self.directory_display.pack(fill="both", side="left", expand=True)
+        #
+        # self.restore_btn.pack(side="top")
 
         # Declare Settings Path Variable
         self.path_past = ""
@@ -588,7 +609,11 @@ class Settings(tk.Frame):
     @staticmethod
     def update_convert_type_yes():
         config.set('main', 'Convert_Type', f"{Settings.convert_var.get()}")
-        config.set('main', 'Colour_Mode', f"{Settings.colour_var.get()}")
+        if f"{Settings.colour_var.get()}" == "Dark Mode":
+            colour_config = "dark_mode"
+        else:
+            colour_config = "light_mode"
+        config.set('main', 'Colour_Mode', colour_config)
         with open('config.ini', 'w') as f:
             config.write(f)
         python = sys.executable
@@ -596,7 +621,7 @@ class Settings(tk.Frame):
 
     def update_convert_type_no(self):
         self.convert_var.set(config.get('main', 'Convert_Type'))
-        self.colour_var.set(config.get('main', 'Colour_Mode'))
+        self.colour_var.set(config.get(f"{config.get('main', 'Colour_Mode')}", "option_menu_mode"))
         self.restart_popup.destroy()
 
     # Initialise windows directory selection and save within config
