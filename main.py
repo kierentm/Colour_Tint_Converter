@@ -1,17 +1,14 @@
-import pathlib
+from pathlib import Path
 import tkinter as tk
 import webbrowser
 from configparser import ConfigParser
 from tkinter import filedialog
 from tkinter import ttk
-import time
-import sys
-import os
-
-import webcolors
+from time import sleep
+from sys import executable, argv
+from os import execl
+from webcolors import rgb_to_hex
 from PIL import ImageGrab, ImageTk
-
-
 from utility_functions import *
 
 # ---- Version 1.0 ----- #
@@ -57,7 +54,7 @@ if not config.has_section('main'):
 
     # Adds main config section
     config.add_section('main')
-    config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
+    config.set('main', 'SaveLocation', f'{Path().absolute()}')
     config.set('main', 'OnTop', '0')
     config.set('main', 'Convert_Type', 'sRGB [0,1]')
     config.set('main', 'Colour_Mode', 'dark_mode')
@@ -211,7 +208,7 @@ class Home(tk.Frame):
 
     def screenshot(self):
         root.withdraw()
-        time.sleep(0.2)
+        sleep(0.2)
         self.image = ImageGrab.grab()  # Takes screenshot of whole screen
 
         img = ImageTk.PhotoImage(self.image)
@@ -364,21 +361,21 @@ class Home(tk.Frame):
                 if conversion_type == "sRGB [0,1]":
                     rgb_nonlin = get_entries_convert(get_entries, conversion_type)
                     rgb_linear = LSRGBtoSRGB8(rgb_nonlin)
-                    hexvals = webcolors.rgb_to_hex(rgb_linear)
+                    hexvals = rgb_to_hex(rgb_linear)
                     self.hex_box_value.set(hexvals.upper())
                     self.colour_preview.config({"background": self.hex_box.get()})  # Adds colour to side box
 
                 # Conversion type sRGB [0,1]
                 if conversion_type == "sRGB8 [0,255]":
                     rgb_nonlin = get_entries_convert(get_entries, conversion_type)
-                    hexvals = webcolors.rgb_to_hex(rgb_nonlin)
+                    hexvals = rgb_to_hex(rgb_nonlin)
                     self.hex_box_value.set(hexvals.upper())
                     self.colour_preview.config({"background": self.hex_box.get()})  # Adds colour to side box
 
                 if conversion_type == "sRGB' [0,1]":
                     rgb_nonlin = get_entries_convert(get_entries, conversion_type)
                     yeet = NLSRGBtoSRGB8(rgb_nonlin)
-                    hexvals = webcolors.rgb_to_hex(yeet)
+                    hexvals = rgb_to_hex(yeet)
                     self.hex_box_value.set(hexvals.upper())
                     self.colour_preview.config({"background": self.hex_box.get()})  # Adds colour to side box
 
@@ -601,8 +598,8 @@ class Settings(tk.Frame):
         config.set('main', 'Colour_Mode', colour_config)
         with open('config.ini', 'w') as f:
             config.write(f)
-        python = sys.executable
-        os.execl(python, python, *sys.argv)
+        python = executable
+        execl(python, python, *argv)
 
     def update_convert_type_no(self):
         self.convert_var.set(config.get('main', 'Convert_Type'))
@@ -640,7 +637,7 @@ class Settings(tk.Frame):
         button_close.pack(fill='x')
 
     def restore(self):
-        config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
+        config.set('main', 'SaveLocation', f'{Path().absolute()}')
         config.set('main', 'OnTop', '0')
         config.set('main', 'Convert_Type', 'sRGB [0,1]')
         config.set('main', 'Colour_Mode', 'dark_mode')
@@ -651,8 +648,8 @@ class Settings(tk.Frame):
 
         self.restore_popup.destroy()
 
-        python = sys.executable
-        os.execl(python, python, *sys.argv)
+        python = executable
+        execl(python, python, *argv)
 
 
 if __name__ == '__main__':
