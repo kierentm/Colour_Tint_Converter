@@ -271,9 +271,9 @@ class Home(tk.Frame):
 
             # ---- Remove placeholder functionality if it's a screenshot ---- #
             if is_screenshot:
-                self.r_entry.config(fg="black")
-                self.g_entry.config(fg="black")
-                self.b_entry.config(fg="black")
+                self.r_entry.config(fg=btn_fg)
+                self.g_entry.config(fg=btn_fg)
+                self.b_entry.config(fg=btn_fg)
 
                 self.r_value.set(r)
                 self.g_value.set(g)
