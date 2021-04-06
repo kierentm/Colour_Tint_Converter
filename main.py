@@ -13,6 +13,8 @@ from convert import *
 
 # ---- Version 1.0 ----- #
 
+# FIXME: when restarting to change settings, when you use colour picker it crashes
+
 # Group Bonding Moment Stuff
 
 # TODO: Create readme and video
