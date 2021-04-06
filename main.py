@@ -20,19 +20,22 @@ from convert import *
 # TODO: make further adjustments to light and dark colours as needed [KTM]
 
 # TODO: Make settings buttons consistent with the rest of the app [KTM]
-# TODO: figure out how best to switch the icons from light to dark [KTM/Alex]
+# TODO: Add colour schemes [KTM]
+# TODO: Make light mode less light [KTM]
+# TODO: Change remove icon from plus to minus [KTM]
+# TODO: Save out the icons in black [KTM]
+
+# TODO: Figure out how best to switch the icons from light to dark [KTM/Alex]
 
 
 # TODO: Settings layout redo [Alex]
 
-# TODO: Colour picker select background (under screenshot) image/text when clicking
-# TODO: Stop keyboard inputs when colour picking
-
-# TODO: Work out why border of program not showing on bottom and right of window
+# TODO: Work out why border of program not showing on bottom and right of window (theme issue but can't work out why)
 
 # Group Bonding Moment Stuff
 
 # TODO: Create readme and video
+# TODO: Could create manual file
 
 # TODO: Refactor convert.py name
 # TODO: Refactor meme function names

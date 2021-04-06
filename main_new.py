@@ -25,30 +25,72 @@ config = ConfigParser()
 config.read('config.ini')
 
 if not config.has_section('main'):
+
+    # Adds main config section
     config.add_section('main')
     config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
     config.set('main', 'OnTop', '0')
     config.set('main', 'Convert_Type', 'sRGB [0,1]')
-    config.set('main', 'Colour_Mode', 'Dark Mode')
+    config.set('main', 'Colour_Mode', 'dark_mode')
+
+    # Adds dark mode config section
+    config.add_section('dark_mode')
+    config.set('dark_mode', 'btn_clr', '#393a40')
+    config.set('dark_mode', 'btn_clr_act', '#BCBCBC')
+    config.set('dark_mode', 'btn_fg', '#ffffff')
+    config.set('dark_mode', 'btn_font_type', 'Calibri')
+    config.set('dark_mode', 'btn_font_size', '16')
+    config.set('dark_mode', 'bg_clr', '#2f3136')
+    config.set('dark_mode', 'tab_bg_clr', '#45484f')
+    config.set('dark_mode', 'tab_bg_clr_act', '#45484f')
+    config.set('dark_mode', 'entry_bg', '#212426')
+
+    config.set('dark_mode', 'plus_ico', 'UI_Images/Plus_Ico_Dark_Mode.png')
+    config.set('dark_mode', 'minus_ico', 'UI_Images/Minus_Ico_Dark_Mode.png')
+    config.set('dark_mode', 'pipette_ico', 'UI_Images/Pipette_Ico_Dark_Mode.png')
+    config.set('dark_mode', 'export_ico', 'UI_Images/Txt_Ico_Dark_Mode.png')
+    config.set('dark_mode', 'git_ico', 'UI_Images/Github_Ico_Dark_Mode.png')
+    config.set('dark_mode', 'twitter_ico', 'UI_Images/Twitter_Ico_Dark_Mode.png')
+
+    # Adds light mode config section
+    config.add_section('light_mode')
+    config.set('light_mode', 'btn_clr', '#f0f0f0')
+    config.set('light_mode', 'btn_clr_act', '#ffffff')
+    config.set('light_mode', 'btn_fg', '#0d0d0d')
+    config.set('light_mode', 'btn_font_type', 'Calibri')
+    config.set('light_mode', 'btn_font_size', '16')
+    config.set('light_mode', 'bg_clr', '#f0f0f0')
+    config.set('light_mode', 'tab_bg_clr', '#f0f0f0')
+    config.set('light_mode', 'tab_bg_clr_act', '#ffffff')
+    config.set('light_mode', 'entry_bg', '#f5f5f5')
+
+    config.set('light_mode', 'plus_ico', 'UI_Images/Plus_Ico_Light_Mode.png')
+    config.set('light_mode', 'minus_ico', 'UI_Images/Minus_Ico_Light_Mode.png')
+    config.set('light_mode', 'pipette_ico', 'UI_Images/Pipette_Ico_Light_Mode.png')
+    config.set('light_mode', 'export_ico', 'UI_Images/Txt_Ico_Light_Mode.png')
+    config.set('light_mode', 'git_ico', 'UI_Images/Github_Ico_Light_Mode.png')
+    config.set('light_mode', 'twitter_ico', 'UI_Images/Twitter_Ico_Light_Mode.png')
+
     with open('config.ini', 'w') as file:
         config.write(file)
 
-colour_scheme = colour_mode(f"{config.get('main', 'Colour_Mode')}")
+colour_scheme = f'{config.get("main", "Colour_Mode")}'
 # ---- Style Setup ---- #
-btn_clr = colour_scheme[0]  # button colour
-btn_clr_act = colour_scheme[1]  # button colour when clicked
-btn_fg = colour_scheme[2]  # button font colour
-btn_font = colour_scheme[3]
-bg_clr = colour_scheme[4]  # background colour
-tab_bg_clr = colour_scheme[5]
-tab_bg_clr_act = colour_scheme[7]
-entry_bg = colour_scheme[6]
+btn_clr = f'{config.get(f"{colour_scheme}", "btn_clr")}'  # button colour
+btn_clr_act = f'{config.get(f"{colour_scheme}", "btn_clr_act")}'  # button colour when clicked
+btn_fg = f'{config.get(f"{colour_scheme}", "btn_fg")}'  # button font colour
+btn_font = (f'{config.get(f"{colour_scheme}", "btn_font_type")}', f'{config.get(colour_scheme, "btn_font_size")}')
+bg_clr = f'{config.get(f"{colour_scheme}", "bg_clr")}'  # background colour
+tab_bg_clr = f'{config.get(f"{colour_scheme}", "tab_bg_clr")}'
+tab_bg_clr_act = f'{config.get(f"{colour_scheme}", "tab_bg_clr_act")}'
+entry_bg = f'{config.get(f"{colour_scheme}", "entry_bg")}'
 
-plus_ico = tk.PhotoImage(file="UI_Images/Plus_Ico_Dark_Mode.png")
-pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Ico_Dark_Mode.png")
-export_ico = tk.PhotoImage(file="UI_Images/Txt_Ico_Dark_Mode.png")
-git_ico = tk.PhotoImage(file="UI_Images/Github_Ico_Dark_Mode.png")
-twitter_ico = tk.PhotoImage(file="UI_Images/Twitter_Ico_Dark_Mode.png")
+plus_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "plus_ico")}')
+minus_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "minus_ico")}')
+pipette_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "pipette_ico")}')
+export_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "export_ico")}')
+git_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "git_ico")}')
+twitter_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "twitter_ico")}')
 
 
 def main():
@@ -56,8 +98,14 @@ def main():
 
     style.theme_create("Theme1", parent="alt", settings={
         "TNotebook": {"configure": {"tabmargins": [2, 5, 2, 0]}},
-        "TNotebook.Tab": {"configure": {"padding": [5, 1], "background": tab_bg_clr, "foreground": btn_fg},
-            "map": {"background": [("selected", tab_bg_clr_act)],"expand": [("selected", [1, 1, 1, 0])]}}})
+        "TNotebook.Tab": {
+            "configure": {"padding": [5, 1], "background": tab_bg_clr, "foreground": btn_fg, "focuscolor": tab_bg_clr},
+            "map": {"background": [("selected", tab_bg_clr_act)], "expand": [("selected", [1, 1, 1, 0])]}}})
+
+    # style.theme_create("Theme1", parent="alt", settings={
+    #     "TNotebook.Tab": {
+    #         "configure": {"background": tab_bg_clr, "foreground": btn_fg},
+    #         "map": {"background": [("selected", tab_bg_clr_act)]}}})
 
     style.theme_use("Theme1")
 
@@ -83,23 +131,6 @@ def main():
 
 
 class Home(tk.Frame):
-    colour_scheme = colour_mode(f"{config.get('main', 'Colour_Mode')}")
-    # ---- Style Setup ---- #
-    btn_clr = colour_scheme[0]  # button colour
-    btn_clr_act = colour_scheme[1]  # button colour when clicked
-    btn_fg = colour_scheme[2]  # button font colour
-    btn_font = colour_scheme[3]
-    bg_clr = colour_scheme[4]  # background colour
-    tab_bg_clr = colour_scheme[5]
-    tab_bg_clr_act = colour_scheme[7]
-    entry_bg = colour_scheme[6]
-
-    plus_ico = tk.PhotoImage(file="UI_Images/Plus_Ico_Dark_Mode.png")
-    pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Ico_Dark_Mode.png")
-    export_ico = tk.PhotoImage(file="UI_Images/Txt_Ico_Dark_Mode.png")
-    git_ico = tk.PhotoImage(file="UI_Images/Github_Ico_Dark_Mode.png")
-    twitter_ico = tk.PhotoImage(file="UI_Images/Twitter_Ico_Dark_Mode.png")
-    minus_ico = tk.PhotoImage(file="UI_Images/Minus_Ico_Dark_Mode.png")
 
     def __init__(self, parent, *args, **kwargs):
 
@@ -112,13 +143,13 @@ class Home(tk.Frame):
         control_frame = tk.Frame(self, bg=tab_bg_clr)
 
         # --- Controls --- #
-        add_button = tk.Button(control_frame, image=Home.plus_ico, text="Add", bg=btn_clr, fg=btn_fg,
+        add_button = tk.Button(control_frame, image=plus_ico, text="Add", bg=btn_clr, fg=btn_fg,
                                activebackground=btn_clr_act, command=lambda: Home.RemovableEntry(self),
                                bd="3", height="22", compound="left", font=btn_font)
-        remove_button = tk.Button(control_frame, image=Home.minus_ico, text="Remove", bg=btn_clr, fg=btn_fg,
+        remove_button = tk.Button(control_frame, image=minus_ico, text="Remove", bg=btn_clr, fg=btn_fg,
                                   activebackground=btn_clr_act, command=self.remove_entry,
                                   bd="3", height="22", compound="left", font=btn_font)
-        picker = tk.Button(control_frame, image=Home.pipette_ico, text="Colour Pick", bg=btn_clr, fg=btn_fg,
+        picker = tk.Button(control_frame, image=pipette_ico, text="Colour Pick", bg=btn_clr, fg=btn_fg,
                            activebackground=btn_clr_act, command=self.screenshot,
                            bd="3", height="22", compound="left", font=btn_font)
 
@@ -129,7 +160,7 @@ class Home(tk.Frame):
 
         # --- Export --- #
         self.export_frame = tk.Frame(self, bg=bg_clr)
-        self.export_btn = tk.Button(self.export_frame, image=Home.export_ico, text="Export .txt", bg=btn_clr,
+        self.export_btn = tk.Button(self.export_frame, image=export_ico, text="Export .txt", bg=btn_clr,
                                     fg=btn_fg,
                                     activebackground=btn_clr_act, command=self.file_write,
                                     bd="3", relief="raised", height="22", compound="left", font=btn_font)
@@ -398,8 +429,8 @@ class About(tk.Frame):
                                      , bg=bg_clr, fg=btn_fg)
         self.aboutLinks = tk.Frame(self, bg=bg_clr)
         self.donationFrame = tk.Frame(self, bg=bg_clr)
-        self.github = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=Home.git_ico, bg=bg_clr)
-        self.twitter = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=Home.twitter_ico, bg=bg_clr)
+        self.github = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=git_ico, bg=bg_clr)
+        self.twitter = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=twitter_ico, bg=bg_clr)
 
         self.donationMessage = tk.Label(self.donationFrame, text="Colour Tint Converter is 100% free\n"
                                                                  "You can use the app however you wish\n"
@@ -464,8 +495,8 @@ class Settings(tk.Frame):
     convert_var = tk.StringVar(value=config.get('main', 'Convert_Type'))
 
     colour_modes = [
-        "Light Mode",
-        "Dark Mode"
+        "light_mode",
+        "dark_mode"
     ]
     colour_var = tk.StringVar(value=config.get('main', 'Colour_Mode'))
 
@@ -473,6 +504,7 @@ class Settings(tk.Frame):
         tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr)
 
         self.restart_popup = None
+        self.restore_popup = None
 
         # Check config to apply settings
         root.attributes('-topmost', config.get('main', 'OnTop'))
@@ -480,13 +512,12 @@ class Settings(tk.Frame):
         # Create frame for main settings (not save button) and options
         self.main_settings_frame = tk.Frame(self, bg=bg_clr)
         self.on_top = tk.Checkbutton(self.main_settings_frame, text="Keep window on top", variable=Settings.on_top_var,
-                                     width="20", bg=bg_clr, fg=btn_fg, selectcolor="black", activebackground=bg_clr)
+                                     width="20", bg=bg_clr, fg=btn_fg, selectcolor=bg_clr, activebackground=bg_clr)
         self.on_top_var.trace('w', self.update_settings_main)
 
         # Create convert default type option
         self.convert_frame = tk.Frame(self, bg=bg_clr)
         self.convert_options = tk.OptionMenu(self.convert_frame, Settings.convert_var, *Settings.convert_types)
-
         self.convert_options.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12")
         self.convert_options["menu"].config(bg=btn_clr, fg=btn_fg)
         self.save_button = tk.Button(self.convert_frame, text="Save", width=10, command=self.restart_window,
@@ -498,7 +529,7 @@ class Settings(tk.Frame):
         self.colour_scheme["menu"].config(bg=btn_clr, fg=btn_fg)
 
         # Create a restore button
-        self.restore_btn = tk.Button(self, text="Restore to Default Settings", command=self.restore,
+        self.restore_btn = tk.Button(self, text="Restore to Default Settings", command=self.restore_warning,
                                      bg=bg_clr, fg=btn_fg)
 
         # Create setting for File Location and Frame
@@ -516,8 +547,8 @@ class Settings(tk.Frame):
 
         self.convert_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
         self.convert_options.grid(column=0, row=0, sticky='w')
-        self.save_button.grid(column=1, row=0, sticky='w')
-        self.colour_scheme.grid(column=0, row=1, sticky='w')
+        self.colour_scheme.grid(column=1, row=0, sticky='w')
+        self.save_button.grid(column=2, row=0, sticky='w')
 
         self.save_location_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
         self.directory_button.pack(side="left")
@@ -560,7 +591,6 @@ class Settings(tk.Frame):
         config.set('main', 'Colour_Mode', f"{Settings.colour_var.get()}")
         with open('config.ini', 'w') as f:
             config.write(f)
-        root.attributes('-topmost', config.get('main', 'OnTop'))
         python = sys.executable
         os.execl(python, python, *sys.argv)
 
@@ -581,14 +611,40 @@ class Settings(tk.Frame):
         # Updates file location box
         self.folder_location.set(f"{config.get('main', 'SaveLocation')}")
 
-    @staticmethod
-    def restore():
+    def restore_warning(self):
+        self.restore_popup = tk.Toplevel()
+        self.restore_popup.attributes('-topmost', True)
+
+        self.restore_popup.title("Warning")
+
+        restore_label = tk.Label(self.restore_popup, fg="red",
+                                 text="----------------------- Warning -----------------------\n"
+                                      "Are you sure you want to restore to default settings?\n"
+                                      "This will require a restart,"
+                                      "Please ensure you have exported required colour information!")
+
+        restore_label.pack(side="top", fill='x')
+
+        button_bonus = tk.Button(self.restore_popup, text="Yes", command=self.restore)
+        button_bonus.pack(fill='x')
+
+        button_close = tk.Button(self.restore_popup, text="No", command=self.restore_popup.destroy)
+        button_close.pack(fill='x')
+
+    def restore(self):
         config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
         config.set('main', 'OnTop', '0')
         config.set('main', 'Convert_Type', 'sRGB [0,1]')
-        config.set('main', 'Colour_Mode', 'Dark Mode')
+        config.set('main', 'Colour_Mode', 'dark_mode')
         with open('config.ini', 'w') as restore_conf:
             config.write(restore_conf)
+
+        self.folder_location.set(f"{config.get('main', 'SaveLocation')}")
+
+        self.restore_popup.destroy()
+
+        python = sys.executable
+        os.execl(python, python, *sys.argv)
 
 
 if __name__ == '__main__':
