@@ -57,9 +57,14 @@ def main():
     style.theme_create("Theme1", parent="alt", settings={
         "TNotebook": {"configure": {"tabmargins": [2, 5, 2, 0]}},
         "TNotebook.Tab": {
-            "configure": {"padding": [5, 1], "background": tab_bg_clr, "foreground": btn_fg},
+            "configure": {"padding": [5, 1], "background": tab_bg_clr, "foreground": btn_fg, "focuscolor": tab_bg_clr},
             "map": {"background": [("selected", tab_bg_clr_act)],
                     "expand": [("selected", [1, 1, 1, 0])]}}})
+
+    # style.theme_create("Theme1", parent="alt", settings={
+    #     "TNotebook.Tab": {
+    #         "configure": {"background": tab_bg_clr, "foreground": btn_fg},
+    #         "map": {"background": [("selected", tab_bg_clr_act)]}}})
 
     style.theme_use("Theme1")
 
@@ -85,16 +90,6 @@ def main():
 
 
 class Home(tk.Frame):
-    colour_scheme = colour_mode(f"{config.get('main', 'Colour_Mode')}")
-    # ---- Style Setup ---- #
-    btn_clr = colour_scheme[0]  # button colour
-    btn_clr_act = colour_scheme[1]  # button colour when clicked
-    btn_fg = colour_scheme[2]  # button font colour
-    btn_font = colour_scheme[3]
-    bg_clr = colour_scheme[4]  # background colour
-    tab_bg_clr = colour_scheme[5]
-    tab_bg_clr_act = colour_scheme[7]
-    entry_bg = colour_scheme[6]
 
     plus_ico = tk.PhotoImage(file="UI_Images/Plus_Solo_1.png")
     pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Solo.png")
