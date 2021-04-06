@@ -15,7 +15,7 @@ from convert import *
 
 root = tk.Tk()
 root.geometry("450x500")
-p1 = tk.PhotoImage(file='Design Images/Logo2.png')
+p1 = tk.PhotoImage(file='UI_Images/CTC_Logo.png')
 root.iconphoto(False, p1)
 root.title("Colour Tint Converter")
 root.configure(bg="#000000")
@@ -44,11 +44,11 @@ tab_bg_clr = colour_scheme[5]
 tab_bg_clr_act = colour_scheme[7]
 entry_bg = colour_scheme[6]
 
-plus_ico = tk.PhotoImage(file="UI_Images/Plus_Solo_1.png")
-pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Solo.png")
-export_ico = tk.PhotoImage(file="UI_Images/Txt_Solo.png")
-git_ico = tk.PhotoImage(file="UI_Images/Github_Solo.png")
-twitter_ico = tk.PhotoImage(file="UI_Images/Twitter_Solo.png")
+plus_ico = tk.PhotoImage(file="UI_Images/Plus_Ico_Dark_Mode.png")
+pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Ico_Dark_Mode.png")
+export_ico = tk.PhotoImage(file="UI_Images/Txt_Ico_Dark_Mode.png")
+git_ico = tk.PhotoImage(file="UI_Images/Github_Ico_Dark_Mode.png")
+twitter_ico = tk.PhotoImage(file="UI_Images/Twitter_Ico_Dark_Mode.png")
 
 
 def main():
@@ -56,10 +56,8 @@ def main():
 
     style.theme_create("Theme1", parent="alt", settings={
         "TNotebook": {"configure": {"tabmargins": [2, 5, 2, 0]}},
-        "TNotebook.Tab": {
-            "configure": {"padding": [5, 1], "background": tab_bg_clr, "foreground": btn_fg},
-            "map": {"background": [("selected", tab_bg_clr_act)],
-                    "expand": [("selected", [1, 1, 1, 0])]}}})
+        "TNotebook.Tab": {"configure": {"padding": [5, 1], "background": tab_bg_clr, "foreground": btn_fg},
+            "map": {"background": [("selected", tab_bg_clr_act)],"expand": [("selected", [1, 1, 1, 0])]}}})
 
     style.theme_use("Theme1")
 
@@ -96,11 +94,12 @@ class Home(tk.Frame):
     tab_bg_clr_act = colour_scheme[7]
     entry_bg = colour_scheme[6]
 
-    plus_ico = tk.PhotoImage(file="UI_Images/Plus_Solo_1.png")
-    pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Solo.png")
-    export_ico = tk.PhotoImage(file="UI_Images/Txt_Solo.png")
-    git_ico = tk.PhotoImage(file="UI_Images/Github_Solo.png")
-    twitter_ico = tk.PhotoImage(file="UI_Images/Twitter_Solo.png")
+    plus_ico = tk.PhotoImage(file="UI_Images/Plus_Ico_Dark_Mode.png")
+    pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Ico_Dark_Mode.png")
+    export_ico = tk.PhotoImage(file="UI_Images/Txt_Ico_Dark_Mode.png")
+    git_ico = tk.PhotoImage(file="UI_Images/Github_Ico_Dark_Mode.png")
+    twitter_ico = tk.PhotoImage(file="UI_Images/Twitter_Ico_Dark_Mode.png")
+    minus_ico = tk.PhotoImage(file="UI_Images/Minus_Ico_Dark_Mode.png")
 
     def __init__(self, parent, *args, **kwargs):
 
@@ -116,7 +115,7 @@ class Home(tk.Frame):
         add_button = tk.Button(control_frame, image=Home.plus_ico, text="Add", bg=btn_clr, fg=btn_fg,
                                activebackground=btn_clr_act, command=lambda: Home.RemovableEntry(self),
                                bd="3", height="22", compound="left", font=btn_font)
-        remove_button = tk.Button(control_frame, image=Home.plus_ico, text="Remove", bg=btn_clr, fg=btn_fg,
+        remove_button = tk.Button(control_frame, image=Home.minus_ico, text="Remove", bg=btn_clr, fg=btn_fg,
                                   activebackground=btn_clr_act, command=self.remove_entry,
                                   bd="3", height="22", compound="left", font=btn_font)
         picker = tk.Button(control_frame, image=Home.pipette_ico, text="Colour Pick", bg=btn_clr, fg=btn_fg,

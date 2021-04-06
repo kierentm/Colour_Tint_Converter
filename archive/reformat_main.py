@@ -19,9 +19,9 @@ btn_fg = "#ffffff"  # button font colour
 btn_font = "Calibri", "16"
 bg_clr = "#2f3136"  # background colour
 
-plus_ico = tk.PhotoImage(file="../UI_Images/Plus_Solo_1.png")
-pipette_ico = tk.PhotoImage(file="../UI_Images/Pipette_Solo.png")
-export_ico = tk.PhotoImage(file="../UI_Images/Txt_Solo.png")
+plus_ico = tk.PhotoImage(file="../UI_Images/Plus_Ico_Dark_Mode.png")
+pipette_ico = tk.PhotoImage(file="../UI_Images/Pipette_Ico_Dark_Mode.png")
+export_ico = tk.PhotoImage(file="../UI_Images/Txt_Ico_Dark_Mode.png")
 
 
 # ---- Main Loop ---- #

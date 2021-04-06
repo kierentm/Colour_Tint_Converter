@@ -15,12 +15,13 @@ from convert import *
 
 # Separate Work
 
-# TODO: Create taskbar icon (possibly done but needs testing) [KTM]
+# TODO: Test taskbar icon on the packaged for KTM to make any further changes [Jake]
+
+# TODO: make further adjustments to light and dark colours as needed [KTM]
+
 # TODO: Make settings buttons consistent with the rest of the app [KTM]
-# TODO: Add colour schemes [KTM]
-# TODO: Make light mode less light [KTM]
-# TODO: Change remove icon from plus to minus [KTM]
-# TODO: save out the icons in black
+# TODO: figure out how best to switch the icons from light to dark [KTM/Alex]
+
 
 # TODO: Settings layout redo [Alex]
 
@@ -106,9 +107,9 @@ if not config.has_section('main'):
     with open('config.ini', 'w') as file:
         config.write(file)
 
-plus_ico = tk.PhotoImage(file="UI_Images/Plus_Solo_1.png")
-pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Solo.png")
-export_ico = tk.PhotoImage(file="UI_Images/Txt_Solo.png")
+plus_ico = tk.PhotoImage(file="UI_Images/Plus_Ico_Dark_Mode.png")
+pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Ico_Dark_Mode.png")
+export_ico = tk.PhotoImage(file="UI_Images/Txt_Ico_Dark_Mode.png")
 
 
 class Home:

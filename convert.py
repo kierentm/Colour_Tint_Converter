@@ -89,25 +89,29 @@ def KierensStupidTest(value, conv_type):
 
 def colour_mode(conf_value):
     if conf_value == 'Light Mode':
-        btn_clr = "#f5f5f5"  # button colour
-        btn_clr_act = "#f5f5f5"  # button colour when clicked
+        btn_clr = "#f0f0f0"  # button colour
+        btn_clr_act = "#ffffff"  # button colour when clicked
         btn_fg = "#0d0d0d"  # button font colour
         btn_font = "Calibri", "16"
-        bg_clr = "#f5f5f5"  # background colour
-        tab_bg_clr = "#f5f5f5"
-        tab_bg_clr_act = "#f5f5f5"
+        bg_clr = "#f0f0f0"  # background colour
+        tab_bg_clr = "#f0f0f0"
+        tab_bg_clr_act = "#ffffff"
         entry_bg = "#f5f5f5"
+
+
 
 
     elif conf_value == 'Dark Mode':
         btn_clr = "#393a40"  # button colour
-        btn_clr_act = "#57a337"  # button colour when clicked
+        btn_clr_act = "#BCBCBC"  # button colour when clicked
         btn_fg = "#ffffff"  # button font colour
         btn_font = "Calibri", "16"
         bg_clr = "#2f3136"  # background colour
         tab_bg_clr = "#45484f"
         tab_bg_clr_act = "#45484f"
         entry_bg = "#212426"
+
+
 
     colour_list = [btn_clr, btn_clr_act, btn_fg, btn_font, bg_clr, tab_bg_clr, entry_bg, tab_bg_clr_act]
     return tuple(colour_list)
