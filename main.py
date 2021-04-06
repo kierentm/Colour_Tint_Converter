@@ -11,7 +11,39 @@ import os
 import webcolors
 from PIL import ImageGrab, ImageTk
 
+
 from utility_functions import *
+
+# ---- Version 1.0 ----- #
+
+# FIXME: when restarting to change settings, when you use colour picker it crashes
+
+# Group Bonding Moment Stuff
+
+# TODO: Create readme and video
+# TODO: Could create manual file
+
+# TODO: Refactor convert.py name
+# TODO: Refactor meme function names
+# TODO: Remove sus comments
+# TODO: Remove debugging prints
+# TODO: Refactor some names (eg. spin)
+# TODO: Remove redundant self. tags (High Risk)
+# TODO: Add Comments
+# TODO: Optimise imports (High Risk)
+# TODO: Pack into exe binary files and use installer (High Risk)
+
+# TODO: Github 1.0 release
+# TODO: Github about page
+
+# ---- Version 1.1 ----- #
+# TODO: Save session (json?) (High Risk)
+# TODO: Add group column and reorganize output file (High Risk)
+# TODO: Custom hotkeys (High Risk)
+# TODO: Live preview box for colour picker (High Risk)
+# TODO: Scroll bar (High Risk)
+# TODO: Change default placeholder to 0.0 (High Risk)
+
 
 root = tk.Tk()
 root.geometry("450x500")
