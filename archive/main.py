@@ -142,9 +142,9 @@ class Home:
         for i in RemovableTint.instances:
             # file1.write(colour_area.capitalize())
             file1.write(f"{i.colour_tint_name.get().capitalize()}\n")
-            file1.write(f" R = {ifgreaterthan1(float(i.r_spin.get()), conversion_type)}\n")
-            file1.write(f" B = {ifgreaterthan1(float(i.g_spin.get()), conversion_type)}\n")
-            file1.write(f" G = {ifgreaterthan1(float(i.b_spin.get()), conversion_type)}\n")
+            file1.write(f" R = {export_clarity(float(i.r_spin.get()), conversion_type)}\n")
+            file1.write(f" B = {export_clarity(float(i.g_spin.get()), conversion_type)}\n")
+            file1.write(f" G = {export_clarity(float(i.b_spin.get()), conversion_type)}\n")
             file1.write(f"  {i.hex_spin.get()}\n")
 
         file1.close()
@@ -403,7 +403,7 @@ class RemovableTint(tk.Frame):
     def hex_conversion(self):
         entries = [self.r_spin, self.g_spin, self.b_spin]
         for e in entries:
-            if KierensStupidTest(e.get()):
+            if incorrect_entry_test(e.get()):
                 e.config(background="white")
             else:
                 e.config(background="red")

@@ -1,4 +1,4 @@
-# Python Module to convert to sRGB
+# Functions for usage in Colour Tint Converter main file
 
 # ------------- Functions for converting linear SRGB (SRGB[0,1]) -------------
 
@@ -45,7 +45,7 @@ def RGB8toNLSRGB(srgb8):
 # ------------- Tests to confirm entries are as expected or warn/adjust as required -------------
 
 # If greater than 1 return 1 (useful in print)
-def ifgreaterthan1(value, conv_type):
+def export_clarity(value, conv_type):
     # Converts value over 1 to 1 to make printing make more sense and returns 0 for non numerical ones
     if not conv_type == "sRGB8 [0,255]":
         if 1.0 < value:
@@ -64,7 +64,7 @@ def ifgreaterthan1(value, conv_type):
             return 0
 
 # Tests if correct input is entered and returns false if incorrect, this allows for box to display red
-def KierensStupidTest(value, conv_type):
+def incorrect_entry_test(value, conv_type):
     if not conv_type == "sRGB8 [0,255]":
         if not value == "":
             if not value == ".":

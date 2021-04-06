@@ -210,9 +210,9 @@ class Home(tk.Frame):
             # file1.write(colour_area.capitalize())
             file1.write(f"{i.entry_name.get().capitalize()}\n")
             file1.write(f"Type: {i.convert_type}\n")
-            file1.write(f" R  = {ifgreaterthan1(float(i.r_entry.get()), conversion_type)}\n")
-            file1.write(f" B  = {ifgreaterthan1(float(i.g_entry.get()), conversion_type)}\n")
-            file1.write(f" G  = {ifgreaterthan1(float(i.b_entry.get()), conversion_type)}\n")
+            file1.write(f" R  = {export_clarity(float(i.r_entry.get()), conversion_type)}\n")
+            file1.write(f" B  = {export_clarity(float(i.g_entry.get()), conversion_type)}\n")
+            file1.write(f" G  = {export_clarity(float(i.b_entry.get()), conversion_type)}\n")
             file1.write(f"Hex = {i.hex_box.get()}\n\n")
 
         file1.close()
@@ -305,7 +305,7 @@ class Home(tk.Frame):
             get_entries = [self.r_entry.get(), self.g_entry.get(), self.b_entry.get()]
 
             for e in entries:
-                if KierensStupidTest(e.get(), conversion_type):
+                if incorrect_entry_test(e.get(), conversion_type):
                     e.config(background=Home.entry_bg)
                 else:
                     e.config(background="red")

@@ -8,7 +8,6 @@ config = ConfigParser()
 config.read('config.ini')
 
 
-
 def conversion():
     # Dictionary to return
     colour_types = {"sRGB8 [0,255]": [0, 0, 0], "sRGB' [0,1]": [0, 0, 0], "sRGB [0,1]": [0, 0, 0]}
