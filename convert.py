@@ -34,9 +34,11 @@ def RGB8toLSRGB(rgbt):
 
 # ------------- Functions for converting non-linear SRGB (SRGB'[0,1]) -------------
 
+# Converts non-linear SRGB to SRGB8
 def NLSRGBtoSRGB8(nlsrgb):
     return tuple([int(256 * nl) for nl in nlsrgb])
 
+# Converts SRGB8 to non-linear SRGB
 def RGB8toNLSRGB(srgb8):
     return tuple([rgb / 255 for rgb in srgb8])
 
@@ -44,6 +46,7 @@ def RGB8toNLSRGB(srgb8):
 
 # If greater than 1 return 1 (useful in print)
 def ifgreaterthan1(value, conv_type):
+    # Converts value over 1 to 1 to make printing make more sense and returns 0 for non numerical ones
     if not conv_type == "sRGB8 [0,255]":
         if 1.0 < value:
             return 1.0
@@ -51,6 +54,7 @@ def ifgreaterthan1(value, conv_type):
             return value
         else:
             return 0.0
+    # Converts value over 255 to 255 to make printing make more sense and returns 0 for non numerical ones
     else:
         if 255 < value:
             return 255
@@ -59,7 +63,7 @@ def ifgreaterthan1(value, conv_type):
         else:
             return 0
 
-# Tests if correct input is entered and returns false if incorrect
+# Tests if correct input is entered and returns false if incorrect, this allows for box to display red
 def KierensStupidTest(value, conv_type):
     if not conv_type == "sRGB8 [0,255]":
         if not value == "":
@@ -87,30 +91,7 @@ def KierensStupidTest(value, conv_type):
         else:
             return True
 
-# def colour_mode(conf_value):
-#     if conf_value == 'Light Mode':
-#         btn_clr = "#f0f0f0"  # button colour
-#         btn_clr_act = "#ffffff"  # button colour when clicked
-#         btn_fg = "#0d0d0d"  # button font colour
-#         btn_font = "Calibri", "16"
-#         bg_clr = "#f0f0f0"  # background colour
-#         tab_bg_clr = "#f0f0f0"
-#         tab_bg_clr_act = "#ffffff"
-#         entry_bg = "#f5f5f5"
-#
-#     elif conf_value == 'Dark Mode':
-#         btn_clr = "#393a40"  # button colour
-#         btn_clr_act = "#BCBCBC"  # button colour when clicked
-#         btn_fg = "#ffffff"  # button font colour
-#         btn_font = "Calibri", "16"
-#         bg_clr = "#2f3136"  # background colour
-#         tab_bg_clr = "#45484f"
-#         tab_bg_clr_act = "#45484f"
-#         entry_bg = "#212426"
-#
-#     colour_list = [btn_clr, btn_clr_act, btn_fg, btn_font, bg_clr, tab_bg_clr, entry_bg, tab_bg_clr_act]
-#     return tuple(colour_list)
-
+# Conversion for calculation to float or int and returns 0 if error
 def get_entries_convert(get_entries, conv_type):
     converted_get_entries = []
     if conv_type == 'sRGB8 [0,255]':
@@ -128,7 +109,6 @@ def get_entries_convert(get_entries, conv_type):
                 flt_entry = 0.0
             converted_get_entries.append(flt_entry)
     return tuple(converted_get_entries)
-
 
 
 # Warning to confirm if functions file was run independently

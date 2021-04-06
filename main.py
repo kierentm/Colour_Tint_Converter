@@ -13,15 +13,6 @@ from convert import *
 
 # ---- Version 1.0 ----- #
 
-# Separate Work
-
-# TODO: Test taskbar icon on the packaged for KTM to make any further changes [Jake]
-
-# TODO: Make further adjustments to light and dark colours as needed [KTM]
-# TODO: Make light mode less light [KTM]
-
-# TODO: Work out why border of program not showing on bottom and right of window (theme issue but can't work out why)
-
 # Group Bonding Moment Stuff
 
 # TODO: Create readme and video

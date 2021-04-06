@@ -428,9 +428,9 @@ class About(tk.Frame):
         # Add content to about frame
         self.AboutBigText = tk.Label(self, text="Colour Tint Converter\n", font="bold, 20", bg=bg_clr,
                                      fg=btn_fg)
-        self.AboutContent = tk.Label(self, text="Tool developed by Kieren Townley-Moss, Jake Broughton "
-                                                "and Alex Todd\n\n Version 1.0.23 \n\n Copyright©2021 \n\n"
-                                     , bg=bg_clr, fg=btn_fg)
+        self.AboutContent = tk.Label(self, text="Tool developed by Kieren Townley-Moss, Jake Broughton and "
+                                                "Alex Todd\n\n Version 1.0.23 \n\n Copyright©2021 \n\n", bg=bg_clr,
+                                     fg=btn_fg)
         self.aboutLinks = tk.Frame(self, bg=bg_clr)
         self.donationFrame = tk.Frame(self, bg=bg_clr)
         self.github = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=git_ico, bg=bg_clr)
@@ -447,7 +447,7 @@ class About(tk.Frame):
         self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
         self.twitter.bind("<Button-1>", lambda e: self.github_click("https://twitter.com/KajDevelopment"))
         self.donationLink.bind("<Button-1>", lambda e: self.github_click(
-            "https://streamelements.com/beardo1557/tip"))
+            "https://www.specialeffect.org.uk/get-involved/donate"))
 
         self.AboutBigText.pack(side="top")
         self.AboutContent.pack(side="top")
@@ -467,7 +467,7 @@ class About(tk.Frame):
 class Hotkeys(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         # --- Main frames --- #
-        tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr)
+        tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr, pady=5, padx=4)
 
         # Add content to about frame
         tk.Label(self, text="Enter", fg=btn_fg, bg=bg_clr).grid(column=0, row=0, sticky='w')
@@ -550,7 +550,7 @@ class Settings(tk.Frame):
                                      bg=bg_clr, fg=btn_fg)
 
         # Packs frames left
-        self.main_settings_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
+        self.main_settings_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(5, 15))
         self.on_top.pack(side="left")
         # self.on_top.place()
 
