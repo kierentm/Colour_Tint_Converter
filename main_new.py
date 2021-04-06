@@ -90,7 +90,6 @@ def main():
 
 
 class Home(tk.Frame):
-
     plus_ico = tk.PhotoImage(file="UI_Images/Plus_Solo_1.png")
     pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Solo.png")
     export_ico = tk.PhotoImage(file="UI_Images/Txt_Solo.png")
@@ -469,6 +468,7 @@ class Settings(tk.Frame):
         tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr)
 
         self.restart_popup = None
+        self.restore_popup = None
 
         # Check config to apply settings
         root.attributes('-topmost', config.get('main', 'OnTop'))
@@ -476,13 +476,12 @@ class Settings(tk.Frame):
         # Create frame for main settings (not save button) and options
         self.main_settings_frame = tk.Frame(self, bg=bg_clr)
         self.on_top = tk.Checkbutton(self.main_settings_frame, text="Keep window on top", variable=Settings.on_top_var,
-                                     width="20", bg=bg_clr, fg=btn_fg, selectcolor="black", activebackground=bg_clr)
+                                     width="20", bg=bg_clr, fg=btn_fg, selectcolor=bg_clr, activebackground=bg_clr)
         self.on_top_var.trace('w', self.update_settings_main)
 
         # Create convert default type option
         self.convert_frame = tk.Frame(self, bg=bg_clr)
         self.convert_options = tk.OptionMenu(self.convert_frame, Settings.convert_var, *Settings.convert_types)
-
         self.convert_options.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12")
         self.convert_options["menu"].config(bg=btn_clr, fg=btn_fg)
         self.save_button = tk.Button(self.convert_frame, text="Save", width=10, command=self.restart_window,
@@ -494,7 +493,7 @@ class Settings(tk.Frame):
         self.colour_scheme["menu"].config(bg=btn_clr, fg=btn_fg)
 
         # Create a restore button
-        self.restore_btn = tk.Button(self, text="Restore to Default Settings", command=self.restore,
+        self.restore_btn = tk.Button(self, text="Restore to Default Settings", command=self.restore_warning,
                                      bg=bg_clr, fg=btn_fg)
 
         # Create setting for File Location and Frame
@@ -512,8 +511,8 @@ class Settings(tk.Frame):
 
         self.convert_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
         self.convert_options.grid(column=0, row=0, sticky='w')
-        self.save_button.grid(column=1, row=0, sticky='w')
-        self.colour_scheme.grid(column=0, row=1, sticky='w')
+        self.colour_scheme.grid(column=1, row=0, sticky='w')
+        self.save_button.grid(column=2, row=0, sticky='w')
 
         self.save_location_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
         self.directory_button.pack(side="left")
@@ -577,14 +576,38 @@ class Settings(tk.Frame):
         # Updates file location box
         self.folder_location.set(f"{config.get('main', 'SaveLocation')}")
 
-    @staticmethod
-    def restore():
+    def restore_warning(self):
+        self.restore_popup = tk.Toplevel()
+        self.restore_popup.attributes('-topmost', True)
+
+        self.restore_popup.title("Warning")
+
+        restore_label = tk.Label(self.restore_popup, fg="red",
+                                 text="----------------------- Warning -----------------------\n"
+                                      "Are you sure you want to restore to default settings?\n"
+                                      "This will require a restart,"
+                                      "Please ensure you have exported required colour information!")
+
+        restore_label.pack(side="top", fill='x')
+
+        button_bonus = tk.Button(self.restore_popup, text="Yes", command=self.restore)
+        button_bonus.pack(fill='x')
+
+        button_close = tk.Button(self.restore_popup, text="No", command=self.restore_popup.destroy)
+        button_close.pack(fill='x')
+
+    def restore(self):
         config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
         config.set('main', 'OnTop', '0')
         config.set('main', 'Convert_Type', 'sRGB [0,1]')
         config.set('main', 'Colour_Mode', 'Dark Mode')
         with open('config.ini', 'w') as restore_conf:
             config.write(restore_conf)
+
+        # Updates file location box
+        self.folder_location.set(f"{config.get('main', 'SaveLocation')}")
+
+        self.restore_popup.destroy()
 
 
 if __name__ == '__main__':
