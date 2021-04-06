@@ -555,7 +555,6 @@ class Settings(tk.Frame):
         config.set('main', 'Colour_Mode', f"{Settings.colour_var.get()}")
         with open('config.ini', 'w') as f:
             config.write(f)
-        root.attributes('-topmost', config.get('main', 'OnTop'))
         python = sys.executable
         os.execl(python, python, *sys.argv)
 
@@ -604,10 +603,12 @@ class Settings(tk.Frame):
         with open('config.ini', 'w') as restore_conf:
             config.write(restore_conf)
 
-        # Updates file location box
         self.folder_location.set(f"{config.get('main', 'SaveLocation')}")
 
         self.restore_popup.destroy()
+
+        python = sys.executable
+        os.execl(python, python, *sys.argv)
 
 
 if __name__ == '__main__':
