@@ -25,30 +25,72 @@ config = ConfigParser()
 config.read('config.ini')
 
 if not config.has_section('main'):
+
+    # Adds main config section
     config.add_section('main')
     config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
     config.set('main', 'OnTop', '0')
     config.set('main', 'Convert_Type', 'sRGB [0,1]')
-    config.set('main', 'Colour_Mode', 'Dark Mode')
+    config.set('main', 'Colour_Mode', 'dark_mode')
+
+    # Adds dark mode config section
+    config.add_section('dark_mode')
+    config.set('dark_mode', 'btn_clr', '#393a40')
+    config.set('dark_mode', 'btn_clr_act', '#BCBCBC')
+    config.set('dark_mode', 'btn_fg', '#ffffff')
+    config.set('dark_mode', 'btn_font_type', 'Calibri')
+    config.set('dark_mode', 'btn_font_size', '16')
+    config.set('dark_mode', 'bg_clr', '#2f3136')
+    config.set('dark_mode', 'tab_bg_clr', '#45484f')
+    config.set('dark_mode', 'tab_bg_clr_act', '#45484f')
+    config.set('dark_mode', 'entry_bg', '#212426')
+
+    config.set('dark_mode', 'plus_ico', 'UI_Images/Plus_Ico_Dark_Mode.png')
+    config.set('dark_mode', 'minus_ico', 'UI_Images/Minus_Ico_Dark_Mode.png')
+    config.set('dark_mode', 'pipette_ico', 'UI_Images/Pipette_Ico_Dark_Mode.png')
+    config.set('dark_mode', 'export_ico', 'UI_Images/Txt_Ico_Dark_Mode.png')
+    config.set('dark_mode', 'git_ico', 'UI_Images/Github_Ico_Dark_Mode.png')
+    config.set('dark_mode', 'twitter_ico', 'UI_Images/Twitter_Ico_Dark_Mode.png')
+
+    # Adds light mode config section
+    config.add_section('light_mode')
+    config.set('light_mode', 'btn_clr', '#f0f0f0')
+    config.set('light_mode', 'btn_clr_act', '#ffffff')
+    config.set('light_mode', 'btn_fg', '#0d0d0d')
+    config.set('light_mode', 'btn_font_type', 'Calibri')
+    config.set('light_mode', 'btn_font_size', '16')
+    config.set('light_mode', 'bg_clr', '#f0f0f0')
+    config.set('light_mode', 'tab_bg_clr', '#f0f0f0')
+    config.set('light_mode', 'tab_bg_clr_act', '#ffffff')
+    config.set('light_mode', 'entry_bg', '#f5f5f5')
+
+    config.set('light_mode', 'plus_ico', 'UI_Images/Plus_Ico_Light_Mode.png')
+    config.set('light_mode', 'minus_ico', 'UI_Images/Minus_Ico_Light_Mode.png')
+    config.set('light_mode', 'pipette_ico', 'UI_Images/Pipette_Ico_Light_Mode.png')
+    config.set('light_mode', 'export_ico', 'UI_Images/Txt_Ico_Light_Mode.png')
+    config.set('light_mode', 'git_ico', 'UI_Images/Github_Ico_Light_Mode.png')
+    config.set('light_mode', 'twitter_ico', 'UI_Images/Twitter_Ico_Light_Mode.png')
+
     with open('config.ini', 'w') as file:
         config.write(file)
 
-colour_scheme = colour_mode(f"{config.get('main', 'Colour_Mode')}")
+colour_scheme = f'{config.get("main", "Colour_Mode")}'
 # ---- Style Setup ---- #
-btn_clr = colour_scheme[0]  # button colour
-btn_clr_act = colour_scheme[1]  # button colour when clicked
-btn_fg = colour_scheme[2]  # button font colour
-btn_font = colour_scheme[3]
-bg_clr = colour_scheme[4]  # background colour
-tab_bg_clr = colour_scheme[5]
-tab_bg_clr_act = colour_scheme[7]
-entry_bg = colour_scheme[6]
+btn_clr = f'{config.get(f"{colour_scheme}", "btn_clr")}'  # button colour
+btn_clr_act = f'{config.get(f"{colour_scheme}", "btn_clr_act")}'  # button colour when clicked
+btn_fg = f'{config.get(f"{colour_scheme}", "btn_fg")}'  # button font colour
+btn_font = (f'{config.get(f"{colour_scheme}", "btn_font_type")}', f'{config.get(colour_scheme, "btn_font_size")}')
+bg_clr = f'{config.get(f"{colour_scheme}", "bg_clr")}'  # background colour
+tab_bg_clr = f'{config.get(f"{colour_scheme}", "tab_bg_clr")}'
+tab_bg_clr_act = f'{config.get(f"{colour_scheme}", "tab_bg_clr_act")}'
+entry_bg = f'{config.get(f"{colour_scheme}", "entry_bg")}'
 
-plus_ico = tk.PhotoImage(file="UI_Images/Plus_Ico_Dark_Mode.png")
-pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Ico_Dark_Mode.png")
-export_ico = tk.PhotoImage(file="UI_Images/Txt_Ico_Dark_Mode.png")
-git_ico = tk.PhotoImage(file="UI_Images/Github_Ico_Dark_Mode.png")
-twitter_ico = tk.PhotoImage(file="UI_Images/Twitter_Ico_Dark_Mode.png")
+plus_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "plus_ico")}')
+minus_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "minus_ico")}')
+pipette_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "pipette_ico")}')
+export_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "export_ico")}')
+git_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "git_ico")}')
+twitter_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "twitter_ico")}')
 
 
 def main():
@@ -89,11 +131,6 @@ def main():
 
 
 class Home(tk.Frame):
-    plus_ico = tk.PhotoImage(file="UI_Images/Plus_Solo_1.png")
-    pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Solo.png")
-    export_ico = tk.PhotoImage(file="UI_Images/Txt_Solo.png")
-    git_ico = tk.PhotoImage(file="UI_Images/Github_Solo.png")
-    twitter_ico = tk.PhotoImage(file="UI_Images/Twitter_Solo.png")
 
     def __init__(self, parent, *args, **kwargs):
 
@@ -106,13 +143,13 @@ class Home(tk.Frame):
         control_frame = tk.Frame(self, bg=tab_bg_clr)
 
         # --- Controls --- #
-        add_button = tk.Button(control_frame, image=Home.plus_ico, text="Add", bg=btn_clr, fg=btn_fg,
+        add_button = tk.Button(control_frame, image=plus_ico, text="Add", bg=btn_clr, fg=btn_fg,
                                activebackground=btn_clr_act, command=lambda: Home.RemovableEntry(self),
                                bd="3", height="22", compound="left", font=btn_font)
-        remove_button = tk.Button(control_frame, image=Home.minus_ico, text="Remove", bg=btn_clr, fg=btn_fg,
+        remove_button = tk.Button(control_frame, image=minus_ico, text="Remove", bg=btn_clr, fg=btn_fg,
                                   activebackground=btn_clr_act, command=self.remove_entry,
                                   bd="3", height="22", compound="left", font=btn_font)
-        picker = tk.Button(control_frame, image=Home.pipette_ico, text="Colour Pick", bg=btn_clr, fg=btn_fg,
+        picker = tk.Button(control_frame, image=pipette_ico, text="Colour Pick", bg=btn_clr, fg=btn_fg,
                            activebackground=btn_clr_act, command=self.screenshot,
                            bd="3", height="22", compound="left", font=btn_font)
 
@@ -123,7 +160,7 @@ class Home(tk.Frame):
 
         # --- Export --- #
         self.export_frame = tk.Frame(self, bg=bg_clr)
-        self.export_btn = tk.Button(self.export_frame, image=Home.export_ico, text="Export .txt", bg=btn_clr,
+        self.export_btn = tk.Button(self.export_frame, image=export_ico, text="Export .txt", bg=btn_clr,
                                     fg=btn_fg,
                                     activebackground=btn_clr_act, command=self.file_write,
                                     bd="3", relief="raised", height="22", compound="left", font=btn_font)
@@ -392,8 +429,8 @@ class About(tk.Frame):
                                      , bg=bg_clr, fg=btn_fg)
         self.aboutLinks = tk.Frame(self, bg=bg_clr)
         self.donationFrame = tk.Frame(self, bg=bg_clr)
-        self.github = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=Home.git_ico, bg=bg_clr)
-        self.twitter = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=Home.twitter_ico, bg=bg_clr)
+        self.github = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=git_ico, bg=bg_clr)
+        self.twitter = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=twitter_ico, bg=bg_clr)
 
         self.donationMessage = tk.Label(self.donationFrame, text="Colour Tint Converter is 100% free\n"
                                                                  "You can use the app however you wish\n"
@@ -458,8 +495,8 @@ class Settings(tk.Frame):
     convert_var = tk.StringVar(value=config.get('main', 'Convert_Type'))
 
     colour_modes = [
-        "Light Mode",
-        "Dark Mode"
+        "light_mode",
+        "dark_mode"
     ]
     colour_var = tk.StringVar(value=config.get('main', 'Colour_Mode'))
 
@@ -598,7 +635,7 @@ class Settings(tk.Frame):
         config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
         config.set('main', 'OnTop', '0')
         config.set('main', 'Convert_Type', 'sRGB [0,1]')
-        config.set('main', 'Colour_Mode', 'Dark Mode')
+        config.set('main', 'Colour_Mode', 'dark_mode')
         with open('config.ini', 'w') as restore_conf:
             config.write(restore_conf)
 
