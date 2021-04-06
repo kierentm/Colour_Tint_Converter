@@ -20,6 +20,7 @@ from convert import *
 # TODO: Add colour schemes [KTM]
 # TODO: Make light mode less light [KTM]
 # TODO: Change remove icon from plus to minus [KTM]
+# TODO: save out the icons in black
 
 # TODO: Settings layout redo [Alex]
 
