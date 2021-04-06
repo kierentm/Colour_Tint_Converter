@@ -23,10 +23,7 @@ from utility_functions import *
 # TODO: Create readme and video
 # TODO: Could create manual file
 
-# TODO: Refactor convert.py name
-# TODO: Refactor meme function names
 # TODO: Remove sus comments
-# TODO: Remove debugging prints
 # TODO: Refactor some names (eg. spin)
 # TODO: Remove redundant self. tags (High Risk)
 # TODO: Add Comments
@@ -237,21 +234,14 @@ class Home(tk.Frame):
         self.tracer_win.destroy()  # Destroys grey window
         self.image = self.image.crop((x - 1, y - 1, x + 1, y + 1))  # Crops image to 2 x 2 box
         self.image = self.image.convert('RGB')  # Converts to RGB8
-        # self.image.save("screenshot.png")
         rgb_tuple = self.image.getpixel((1, 1))  # Gets SRGB8 of centre pixel
-        # rounded = [round(num, 3) for num in rgb_tuple]  # Round Tuple
-        # red = rounded[0]
-        # green = rounded[1]
-        # blue = rounded[2]
 
         conversion_type = config.get('main', 'Convert_Type')
         if conversion_type == "sRGB [0,1]":
             rgb_tuple = RGB8toLSRGB(rgb_tuple)
-            print(rgb_tuple)
 
         if conversion_type == "sRGB' [0,1]":
             rgb_tuple = RGB8toNLSRGB(rgb_tuple)
-            print(rgb_tuple)
 
         if conversion_type == "sRGB8 [0,255]":
             pass
@@ -271,9 +261,6 @@ class Home(tk.Frame):
     # ----------------------------- File write Start ----------------------------- #
     def file_write(self):
         file1 = open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt", "w+")
-        # item_name = "Item_Name"
-        # file1.write(item_name + "\n\n")
-        # colour_area = "Colours for the\n\n"
 
         conversion_type = config.get('main', 'Convert_Type')
 
@@ -299,19 +286,6 @@ class Home(tk.Frame):
             # ---- Setup ---- #
             tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr)
             Home.RemovableEntry.instances.append(self)
-
-            # # ---- Each entry set up here ---- #
-            # convert_types = [
-            #     "sRGB8 [0,255]",
-            #     "sRGB' [0,1]",
-            #     "sRGB [0,1]"
-            # ]
-            #
-            # self.type_drop_value = tk.StringVar(self)
-            # self.type_drop_value.set(self.convert_type)
-            #
-            # type_dropdown = tk.OptionMenu(self, self.type_drop_value, *convert_types)
-            # type_dropdown.config(width=10)
 
             self.entry_name = Home.EntryWithPlaceholder(self, width=20, placeholder="Colour Name", bg=entry_bg,
                                                         fg=btn_fg)
@@ -396,10 +370,6 @@ class Home(tk.Frame):
 
                 # Conversion type sRGB [0,1]
                 if conversion_type == "sRGB8 [0,255]":
-                    # r_nonlin = int(self.r_entry.get())
-                    # g_nonlin = int(self.g_entry.get())
-                    # b_nonlin = int(self.b_entry.get())
-                    # rgb_nonlin = (r_nonlin, g_nonlin, b_nonlin)
                     rgb_nonlin = get_entries_convert(get_entries, conversion_type)
                     hexvals = webcolors.rgb_to_hex(rgb_nonlin)
                     self.hex_box_value.set(hexvals.upper())
@@ -654,9 +624,7 @@ class Settings(tk.Frame):
     def restore_warning(self):
         self.restore_popup = tk.Toplevel()
         self.restore_popup.attributes('-topmost', True)
-
         self.restore_popup.title("Warning")
-
         restore_label = tk.Label(self.restore_popup, fg="red",
                                  text="----------------------- Warning -----------------------\n"
                                       "Are you sure you want to restore to default settings?\n"
