@@ -3,7 +3,7 @@ from tkinter import ttk, Toplevel
 
 from PIL import ImageGrab
 
-from convert import nonlinearsrgbtolinear
+from utility_functions import nonlinearsrgbtolinear
 import webcolors
 from configparser import ConfigParser
 import pathlib

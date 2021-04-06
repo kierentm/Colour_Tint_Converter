@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import ttk
 # from tkinter import filedialog
-from convert import *
+from utility_functions import *
 from PIL import ImageGrab
 import webcolors
 import webbrowser

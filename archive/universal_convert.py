@@ -1,12 +1,11 @@
 import webcolors
 
-from convert import *
+from utility_functions import *
 from configparser import ConfigParser
 
 # Load Config and generate main if required
 config = ConfigParser()
 config.read('config.ini')
-
 
 
 def conversion():
