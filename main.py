@@ -17,16 +17,8 @@ from convert import *
 
 # TODO: Test taskbar icon on the packaged for KTM to make any further changes [Jake]
 
-# TODO: make further adjustments to light and dark colours as needed [KTM]
-
-# TODO: Make settings buttons consistent with the rest of the app [KTM]
-# TODO: Add colour schemes [KTM]
+# TODO: Make further adjustments to light and dark colours as needed [KTM]
 # TODO: Make light mode less light [KTM]
-# TODO: Change remove icon from plus to minus [KTM]
-# TODO: Save out the icons in black [KTM]
-
-# TODO: Figure out how best to switch the icons from light to dark [KTM/Alex]
-
 
 # TODO: Settings layout redo [Alex]
 
