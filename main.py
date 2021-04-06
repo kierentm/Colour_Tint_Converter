@@ -19,37 +19,93 @@ p1 = tk.PhotoImage(file='UI_Images/CTC_Logo.png')
 root.iconphoto(False, p1)
 root.title("Colour Tint Converter")
 root.configure(bg="#000000")
+
 # Load Config and generate main if required
 config = ConfigParser()
 config.read('config.ini')
 
-
 if not config.has_section('main'):
+
+    # Adds main config section
     config.add_section('main')
     config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
     config.set('main', 'OnTop', '0')
     config.set('main', 'Convert_Type', 'sRGB [0,1]')
-    config.set('main', 'Colour_Mode', 'Dark Mode')
+    config.set('main', 'Colour_Mode', 'dark_mode')
+
+    # Adds dark mode config section
+    config.add_section('dark_mode')
+    config.set('dark_mode', 'btn_clr', '#393a40')
+    config.set('dark_mode', 'btn_clr_act', '#BCBCBC')
+    config.set('dark_mode', 'btn_fg', '#ffffff')
+    config.set('dark_mode', 'btn_font_type', 'Calibri')
+    config.set('dark_mode', 'btn_font_size', '16')
+    config.set('dark_mode', 'bg_clr', '#2f3136')
+    config.set('dark_mode', 'tab_bg_clr', '#45484f')
+    config.set('dark_mode', 'tab_bg_clr_act', '#45484f')
+    config.set('dark_mode', 'entry_bg', '#212426')
+
+    config.set('dark_mode', 'plus_ico', 'UI_Images/Plus_Ico_Dark_Mode.png')
+    config.set('dark_mode', 'minus_ico', 'UI_Images/Minus_Ico_Dark_Mode.png')
+    config.set('dark_mode', 'pipette_ico', 'UI_Images/Pipette_Ico_Dark_Mode.png')
+    config.set('dark_mode', 'export_ico', 'UI_Images/Txt_Ico_Dark_Mode.png')
+    config.set('dark_mode', 'git_ico', 'UI_Images/Github_Ico_Dark_Mode.png')
+    config.set('dark_mode', 'twitter_ico', 'UI_Images/Twitter_Ico_Dark_Mode.png')
+
+    config.set('dark_mode', 'option_menu_mode', 'Dark Mode')
+
+    # Adds light mode config section
+    config.add_section('light_mode')
+    config.set('light_mode', 'btn_clr', '#f0f0f0')
+    config.set('light_mode', 'btn_clr_act', '#ffffff')
+    config.set('light_mode', 'btn_fg', '#0d0d0d')
+    config.set('light_mode', 'btn_font_type', 'Calibri')
+    config.set('light_mode', 'btn_font_size', '16')
+    config.set('light_mode', 'bg_clr', '#f0f0f0')
+    config.set('light_mode', 'tab_bg_clr', '#f0f0f0')
+    config.set('light_mode', 'tab_bg_clr_act', '#ffffff')
+    config.set('light_mode', 'entry_bg', '#f5f5f5')
+
+    config.set('light_mode', 'plus_ico', 'UI_Images/Plus_Ico_Light_Mode.png')
+    config.set('light_mode', 'minus_ico', 'UI_Images/Minus_Ico_Light_Mode.png')
+    config.set('light_mode', 'pipette_ico', 'UI_Images/Pipette_Ico_Light_Mode.png')
+    config.set('light_mode', 'export_ico', 'UI_Images/Txt_Ico_Light_Mode.png')
+    config.set('light_mode', 'git_ico', 'UI_Images/Github_Ico_Light_Mode.png')
+    config.set('light_mode', 'twitter_ico', 'UI_Images/Twitter_Ico_Light_Mode.png')
+
+    config.set('light_mode', 'option_menu_mode', 'Light Mode')
+
     with open('config.ini', 'w') as file:
         config.write(file)
 
+# ---- Style Setup ---- #
+colour_scheme = f'{config.get("main", "Colour_Mode")}'
+
+btn_clr = f'{config.get(f"{colour_scheme}", "btn_clr")}'  # button colour
+btn_clr_act = f'{config.get(f"{colour_scheme}", "btn_clr_act")}'  # button colour when clicked
+btn_fg = f'{config.get(f"{colour_scheme}", "btn_fg")}'  # button font colour
+btn_font = (f'{config.get(f"{colour_scheme}", "btn_font_type")}', f'{config.get(colour_scheme, "btn_font_size")}')
+bg_clr = f'{config.get(f"{colour_scheme}", "bg_clr")}'  # background colour
+tab_bg_clr = f'{config.get(f"{colour_scheme}", "tab_bg_clr")}'
+tab_bg_clr_act = f'{config.get(f"{colour_scheme}", "tab_bg_clr_act")}'
+entry_bg = f'{config.get(f"{colour_scheme}", "entry_bg")}'
+
+plus_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "plus_ico")}')
+minus_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "minus_ico")}')
+pipette_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "pipette_ico")}')
+export_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "export_ico")}')
+git_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "git_ico")}')
+twitter_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "twitter_ico")}')
+
 
 def main():
-
-    colour_scheme = colour_mode(f"{config.get('main', 'Colour_Mode')}")
-
-    btn_fg = colour_scheme[2]  # button font colour
-    tab_bg_clr = colour_scheme[5]
-    tab_bg_clr_act = colour_scheme[7]
-
     style = ttk.Style()
 
     style.theme_create("Theme1", parent="alt", settings={
         "TNotebook": {"configure": {"tabmargins": [2, 5, 2, 0]}},
         "TNotebook.Tab": {
-            "configure": {"padding": [5, 1], "background": tab_bg_clr, "foreground": btn_fg},
-            "map": {"background": [("selected", tab_bg_clr_act)],
-                    "expand": [("selected", [1, 1, 1, 0])]}}})
+            "configure": {"padding": [5, 1], "background": tab_bg_clr, "foreground": btn_fg, "focuscolor": tab_bg_clr},
+            "map": {"background": [("selected", tab_bg_clr_act)], "expand": [("selected", [1, 1, 1, 0])]}}})
 
     style.theme_use("Theme1")
 
@@ -76,23 +132,6 @@ def main():
 
 class Home(tk.Frame):
 
-    colour_scheme = colour_mode(f"{config.get('main', 'Colour_Mode')}")
-    # ---- Style Setup ---- #
-    btn_clr = colour_scheme[0]  # button colour
-    btn_clr_act = colour_scheme[1]  # button colour when clicked
-    btn_fg = colour_scheme[2]  # button font colour
-    btn_font = colour_scheme[3]
-    bg_clr = colour_scheme[4]  # background colour
-    tab_bg_clr = colour_scheme[5]
-    tab_bg_clr_act = colour_scheme[7]
-    entry_bg = colour_scheme[6]
-
-    plus_ico = tk.PhotoImage(file="UI_Images/Plus_Ico_Dark_Mode.png")
-    pipette_ico = tk.PhotoImage(file="UI_Images/Pipette_Ico_Dark_Mode.png")
-    export_ico = tk.PhotoImage(file="UI_Images/Txt_Ico_Dark_Mode.png")
-    git_ico = tk.PhotoImage(file="UI_Images/Github_Ico_Dark_Mode.png")
-    twitter_ico = tk.PhotoImage(file="UI_Images/Twitter_Ico_Dark_Mode.png")
-
     def __init__(self, parent, *args, **kwargs):
 
         root.bind('<Return>', lambda event: self.RemovableEntry(self))
@@ -100,32 +139,32 @@ class Home(tk.Frame):
         root.bind('<Control-Return>', lambda event: self.screenshot())
 
         # --- Main frames --- #
-        tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr)
-        control_frame = tk.Frame(self, bg=Home.tab_bg_clr)
+        tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr)
+        control_frame = tk.Frame(self, bg=tab_bg_clr, padx=5, pady=5)
 
         # --- Controls --- #
-        add_button = tk.Button(control_frame, image=Home.plus_ico, text="Add", bg=Home.btn_clr, fg=Home.btn_fg,
-                               activebackground=Home.btn_clr_act, command=lambda: Home.RemovableEntry(self),
-                               bd="3", height="22", compound="left", font=Home.btn_font)
-        remove_button = tk.Button(control_frame, image=Home.plus_ico, text="Remove", bg=Home.btn_clr, fg=Home.btn_fg,
-                                  activebackground=Home.btn_clr_act, command=self.remove_entry,
-                                  bd="3", height="22", compound="left", font=Home.btn_font)
-        picker = tk.Button(control_frame, image=Home.pipette_ico, text="Colour Pick", bg=Home.btn_clr, fg=Home.btn_fg,
-                           activebackground=Home.btn_clr_act, command=self.screenshot,
-                           bd="3", height="22", compound="left", font=Home.btn_font)
+        add_button = tk.Button(control_frame, image=plus_ico, text="Add", bg=btn_clr, fg=btn_fg,
+                               activebackground=btn_clr_act, command=lambda: Home.RemovableEntry(self),
+                               bd="3", height="22", compound="left", font=btn_font)
+        remove_button = tk.Button(control_frame, image=minus_ico, text="Remove", bg=btn_clr, fg=btn_fg,
+                                  activebackground=btn_clr_act, command=self.remove_entry,
+                                  bd="3", height="22", compound="left", font=btn_font)
+        picker = tk.Button(control_frame, image=pipette_ico, text="Colour Pick", bg=btn_clr, fg=btn_fg,
+                           activebackground=btn_clr_act, command=self.screenshot,
+                           bd="3", height="22", compound="left", font=btn_font)
 
         # --- Pack Controls --- #
-        add_button.pack(side="left")
-        remove_button.pack(side="left")
-        picker.pack(side="right")
+        add_button.pack(fill="x", side="left", expand=1)
+        remove_button.pack(fill="x", side="left", expand=1)
+        picker.pack(fill="x", side="left", expand=1)
 
         # --- Export --- #
-        self.export_frame = tk.Frame(self, bg=Home.bg_clr)
-        self.export_btn = tk.Button(self.export_frame, image=Home.export_ico, text="Export .txt", bg=Home.btn_clr,
-                                    fg=Home.btn_fg,
-                                    activebackground=Home.btn_clr_act, command=self.file_write,
-                                    bd="3", relief="raised", height="22", compound="left", font=Home.btn_font)
-        self.export_name = self.EntryWithPlaceholder(self.export_frame, "Item Name", bg=Home.entry_bg, fg=Home.btn_fg,
+        self.export_frame = tk.Frame(self, bg=bg_clr, padx=5, pady=5)
+        self.export_btn = tk.Button(self.export_frame, image=export_ico, text="Export .txt", bg=btn_clr,
+                                    fg=btn_fg,
+                                    activebackground=btn_clr_act, command=self.file_write,
+                                    bd="3", relief="raised", height="22", compound="left", font=btn_font)
+        self.export_name = self.EntryWithPlaceholder(self.export_frame, "Item Name", bg=entry_bg, fg=btn_fg,
                                                      bd="3", relief="raised")
 
         # --- Pack Export --- #
@@ -226,7 +265,7 @@ class Home(tk.Frame):
             self.convert_type = config.get('main', 'Convert_Type')
 
             # ---- Setup ---- #
-            tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr)
+            tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr)
             Home.RemovableEntry.instances.append(self)
 
             # # ---- Each entry set up here ---- #
@@ -242,28 +281,29 @@ class Home(tk.Frame):
             # type_dropdown = tk.OptionMenu(self, self.type_drop_value, *convert_types)
             # type_dropdown.config(width=10)
 
-            self.entry_name = Home.EntryWithPlaceholder(self, width=20, placeholder="Colour Name", bg=Home.entry_bg, fg=Home.btn_fg)
+            self.entry_name = Home.EntryWithPlaceholder(self, width=20, placeholder="Colour Name", bg=entry_bg,
+                                                        fg=btn_fg)
 
             self.r_value = tk.StringVar()
             self.g_value = tk.StringVar()
             self.b_value = tk.StringVar()
             self.hex_box_value = tk.StringVar()
 
-            self.r_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.r_value, bg=Home.entry_bg, fg=Home.btn_fg)
-            self.g_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.g_value, bg=Home.entry_bg, fg=Home.btn_fg)
-            self.b_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.b_value, bg=Home.entry_bg, fg=Home.btn_fg)
+            self.r_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.r_value, bg=entry_bg, fg=btn_fg)
+            self.g_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.g_value, bg=entry_bg, fg=btn_fg)
+            self.b_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.b_value, bg=entry_bg, fg=btn_fg)
 
-            self.hex_box = tk.Entry(self, width=10, textvariable=self.hex_box_value, bg=Home.entry_bg, fg=Home.btn_fg)
+            self.hex_box = tk.Entry(self, width=10, textvariable=self.hex_box_value, bg=entry_bg, fg=btn_fg)
 
             self.colour_preview = tk.Entry(self, width=4)
 
-            self.remove_button = tk.Button(self, text="X", bg=Home.entry_bg, fg=Home.btn_fg, command=lambda: self.remove())
+            self.remove_button = tk.Button(self, text="X", bg=entry_bg, fg=btn_fg, command=lambda: self.remove())
 
             # ---- Remove placeholder functionality if it's a screenshot ---- #
             if is_screenshot:
-                self.r_entry.config(fg="black")
-                self.g_entry.config(fg="black")
-                self.b_entry.config(fg="black")
+                self.r_entry.config(fg=btn_fg)
+                self.g_entry.config(fg=btn_fg)
+                self.b_entry.config(fg=btn_fg)
 
                 self.r_value.set(r)
                 self.g_value.set(g)
@@ -306,7 +346,7 @@ class Home(tk.Frame):
 
             for e in entries:
                 if incorrect_entry_test(e.get(), conversion_type):
-                    e.config(background=Home.entry_bg)
+                    e.config(background=entry_bg)
                 else:
                     e.config(background="red")
 
@@ -317,7 +357,6 @@ class Home(tk.Frame):
                 # Conversion type sRGB [0,1]
                 if conversion_type == "sRGB [0,1]":
                     rgb_nonlin = get_entries_convert(get_entries, conversion_type)
-                    print(rgb_nonlin)
                     rgb_linear = LSRGBtoSRGB8(rgb_nonlin)
                     hexvals = webcolors.rgb_to_hex(rgb_linear)
                     self.hex_box_value.set(hexvals.upper())
@@ -325,17 +364,17 @@ class Home(tk.Frame):
 
                 # Conversion type sRGB [0,1]
                 if conversion_type == "sRGB8 [0,255]":
-                    r_nonlin = int(self.r_entry.get())
-                    g_nonlin = int(self.g_entry.get())
-                    b_nonlin = int(self.b_entry.get())
-                    rgb_nonlin = (r_nonlin, g_nonlin, b_nonlin)
-
+                    # r_nonlin = int(self.r_entry.get())
+                    # g_nonlin = int(self.g_entry.get())
+                    # b_nonlin = int(self.b_entry.get())
+                    # rgb_nonlin = (r_nonlin, g_nonlin, b_nonlin)
+                    rgb_nonlin = get_entries_convert(get_entries, conversion_type)
                     hexvals = webcolors.rgb_to_hex(rgb_nonlin)
                     self.hex_box_value.set(hexvals.upper())
                     self.colour_preview.config({"background": self.hex_box.get()})  # Adds colour to side box
 
                 if conversion_type == "sRGB' [0,1]":
-                    rgb_nonlin = tuple(map(float, get_entries))
+                    rgb_nonlin = get_entries_convert(get_entries, conversion_type)
                     yeet = NLSRGBtoSRGB8(rgb_nonlin)
                     hexvals = webcolors.rgb_to_hex(yeet)
                     self.hex_box_value.set(hexvals.upper())
@@ -380,36 +419,30 @@ class Home(tk.Frame):
 class About(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         # --- Main frames --- #
-        tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr, bd="10")
+        tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr, bd="10")
         # Add content to about frame
-        self.AboutBigText = tk.Label(self, text="Colour Tint Converter\n", font="bold, 20", bg=Home.bg_clr,
-                                     fg=Home.btn_fg)
-        self.AboutContent = tk.Label(self, text="Tool developed by Kieren Townley-Moss, Jake Broughton "
-                                                "and Alex Todd\n\n Version 1.0.23 \n\n Copyright©2021 \n\n"
-
-                                     , bg=Home.bg_clr, fg=Home.btn_fg)
-        self.aboutLinks = tk.Frame(self, bg=Home.bg_clr)
-        self.donationFrame = tk.Frame(self, bg=Home.bg_clr)
-        self.github = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=Home.git_ico, bg=Home.bg_clr)
-        self.twitter = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=Home.twitter_ico, bg=Home.bg_clr)
+        self.AboutBigText = tk.Label(self, text="Colour Tint Converter\n", font="bold, 20", bg=bg_clr,
+                                     fg=btn_fg)
+        self.AboutContent = tk.Label(self, text="Tool developed by Kieren Townley-Moss, Jake Broughton and "
+                                                "Alex Todd\n\n Version 1.0.23 \n\n Copyright©2021 \n\n", bg=bg_clr,
+                                     fg=btn_fg)
+        self.aboutLinks = tk.Frame(self, bg=bg_clr)
+        self.donationFrame = tk.Frame(self, bg=bg_clr)
+        self.github = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=git_ico, bg=bg_clr)
+        self.twitter = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=twitter_ico, bg=bg_clr)
 
         self.donationMessage = tk.Label(self.donationFrame, text="Colour Tint Converter is 100% free\n"
-                                                   "You can use the app however you wish\n"
-                                                   "If you like the app, please donate :)", bg=Home.bg_clr,
-                                        fg=Home.btn_fg)
-        self.donationLink = tk.Label(self.donationFrame, text="Donate", fg="#538cc2", cursor="hand2", bg=Home.bg_clr)
+                                                                 "You can use the app however you wish\n"
+                                                                 "If you like the app, please donate :)",
+                                        bg=bg_clr, fg=btn_fg)
 
-        # self.AboutBigText.grid(column=0, row=0, sticky='w')
-        # self.AboutContent.grid(column=0, row=1, sticky='w')
-        # self.github.grid(column=0, row=2, sticky='w')
-        # self.twitter.grid(column=1, row=2, sticky='w')
-        # self.donationMessage.grid(column=0, row=3)
-        # self.donationLink.grid(column=1, row=5, sticky="e")
+        self.donationLink = tk.Label(self.donationFrame, text="Donate", fg="#538cc2", cursor="hand2", bg=bg_clr)
+        self.ContactUs = tk.Label(self, text="Contact us at : kajdevelopmentofficial@gmail.com", bg=bg_clr, fg=btn_fg)
 
         self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
-        self.twitter.bind("<Button-1>", lambda e: self.github_click("https://twitter.com/JakDevelopment"))
+        self.twitter.bind("<Button-1>", lambda e: self.github_click("https://twitter.com/KajDevelopment"))
         self.donationLink.bind("<Button-1>", lambda e: self.github_click(
-            "https://streamelements.com/beardo1557/tip"))
+            "https://www.specialeffect.org.uk/get-involved/donate"))
 
         self.AboutBigText.pack(side="top")
         self.AboutContent.pack(side="top")
@@ -417,8 +450,9 @@ class About(tk.Frame):
         self.github.pack(side="left", padx="10")
         self.twitter.pack(side="right")
         self.donationFrame.pack(side="bottom", pady="30")
-        self.donationMessage.pack(side="left", padx="10")
-        self.donationLink.pack(side="right")
+        self.donationLink.pack(side="bottom")
+        self.ContactUs.pack(side="bottom")
+        self.donationMessage.pack(side="bottom", padx="10")
 
     @staticmethod
     def github_click(url):
@@ -428,20 +462,20 @@ class About(tk.Frame):
 class Hotkeys(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         # --- Main frames --- #
-        tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr)
+        tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr, pady=5, padx=4)
 
         # Add content to about frame
-        tk.Label(self, text="Enter", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=0, row=0, sticky='w')
-        tk.Label(self, text="-", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=1, row=0, sticky='w')
-        tk.Label(self, text="Insert new colour", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=2, row=0, sticky='w')
+        tk.Label(self, text="Enter", fg=btn_fg, bg=bg_clr).grid(column=0, row=0, sticky='w')
+        tk.Label(self, text="-", fg=btn_fg, bg=bg_clr).grid(column=1, row=0, sticky='w')
+        tk.Label(self, text="Insert new colour", fg=btn_fg, bg=bg_clr).grid(column=2, row=0, sticky='w')
 
-        tk.Label(self, text="Escape", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=0, row=1, sticky='w')
-        tk.Label(self, text="-", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=1, row=1, sticky='w')
-        tk.Label(self, text="Delete last colour", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=2, row=1, sticky='w')
+        tk.Label(self, text="Escape", fg=btn_fg, bg=bg_clr).grid(column=0, row=1, sticky='w')
+        tk.Label(self, text="-", fg=btn_fg, bg=bg_clr).grid(column=1, row=1, sticky='w')
+        tk.Label(self, text="Delete last colour", fg=btn_fg, bg=bg_clr).grid(column=2, row=1, sticky='w')
 
-        tk.Label(self, text="Control + Enter", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=0, row=2, sticky='w')
-        tk.Label(self, text="-", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=1, row=2, sticky='w')
-        tk.Label(self, text="Colour Picker", fg=Home.btn_fg, bg=Home.bg_clr).grid(column=2, row=2, sticky='w')
+        tk.Label(self, text="Control + Enter", fg=btn_fg, bg=bg_clr).grid(column=0, row=2, sticky='w')
+        tk.Label(self, text="-", fg=btn_fg, bg=bg_clr).grid(column=1, row=2, sticky='w')
+        tk.Label(self, text="Colour Picker", fg=btn_fg, bg=bg_clr).grid(column=2, row=2, sticky='w')
 
     @staticmethod
     def github_click(url):
@@ -465,51 +499,66 @@ class Settings(tk.Frame):
         "Light Mode",
         "Dark Mode"
     ]
-    colour_var = tk.StringVar(value=config.get('main', 'Colour_Mode'))
+    colour_var = tk.StringVar(value=config.get(f"{config.get('main', 'Colour_Mode')}", "option_menu_mode"))
 
     def __init__(self, parent, *args, **kwargs):
-        tk.Frame.__init__(self, parent, *args, **kwargs, bg=Home.bg_clr)
+        tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr)
 
         self.restart_popup = None
+        self.restore_popup = None
 
         # Check config to apply settings
         root.attributes('-topmost', config.get('main', 'OnTop'))
 
         # Create frame for main settings (not save button) and options
-        self.main_settings_frame = tk.Frame(self, bg=Home.bg_clr)
+        self.main_settings_frame = tk.Frame(self, bg=bg_clr)
         self.on_top = tk.Checkbutton(self.main_settings_frame, text="Keep window on top", variable=Settings.on_top_var,
-                                     width="20")
+                                     width="20", bg=bg_clr, fg=btn_fg, selectcolor=bg_clr, activebackground=bg_clr,
+                                     activeforeground=btn_fg)
         self.on_top_var.trace('w', self.update_settings_main)
 
         # Create convert default type option
-        self.convert_frame = tk.Frame(self, bg=Home.bg_clr)
+        self.convert_frame = tk.Frame(self, bg=bg_clr)
         self.convert_options = tk.OptionMenu(self.convert_frame, Settings.convert_var, *Settings.convert_types)
-        self.save_button = tk.Button(self.convert_frame, text="Save", width=10, command=self.restart_window)
+        self.convert_options.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12",
+                                    highlightthickness=0)
+        self.convert_options["menu"].config(bg=btn_clr, fg=btn_fg)
+        self.save_button = tk.Button(self.convert_frame, text="Save", width=10, command=self.restart_window,
+                                     bg=bg_clr, fg=btn_fg)
 
         # Create colour scheme drop down
         self.colour_scheme = tk.OptionMenu(self.convert_frame, Settings.colour_var, *Settings.colour_modes)
+        self.colour_scheme.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12", highlightthickness=0)
+        self.colour_scheme["menu"].config(bg=btn_clr, fg=btn_fg)
 
         # Create setting for File Location and Frame
-        self.save_location_frame = tk.Frame(self, bg=Home.bg_clr)
+        self.save_location_frame = tk.Frame(self, bg=bg_clr)
         self.directory_button = tk.Button(self.save_location_frame, text="Select Save Location",
-                                          command=self.get_file_past)
+                                          command=self.get_file_past, bg=bg_clr, fg=btn_fg)
         self.folder_location = tk.StringVar(self.save_location_frame, f"{config.get('main', 'SaveLocation')}")
         self.directory_display = tk.Entry(self.save_location_frame, width=42, font="Calibri, 9",
                                           textvariable=self.folder_location, state="disabled",
-                                          disabledbackground=Home.entry_bg, disabledforeground=Home.btn_fg)
+                                          disabledbackground=entry_bg, disabledforeground=btn_fg)
 
-        # Packs frames
-        self.main_settings_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
-        self.on_top.grid(column=0, row=0, sticky='w')
+        # Create a restore button
+        self.restore_btn = tk.Button(self, text="Restore to Default Settings", command=self.restore_warning,
+                                     bg=bg_clr, fg=btn_fg)
 
-        self.convert_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15))
-        self.convert_options.grid(column=0, row=0, sticky='w')
-        self.save_button.grid(column=1, row=0, sticky='w')
-        self.colour_scheme.grid(column=0, row=1, sticky='w')
+        # Packs frames left
+        self.main_settings_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(5, 15))
+        self.on_top.pack(side="left")
+        # self.on_top.place()
 
-        self.save_location_frame.pack(side="top", anchor="nw", fill=tk.X)
+        self.convert_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15), padx=6)
+        self.convert_options.pack(side="left")
+        self.colour_scheme.pack(side="left")
+        self.save_button.pack(side="left")
+
+        self.save_location_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15), padx=6)
         self.directory_button.pack(side="left")
         self.directory_display.pack(fill="both", side="left", expand=True)
+
+        self.restore_btn.pack(side="top", anchor="nw", padx=6)
 
         # Declare Settings Path Variable
         self.path_past = ""
@@ -543,16 +592,19 @@ class Settings(tk.Frame):
     @staticmethod
     def update_convert_type_yes():
         config.set('main', 'Convert_Type', f"{Settings.convert_var.get()}")
-        config.set('main', 'Colour_Mode', f"{Settings.colour_var.get()}")
+        if f"{Settings.colour_var.get()}" == "Dark Mode":
+            colour_config = "dark_mode"
+        else:
+            colour_config = "light_mode"
+        config.set('main', 'Colour_Mode', colour_config)
         with open('config.ini', 'w') as f:
             config.write(f)
-        root.attributes('-topmost', config.get('main', 'OnTop'))
         python = sys.executable
         os.execl(python, python, *sys.argv)
 
     def update_convert_type_no(self):
         self.convert_var.set(config.get('main', 'Convert_Type'))
-        self.colour_var.set(config.get('main', 'Colour_Mode'))
+        self.colour_var.set(config.get(f"{config.get('main', 'Colour_Mode')}", "option_menu_mode"))
         self.restart_popup.destroy()
 
     # Initialise windows directory selection and save within config
@@ -566,6 +618,41 @@ class Settings(tk.Frame):
 
         # Updates file location box
         self.folder_location.set(f"{config.get('main', 'SaveLocation')}")
+
+    def restore_warning(self):
+        self.restore_popup = tk.Toplevel()
+        self.restore_popup.attributes('-topmost', True)
+
+        self.restore_popup.title("Warning")
+
+        restore_label = tk.Label(self.restore_popup, fg="red",
+                                 text="----------------------- Warning -----------------------\n"
+                                      "Are you sure you want to restore to default settings?\n"
+                                      "This will require a restart,"
+                                      "Please ensure you have exported required colour information!")
+
+        restore_label.pack(side="top", fill='x')
+
+        button_bonus = tk.Button(self.restore_popup, text="Yes", command=self.restore)
+        button_bonus.pack(fill='x')
+
+        button_close = tk.Button(self.restore_popup, text="No", command=self.restore_popup.destroy)
+        button_close.pack(fill='x')
+
+    def restore(self):
+        config.set('main', 'SaveLocation', f'{pathlib.Path().absolute()}')
+        config.set('main', 'OnTop', '0')
+        config.set('main', 'Convert_Type', 'sRGB [0,1]')
+        config.set('main', 'Colour_Mode', 'dark_mode')
+        with open('config.ini', 'w') as restore_conf:
+            config.write(restore_conf)
+
+        self.folder_location.set(f"{config.get('main', 'SaveLocation')}")
+
+        self.restore_popup.destroy()
+
+        python = sys.executable
+        os.execl(python, python, *sys.argv)
 
 
 if __name__ == '__main__':

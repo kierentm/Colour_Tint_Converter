@@ -18,8 +18,6 @@ from utility_functions import *
 # TODO: Create readme and video
 # TODO: Could create manual file
 
-# TODO: Refactor utility_functions.py name
-# TODO: Refactor meme function names
 # TODO: Remove sus comments
 # TODO: Remove debugging prints
 # TODO: Refactor some names (eg. spin)
