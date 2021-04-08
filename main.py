@@ -16,6 +16,8 @@ from utility_functions import *
 # FIXME: when restarting to change settings, when you use colour picker it crashes
 #  (not happening when I created exe)
 
+# TODO: Comment
+
 # Group Bonding Moment Stuff
 
 # TODO: Create readme and video
@@ -124,6 +126,7 @@ git_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "git_ico")}')
 twitter_ico = tk.PhotoImage(file=f'{config.get(f"{colour_scheme}", "twitter_ico")}')
 
 
+# --- Entry point and main class/function calls --- #
 def main():
     style = ttk.Style()
 
@@ -160,6 +163,7 @@ class Home(tk.Frame):
 
     def __init__(self, parent, *args, **kwargs):
 
+        # --- Set up main key binds --- #
         root.bind('<Return>', lambda event: self.RemovableEntry(self))
         root.bind('<Escape>', lambda event: self.remove_entry())
         root.bind('<Control-Return>', lambda event: self.screenshot())
@@ -206,33 +210,42 @@ class Home(tk.Frame):
         self.image = None
         self.tracer_win = None
 
-    def screenshot(self):
-        root.withdraw()
-        sleep(0.2)
-        self.image = ImageGrab.grab()  # Takes screenshot of whole screen
+    # --- Removes last entry in instances list --- #
+    def remove_entry(self):
+        # If there are instances in the list, remove the last one
+        if not len(self.RemovableEntry.instances) == 0:
+            Home.RemovableEntry.instances[-1].delete_last()
 
-        img = ImageTk.PhotoImage(self.image)
+    # ----------------------------- Colour Picker Functionality ----------------------------- #
+    # --- Initiates screenshot, overlay and key binds for screenshot --- #
+    def screenshot(self):
+        root.withdraw()  # Minimises
+        sleep(0.2)
+
+        self.image = ImageGrab.grab()  # Takes screenshot of whole screen
+        img = ImageTk.PhotoImage(self.image)  # Creates tk image object to display on overlay
 
         self.tracer_win = tk.Toplevel(self.master, cursor="cross")  # To make top level
         self.tracer_win.attributes("-fullscreen", True)  # Full screen
         self.tracer_win.overrideredirect(1)
         self.tracer_win.attributes('-alpha', 1)  # Sets transparency
         self.tracer_win.attributes('-topmost', True)  # Keeps on top
-        tracer_frame = tk.Frame(self.tracer_win)
-        self.tracer_win.bind("<Button-1>", self.capture)  # Binds left click to run capture
-        screenshot_bg = tk.Label(self.tracer_win, image=img)
-        screenshot_bg.photo = img  # Anchors the image to the object
-        screenshot_bg.pack(fill="both", expand=True)
 
-        tracer_frame.pack()
+        tracer_frame = tk.Frame(self.tracer_win)  # Adds frame to window in order to add label
+        self.tracer_win.bind("<Button-1>", self.capture)  # Binds left click to run capture
+        screenshot_bg = tk.Label(self.tracer_win, image=img)  # Creates label to bind image to
+        screenshot_bg.photo = img  # Anchors the image to the object
+        screenshot_bg.pack(fill="both", expand=True)  # Fills frame with label (image)
+        tracer_frame.pack()  # Packs the frame to fill the window
 
     def capture(self, event):  # Auto pass in event details (clicking)
-        x, y = event.x, event.y
+        x, y = event.x, event.y  # Mouse x and y coordinates
         self.tracer_win.destroy()  # Destroys grey window
         self.image = self.image.crop((x - 1, y - 1, x + 1, y + 1))  # Crops image to 2 x 2 box
         self.image = self.image.convert('RGB')  # Converts to RGB8
         rgb_tuple = self.image.getpixel((1, 1))  # Gets SRGB8 of centre pixel
 
+        # --- Conversions depending on which setting is chosen --- #
         conversion_type = config.get('main', 'Convert_Type')
         if conversion_type == "sRGB [0,1]":
             rgb_tuple = RGB8toLSRGB(rgb_tuple)
@@ -243,17 +256,17 @@ class Home(tk.Frame):
         if conversion_type == "sRGB8 [0,255]":
             pass
 
+        # --- Rounds the RGB value ready for the UI --- #
         rounded = [round(num, 2) for num in rgb_tuple]  # Round Tuple
         red = rounded[0]
         green = rounded[1]
         blue = rounded[2]
+
+        # --- Creates an entry based on the above RGB values --- #
         self.RemovableEntry(self, r=red, g=green, b=blue,
                             is_screenshot=True)  # Sends RBG values to add_frame
-        root.deiconify()
 
-    def remove_entry(self):
-        if not len(self.RemovableEntry.instances) == 0:
-            Home.RemovableEntry.instances[-1].delete_last()
+        root.deiconify()  # Restores the window
 
     # ----------------------------- File write Start ----------------------------- #
     def file_write(self):
