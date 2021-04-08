@@ -16,8 +16,6 @@ from utility_functions import *
 # FIXME: when restarting to change settings, when you use colour picker it crashes
 #  (not happening when I created exe)
 
-# TODO reorganise colour convert box to ensure tabbing works in correct order (current tabs to hex before colour box)
-
 # Group Bonding Moment Stuff
 
 # TODO: Create readme and video
@@ -54,7 +52,6 @@ config = ConfigParser()
 config.read('config.ini')
 
 if not config.has_section('main'):
-
     # Adds main config section
     config.add_section('main')
     config.set('main', 'SaveLocation', f'{Path().absolute()}')
@@ -278,6 +275,7 @@ class Home(tk.Frame):
 
     # ----- Class to create and track entries ---- #
     class RemovableEntry(tk.Frame):
+        # List of object (entry) instances to keep track of them
         instances = []
 
         def __init__(self, parent, r=0, g=0, b=0, is_screenshot=False, *args, **kwargs):
@@ -299,9 +297,9 @@ class Home(tk.Frame):
             self.g_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.g_value, bg=entry_bg, fg=btn_fg)
             self.b_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.b_value, bg=entry_bg, fg=btn_fg)
 
-            self.hex_box = tk.Entry(self, width=10, textvariable=self.hex_box_value, bg=entry_bg, fg=btn_fg)
-
             self.colour_preview = tk.Entry(self, width=4)
+
+            self.hex_box = tk.Entry(self, width=10, textvariable=self.hex_box_value, bg=entry_bg, fg=btn_fg)
 
             self.remove_button = tk.Button(self, text="X", bg=entry_bg, fg=btn_fg, command=lambda: self.remove())
 
@@ -316,7 +314,6 @@ class Home(tk.Frame):
                 self.b_value.set(b)
 
             # ---- Pack ---- #
-            # type_dropdown.pack(side="left", fill=tk.Y)
             self.entry_name.pack(side="left", fill=tk.BOTH, expand=True)
 
             self.r_entry.pack(side="left", fill=tk.Y)
@@ -330,9 +327,9 @@ class Home(tk.Frame):
             self.pack(side="top", fill=tk.X)
 
             # ---- Trace Value Change to Update Hex ---- #
-            self.r_value.trace('w', self.value_change)
-            self.g_value.trace('w', self.value_change)
-            self.b_value.trace('w', self.value_change)
+            self.r_value.trace('w', lambda event, f, _: self.value_change())
+            self.g_value.trace('w', lambda event, f, _: self.value_change())
+            self.b_value.trace('w', lambda event, f, _: self.value_change())
             # self.type_drop_value.trace('w', self.value_change)
 
             # ---- Trace Value Change to Update Hex ---- #
@@ -341,7 +338,17 @@ class Home(tk.Frame):
             # --- Update hex on creation --- #
             self.hex_convert()
 
-        def value_change(self, *args):
+            # --- Bind left click to update hex value --- #
+            self.colour_preview.bind("<FocusIn>", self.skip_widget)
+            self.hex_box.bind("<1>", lambda e: self.hex_convert())
+
+        # --- skips to next widget in order of tabbing --- #
+        @staticmethod
+        def skip_widget(event):
+            event.widget.tk_focusNext().focus()
+            return "break"
+
+        def value_change(self):
             self.hex_convert()
 
         def hex_convert(self):
@@ -517,7 +524,7 @@ class Settings(tk.Frame):
         self.on_top = tk.Checkbutton(self.main_settings_frame, text="Keep window on top", variable=Settings.on_top_var,
                                      width="20", bg=bg_clr, fg=btn_fg, selectcolor=bg_clr, activebackground=bg_clr,
                                      activeforeground=btn_fg)
-        self.on_top_var.trace('w', self.update_settings_main)
+        self.on_top_var.trace('w', lambda func, subst, widget: self.update_settings_main())
 
         # Create convert default type option
         self.convert_frame = tk.Frame(self, bg=bg_clr)
@@ -566,7 +573,7 @@ class Settings(tk.Frame):
         self.path_past = ""
 
     @staticmethod
-    def update_settings_main(*args):
+    def update_settings_main():
         root.attributes('-topmost', Settings.on_top_var.get())
         config.set('main', 'OnTop', f"{Settings.on_top_var.get()}")
         with open('config.ini', 'w') as conf:
