@@ -14,6 +14,9 @@ from utility_functions import *
 # ---- Version 1.0 ----- #
 
 # FIXME: when restarting to change settings, when you use colour picker it crashes
+#  (not happening when I created exe)
+
+# TODO reorganise colour convert box to ensure tabbing works in correct order (current tabs to hex before colour box)
 
 # Group Bonding Moment Stuff
 
