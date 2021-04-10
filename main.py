@@ -1,3 +1,11 @@
+# --- Colour Tint Converter 2020 --- #
+__author__ = "Kieren Townley-Moss, Jake Broughton, Alex Todd"
+__credits__ = ["Kieren Townley-Moss", "Jake Broughton", "Alex Todd"]
+__version__ = "1.0.0"
+__maintainer__ = "Kieren Townley-Moss, Jake Broughton, Alex Todd"
+__email__ = "kajdevelopmentofficial@gmail.comu"
+__status__ = "Development"
+
 from pathlib import Path
 import tkinter as tk
 import webbrowser
@@ -10,7 +18,6 @@ from os import execl
 from webcolors import rgb_to_hex
 from PIL import ImageGrab, ImageTk
 from utility_functions import *
-
 
 root = tk.Tk()
 root.geometry("450x500")
@@ -68,7 +75,7 @@ def main():
     # Initialise Tab Parent Notebook
     tab_parent = ttk.Notebook(root)
 
-    # Initialise home frame
+    # Initialise all frames
     home = Home(root)
     settings = Settings(root)
     hotkeys = Hotkeys(root)
@@ -116,17 +123,16 @@ class Home(tk.Frame):
         picker.pack(fill="x", side="left", expand=1)
 
         # --- Export --- #
-        self.export_frame = tk.Frame(self, bg=bg_clr, padx=5, pady=5)
-        self.export_btn = tk.Button(self.export_frame, image=export_ico, text="Export .txt", bg=btn_clr,
-                                    fg=btn_fg,
-                                    activebackground=btn_clr_act, command=self.file_write,
-                                    bd="3", relief="raised", height="22", compound="left", font=btn_font)
-        self.export_name = self.EntryWithPlaceholder(self.export_frame, "Item Name", bg=entry_bg, fg=btn_fg,
+        export_frame = tk.Frame(self, bg=bg_clr, padx=5, pady=5)
+        export_btn = tk.Button(export_frame, image=export_ico, text="Export .txt", bg=btn_clr, fg=btn_fg,
+                               activebackground=btn_clr_act, command=self.file_write,
+                               bd="3", relief="raised", height="22", compound="left", font=btn_font)
+        self.export_name = self.EntryWithPlaceholder(export_frame, "Item Name", bg=entry_bg, fg=btn_fg,
                                                      bd="3", relief="raised")
 
         # --- Pack Export --- #
-        self.export_frame.pack(side="bottom", fill=tk.X)
-        self.export_btn.pack(side="right")
+        export_frame.pack(side="bottom", fill=tk.X)
+        export_btn.pack(side="right")
         self.export_name.pack(fill=tk.BOTH, side="left", expand=True)
 
         # --- Pack frames --- #
@@ -141,7 +147,7 @@ class Home(tk.Frame):
     def remove_entry(self):
         # If there are instances in the list, remove the last one
         if not len(self.RemovableEntry.instances) == 0:
-            Home.RemovableEntry.instances[-1].delete_last()
+            Home.RemovableEntry.instances[-1].remove()
 
     # ----------------------------- Colour Picker Functionality ----------------------------- #
     # --- Initiates screenshot, overlay and key binds for screenshot --- #
@@ -168,9 +174,9 @@ class Home(tk.Frame):
     def capture(self, event):  # Auto pass in event details (clicking)
         x, y = event.x, event.y  # Mouse x and y coordinates
         self.tracer_win.destroy()  # Destroys grey window
-        self.image = self.image.crop((x - 1, y - 1, x + 1, y + 1))  # Crops image to 2 x 2 box
-        self.image = self.image.convert('RGB')  # Converts to RGB8
-        rgb_tuple = self.image.getpixel((1, 1))  # Gets SRGB8 of centre pixel
+        image = self.image.crop((x - 1, y - 1, x + 1, y + 1))  # Crops image to 2 x 2 box
+        image = image.convert('RGB')  # Converts to RGB8
+        rgb_tuple = image.getpixel((1, 1))  # Gets SRGB8 of centre pixel
 
         # --- Conversions depending on which setting is chosen --- #
         conversion_type = config.get('main', 'Convert_Type')
@@ -231,27 +237,30 @@ class Home(tk.Frame):
             self.entry_name = Home.EntryWithPlaceholder(self, width=20, placeholder="Colour Name", bg=entry_bg,
                                                         fg=btn_fg)
 
+            # --- Create variables to track/modify values --- #
             self.r_value = tk.StringVar()
             self.g_value = tk.StringVar()
             self.b_value = tk.StringVar()
             self.hex_box_value = tk.StringVar()
 
+            # --- Create RGB entries with placeholder value --- #
             self.r_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.r_value, bg=entry_bg, fg=btn_fg)
             self.g_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.g_value, bg=entry_bg, fg=btn_fg)
             self.b_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.b_value, bg=entry_bg, fg=btn_fg)
 
+            # --- Create hex entry, colour preview and remove button --- #
             self.colour_preview = tk.Entry(self, width=4)
-
             self.hex_box = tk.Entry(self, width=10, textvariable=self.hex_box_value, bg=entry_bg, fg=btn_fg)
-
             self.remove_button = tk.Button(self, text="X", bg=entry_bg, fg=btn_fg, command=lambda: self.remove())
 
-            # ---- Remove placeholder functionality if it's a screenshot ---- #
+            # ---- Remove placeholder functionality if it's a screenshot by changing the foreground colour  ---- #
             if is_screenshot:
+                # Change text colour of RGB entries
                 self.r_entry.config(fg=btn_fg)
                 self.g_entry.config(fg=btn_fg)
                 self.b_entry.config(fg=btn_fg)
 
+                # Set RGB values to those given by the screenshot function
                 self.r_value.set(r)
                 self.g_value.set(g)
                 self.b_value.set(b)
@@ -291,15 +300,18 @@ class Home(tk.Frame):
             event.widget.tk_focusNext().focus()
             return "break"
 
+        # --- Run hex conversion when RGB value changed --- #
         def value_change(self):
             self.hex_convert()
 
+        # --- Function to convert RGB to hex value based on option in settings --- #
         def hex_convert(self):
             # ---- Fetch values ---- #
             conversion_type = config.get('main', 'Convert_Type')
             entries = [self.r_entry, self.g_entry, self.b_entry]
             get_entries = [self.r_entry.get(), self.g_entry.get(), self.b_entry.get()]
 
+            # --- Check all RGB value validity --- #
             for e in entries:
                 if incorrect_entry_test(e.get(), conversion_type):
                     e.config(background=entry_bg)
@@ -308,61 +320,67 @@ class Home(tk.Frame):
 
             # If there is no empty box...
             if '' not in get_entries:
-
                 # Use conversion type...
                 # Conversion type sRGB [0,1]
                 if conversion_type == "sRGB [0,1]":
                     rgb_nonlin = get_entries_convert(get_entries, conversion_type)
                     rgb_linear = LSRGBtoSRGB8(rgb_nonlin)
                     hexvals = rgb_to_hex(rgb_linear)
-                    self.hex_box_value.set(hexvals.upper())
+                    self.hex_box_value.set(hexvals.upper())  # Sets hex box value
                     self.colour_preview.config({"background": self.hex_box.get()})  # Adds colour to side box
 
                 # Conversion type sRGB [0,1]
                 if conversion_type == "sRGB8 [0,255]":
                     rgb_nonlin = get_entries_convert(get_entries, conversion_type)
                     hexvals = rgb_to_hex(rgb_nonlin)
-                    self.hex_box_value.set(hexvals.upper())
+                    self.hex_box_value.set(hexvals.upper())  # Sets hex box value
                     self.colour_preview.config({"background": self.hex_box.get()})  # Adds colour to side box
 
                 if conversion_type == "sRGB' [0,1]":
                     rgb_nonlin = get_entries_convert(get_entries, conversion_type)
                     yeet = NLSRGBtoSRGB8(rgb_nonlin)
                     hexvals = rgb_to_hex(yeet)
-                    self.hex_box_value.set(hexvals.upper())
+                    self.hex_box_value.set(hexvals.upper())  # Sets hex box value
                     self.colour_preview.config({"background": self.hex_box.get()})  # Adds colour to side box
 
-        def delete_last(self):
-            Home.RemovableEntry.instances.remove(self)
-            self.destroy()
-
+        # --- Destroy instance and remove from instances list --- #
         def remove(self):
-            self.destroy()
             Home.RemovableEntry.instances.remove(self)
+            self.destroy()
 
-    # ----- Class to create entries with placeholder text ----- #
+        # def remove(self):
+        #     self.destroy()
+        #     Home.RemovableEntry.instances.remove(self)
+
+    # ----- Class to create entries with placeholder text. Inherit from tk.Entry ----- #
     class EntryWithPlaceholder(tk.Entry):
         def __init__(self, master=None, placeholder="0", color='grey', font="Calibri", *args, **kwargs):
+            # Create entry instance
             super().__init__(master, *args, **kwargs)
 
+            # Grab arguments given
             self.placeholder = placeholder
             self.placeholder_color = color
             self.default_fg_color = self['fg']
             self.font = font
 
+            # Bind focus in/out functions to event, i.e when clicking/tabbing in and out of entry
             self.bind("<FocusIn>", lambda event: self.foc_in())
             self.bind("<FocusOut>", lambda event: self.foc_out())
             self.put_placeholder()
 
+        # Insert placeholder text into entry box
         def put_placeholder(self):
             self.insert(0, self.placeholder)
             self['fg'] = self.placeholder_color
 
+        # Remove text in entry when clicked/tabbed into if it's grey (fg colour)
         def foc_in(self):
             if self['fg'] == self.placeholder_color:
                 self.delete('0', 'end')
                 self['fg'] = self.default_fg_color
 
+        # If the entry is not empty upon leaving the entry box, put the placeholder value back
         def foc_out(self):
             if not self.get():
                 self.put_placeholder()
@@ -407,6 +425,7 @@ class About(tk.Frame):
         contact_us.pack(side="bottom")
         donation_message.pack(side="bottom", padx="10")
 
+    # --- Callback function to launch GitHub URL --- #
     @staticmethod
     def github_click(url):
         webbrowser.open_new(url)
@@ -430,6 +449,7 @@ class Hotkeys(tk.Frame):
         tk.Label(self, text="-", fg=btn_fg, bg=bg_clr).grid(column=1, row=2, sticky='w')
         tk.Label(self, text="Colour Picker", fg=btn_fg, bg=bg_clr).grid(column=2, row=2, sticky='w')
 
+    # --- Callback function to open GitHub link --- #
     @staticmethod
     def github_click(url):
         webbrowser.open_new(url)
@@ -619,5 +639,6 @@ class Settings(tk.Frame):
         execl(python, python, *argv)
 
 
+# --- Entry point --- #
 if __name__ == '__main__':
     main()
