@@ -448,39 +448,38 @@ class About(tk.Frame):
         tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr, bd="10")
 
         # Add content to about frame
-        self.AboutBigText = tk.Label(self, text="Colour Tint Converter\n", font="bold, 20", bg=bg_clr,
-                                     fg=btn_fg)
-        self.AboutContent = tk.Label(self, text="Tool developed by Kieren Townley-Moss, Jake Broughton and "
-                                                "Alex Todd\n\n Version 1.0.23 \n\n Copyright©2021 \n\n", bg=bg_clr,
-                                     fg=btn_fg)
-        self.aboutLinks = tk.Frame(self, bg=bg_clr)
-        self.donationFrame = tk.Frame(self, bg=bg_clr)
-        self.github = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=git_ico, bg=bg_clr)
-        self.twitter = tk.Label(self.aboutLinks, text="Github", cursor="hand2", image=twitter_ico, bg=bg_clr)
+        about_big_text = tk.Label(self, text="Colour Tint Converter\n", font="bold, 20", bg=bg_clr, fg=btn_fg)
+        about_content = tk.Label(self, text="Tool developed by Kieren Townley-Moss, Jake Broughton and "
+                                            "Alex Todd\n\n Version 1.0.23 \n\n Copyright©2021 \n\n", bg=bg_clr,
+                                 fg=btn_fg)
+        about_links = tk.Frame(self, bg=bg_clr)
+        donation_frame = tk.Frame(self, bg=bg_clr)
+        github = tk.Label(about_links, text="Github", cursor="hand2", image=git_ico, bg=bg_clr)
+        twitter = tk.Label(about_links, text="Github", cursor="hand2", image=twitter_ico, bg=bg_clr)
 
-        self.donationMessage = tk.Label(self.donationFrame, text="Colour Tint Converter is 100% free\n"
-                                                                 "You can use the app however you wish\n"
-                                                                 "If you like the app, please donate :)",
-                                        bg=bg_clr, fg=btn_fg)
+        donation_message = tk.Label(donation_frame, text="Colour Tint Converter is 100% free\n"
+                                                         "You can use the app however you wish\n"
+                                                         "If you like the app, please donate :)",
+                                    bg=bg_clr, fg=btn_fg)
 
-        self.donationLink = tk.Label(self.donationFrame, text="Donate", fg="#538cc2", cursor="hand2", bg=bg_clr)
-        self.ContactUs = tk.Label(self, text="Contact us at : kajdevelopmentofficial@gmail.com", bg=bg_clr, fg=btn_fg)
+        donation_link = tk.Label(donation_frame, text="Donate", fg="#538cc2", cursor="hand2", bg=bg_clr)
+        contact_us = tk.Label(self, text="Contact us at : kajdevelopmentofficial@gmail.com", bg=bg_clr, fg=btn_fg)
 
-        self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
-        self.twitter.bind("<Button-1>", lambda e: self.github_click("https://twitter.com/KajDevelopment"))
-        self.donationLink.bind("<Button-1>", lambda e: self.github_click(
+        github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
+        twitter.bind("<Button-1>", lambda e: self.github_click("https://twitter.com/KajDevelopment"))
+        donation_link.bind("<Button-1>", lambda e: self.github_click(
             "https://www.specialeffect.org.uk/get-involved/donate"))
 
         # Packs content to about frame
-        self.AboutBigText.pack(side="top")
-        self.AboutContent.pack(side="top")
-        self.aboutLinks.pack(side="bottom")
-        self.github.pack(side="left", padx="10")
-        self.twitter.pack(side="right")
-        self.donationFrame.pack(side="bottom", pady="30")
-        self.donationLink.pack(side="bottom")
-        self.ContactUs.pack(side="bottom")
-        self.donationMessage.pack(side="bottom", padx="10")
+        about_big_text.pack(side="top")
+        about_content.pack(side="top")
+        about_links.pack(side="bottom")
+        github.pack(side="left", padx="10")
+        twitter.pack(side="right")
+        donation_frame.pack(side="bottom", pady="30")
+        donation_link.pack(side="bottom")
+        contact_us.pack(side="bottom")
+        donation_message.pack(side="bottom", padx="10")
 
     @staticmethod
     def github_click(url):
@@ -512,7 +511,6 @@ class Hotkeys(tk.Frame):
 
 # --- Settings Class --- #
 class Settings(tk.Frame):
-
     # Create settings variables, setting values set to default to config value
     on_top_var = tk.IntVar(value=config.get('main', 'OnTop'))
     dark_mode = tk.IntVar()
@@ -545,53 +543,51 @@ class Settings(tk.Frame):
         root.attributes('-topmost', config.get('main', 'OnTop'))
 
         # Create frame for main settings (not save button) and options
-        self.main_settings_frame = tk.Frame(self, bg=bg_clr)
-        self.on_top = tk.Checkbutton(self.main_settings_frame, text="Keep window on top", variable=Settings.on_top_var,
-                                     width="20", bg=bg_clr, fg=btn_fg, selectcolor=bg_clr, activebackground=bg_clr,
-                                     activeforeground=btn_fg)
+        main_settings_frame = tk.Frame(self, bg=bg_clr)
+        on_top = tk.Checkbutton(main_settings_frame, text="Keep window on top", variable=Settings.on_top_var,
+                                width="20", bg=bg_clr, fg=btn_fg, selectcolor=bg_clr, activebackground=bg_clr,
+                                activeforeground=btn_fg)
         self.on_top_var.trace('w', lambda func, subst, widget: self.update_settings_main())
 
         # Create convert default type option
-        self.convert_frame = tk.Frame(self, bg=bg_clr)
-        self.convert_options = tk.OptionMenu(self.convert_frame, Settings.convert_var, *Settings.convert_types)
-        self.convert_options.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12",
-                                    highlightthickness=0)
-        self.convert_options["menu"].config(bg=btn_clr, fg=btn_fg)
-        self.save_button = tk.Button(self.convert_frame, text="Save", width=10, command=self.restart_window,
-                                     bg=bg_clr, fg=btn_fg)
+        convert_frame = tk.Frame(self, bg=bg_clr)
+        convert_options = tk.OptionMenu(convert_frame, Settings.convert_var, *Settings.convert_types)
+        convert_options.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12", highlightthickness=0)
+        convert_options["menu"].config(bg=btn_clr, fg=btn_fg)
+        save_button = tk.Button(convert_frame, text="Save", width=10, command=self.restart_window, bg=bg_clr, fg=btn_fg)
 
         # Create colour scheme drop down
-        self.colour_scheme = tk.OptionMenu(self.convert_frame, Settings.colour_var, *Settings.colour_modes)
+        self.colour_scheme = tk.OptionMenu(convert_frame, Settings.colour_var, *Settings.colour_modes)
         self.colour_scheme.config(bg=btn_clr, fg=btn_fg, activebackground=btn_clr_act, width="12", highlightthickness=0)
         self.colour_scheme["menu"].config(bg=btn_clr, fg=btn_fg)
 
         # Create setting for File Location and Frame
-        self.save_location_frame = tk.Frame(self, bg=bg_clr)
-        self.directory_button = tk.Button(self.save_location_frame, text="Select Save Location",
-                                          command=self.get_file_past, bg=bg_clr, fg=btn_fg)
-        self.folder_location = tk.StringVar(self.save_location_frame, f"{config.get('main', 'SaveLocation')}")
-        self.directory_display = tk.Entry(self.save_location_frame, width=42, font="Calibri, 9",
-                                          textvariable=self.folder_location, state="disabled",
-                                          disabledbackground=entry_bg, disabledforeground=btn_fg)
+        save_location_frame = tk.Frame(self, bg=bg_clr)
+        directory_button = tk.Button(save_location_frame, text="Select Save Location",
+                                     command=self.get_file_past, bg=bg_clr, fg=btn_fg)
+        self.folder_location = tk.StringVar(save_location_frame, f"{config.get('main', 'SaveLocation')}")
+        directory_display = tk.Entry(save_location_frame, width=42, font="Calibri, 9",
+                                     textvariable=self.folder_location, state="disabled",
+                                     disabledbackground=entry_bg, disabledforeground=btn_fg)
 
         # Create a restore button
-        self.restore_btn = tk.Button(self, text="Restore to Default Settings", command=self.restore_warning,
-                                     bg=bg_clr, fg=btn_fg)
+        restore_btn = tk.Button(self, text="Restore to Default Settings", command=self.restore_warning,
+                                bg=bg_clr, fg=btn_fg)
 
         # Packs frames left
-        self.main_settings_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(5, 15))
-        self.on_top.pack(side="left")
+        main_settings_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(5, 15))
+        on_top.pack(side="left")
 
-        self.convert_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15), padx=6)
-        self.convert_options.pack(side="left")
+        convert_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15), padx=6)
+        convert_options.pack(side="left")
         self.colour_scheme.pack(side="left")
-        self.save_button.pack(side="left")
+        save_button.pack(side="left")
 
-        self.save_location_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15), padx=6)
-        self.directory_button.pack(side="left")
-        self.directory_display.pack(fill="both", side="left", expand=True)
+        save_location_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15), padx=6)
+        directory_button.pack(side="left")
+        directory_display.pack(fill="both", side="left", expand=True)
 
-        self.restore_btn.pack(side="top", anchor="nw", padx=6)
+        restore_btn.pack(side="top", anchor="nw", padx=6)
 
         # Declare Settings Path Variable
         self.path_past = ""
