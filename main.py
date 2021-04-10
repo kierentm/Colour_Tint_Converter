@@ -348,10 +348,6 @@ class Home(tk.Frame):
             Home.RemovableEntry.instances.remove(self)
             self.destroy()
 
-        # def remove(self):
-        #     self.destroy()
-        #     Home.RemovableEntry.instances.remove(self)
-
     # ----- Class to create entries with placeholder text. Inherit from tk.Entry ----- #
     class EntryWithPlaceholder(tk.Entry):
         def __init__(self, master=None, placeholder="0", color='grey', font="Calibri", *args, **kwargs):
