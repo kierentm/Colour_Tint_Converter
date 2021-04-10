@@ -1,3 +1,12 @@
+# --- Colour Tint Converter 2020 --- #
+__author__ = "Kieren Townley-Moss, Jake Broughton, Alex Todd"
+__credits__ = ["Kieren Townley-Moss", "Jake Broughton", "Alex Todd"]
+__version__ = "1.0.0"
+__maintainer__ = "Kieren Townley-Moss, Jake Broughton, Alex Todd"
+__email__ = "kajdevelopmentofficial@gmail.comu"
+__status__ = "Development"
+
+
 from pathlib import Path
 import tkinter as tk
 import webbrowser
@@ -16,11 +25,8 @@ from utility_functions import *
 # TODO: Create readme and video
 # TODO: Could create manual file
 
-# TODO: Comment [Jake]
-# TODO: Refactor some names (eg. spin) [Jake]
 # TODO: Remove redundant self. tags (High Risk) [Jake]
 
-# TODO: Optimise imports (High Risk)
 # TODO: Pack into exe binary files and use installer (High Risk)
 
 # TODO: Remove config generation from much of the task
@@ -419,29 +425,35 @@ class Home(tk.Frame):
         #     self.destroy()
         #     Home.RemovableEntry.instances.remove(self)
 
-    # ----- Class to create entries with placeholder text ----- #
+    # ----- Class to create entries with placeholder text. Inherit from tk.Entry ----- #
     class EntryWithPlaceholder(tk.Entry):
         def __init__(self, master=None, placeholder="0", color='grey', font="Calibri", *args, **kwargs):
+            # Create entry instance
             super().__init__(master, *args, **kwargs)
 
+            # Grab arguments given
             self.placeholder = placeholder
             self.placeholder_color = color
             self.default_fg_color = self['fg']
             self.font = font
 
+            # Bind focus in/out functions to event, i.e when clicking/tabbing in and out of entry
             self.bind("<FocusIn>", lambda event: self.foc_in())
             self.bind("<FocusOut>", lambda event: self.foc_out())
             self.put_placeholder()
 
+        # Insert placeholder text into entry box
         def put_placeholder(self):
             self.insert(0, self.placeholder)
             self['fg'] = self.placeholder_color
 
+        # Remove text in entry when clicked/tabbed into if it's grey (fg colour)
         def foc_in(self):
             if self['fg'] == self.placeholder_color:
                 self.delete('0', 'end')
                 self['fg'] = self.default_fg_color
 
+        # If the entry is not empty upon leaving the entry box, put the placeholder value back
         def foc_out(self):
             if not self.get():
                 self.put_placeholder()
@@ -486,6 +498,7 @@ class About(tk.Frame):
         contact_us.pack(side="bottom")
         donation_message.pack(side="bottom", padx="10")
 
+    # --- Callback function to launch GitHub URL --- #
     @staticmethod
     def github_click(url):
         webbrowser.open_new(url)
@@ -509,6 +522,7 @@ class Hotkeys(tk.Frame):
         tk.Label(self, text="-", fg=btn_fg, bg=bg_clr).grid(column=1, row=2, sticky='w')
         tk.Label(self, text="Colour Picker", fg=btn_fg, bg=bg_clr).grid(column=2, row=2, sticky='w')
 
+    # --- Callback function to open GitHub link --- #
     @staticmethod
     def github_click(url):
         webbrowser.open_new(url)
@@ -698,5 +712,6 @@ class Settings(tk.Frame):
         execl(python, python, *argv)
 
 
+# --- Entry point --- #
 if __name__ == '__main__':
     main()
