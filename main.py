@@ -28,6 +28,7 @@ from utility_functions import *
 # TODO: Remove redundant self. tags (High Risk)
 # TODO: Add Comments
 # TODO: Optimise imports (High Risk)
+
 # TODO: Pack into exe binary files and use installer (High Risk)
 
 # TODO: Github 1.0 release
@@ -106,7 +107,7 @@ if not config.has_section('main'):
     with open('config.ini', 'w') as file:
         config.write(file)
 
-# ---- Style Setup ---- #
+# ---- Style Setup from config for light/dark mode ---- #
 colour_scheme = f'{config.get("main", "Colour_Mode")}'
 
 btn_clr = f'{config.get(f"{colour_scheme}", "btn_clr")}'  # button colour
@@ -270,12 +271,13 @@ class Home(tk.Frame):
 
     # ----------------------------- File write Start ----------------------------- #
     def file_write(self):
+        # Opens file in location specified by setting (from config) and using name from entry box
         file1 = open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt", "w+")
 
         conversion_type = config.get('main', 'Convert_Type')
 
+        # Writes values from removable entry list into file
         for i in Home.RemovableEntry.instances:
-            # file1.write(colour_area.capitalize())
             file1.write(f"{i.entry_name.get().capitalize()}\n")
             file1.write(f"Type: {i.convert_type}\n")
             file1.write(f" R  = {export_clarity(float(i.r_entry.get()), conversion_type)}\n")
@@ -284,6 +286,8 @@ class Home(tk.Frame):
             file1.write(f"Hex = {i.hex_box.get()}\n\n")
 
         file1.close()
+
+        # Opens txt after writing to file
         webbrowser.open(f"{config.get('main', 'SaveLocation')}/{self.export_name.get()}_colours_info.txt")
 
     # ----- Class to create and track entries ---- #
@@ -442,6 +446,7 @@ class About(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         # --- Main frames --- #
         tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr, bd="10")
+
         # Add content to about frame
         self.AboutBigText = tk.Label(self, text="Colour Tint Converter\n", font="bold, 20", bg=bg_clr,
                                      fg=btn_fg)
@@ -460,12 +465,13 @@ class About(tk.Frame):
 
         self.donationLink = tk.Label(self.donationFrame, text="Donate", fg="#538cc2", cursor="hand2", bg=bg_clr)
         self.ContactUs = tk.Label(self, text="Contact us at : kajdevelopmentofficial@gmail.com", bg=bg_clr, fg=btn_fg)
-
+        
         self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
         self.twitter.bind("<Button-1>", lambda e: self.github_click("https://twitter.com/KajDevelopment"))
         self.donationLink.bind("<Button-1>", lambda e: self.github_click(
             "https://www.specialeffect.org.uk/get-involved/donate"))
 
+        # Packs content to about frame
         self.AboutBigText.pack(side="top")
         self.AboutContent.pack(side="top")
         self.aboutLinks.pack(side="bottom")
