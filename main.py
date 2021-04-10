@@ -45,12 +45,14 @@ root = tk.Tk()
 root.geometry("450x500")
 p1 = tk.PhotoImage(file='UI_Images/CTC_Logo.png')
 root.iconphoto(False, p1)
-root.title("Colour Tint Converter")
+
 root.configure(bg="#000000")
 
 # Load Config and generate main if required
 config = ConfigParser()
 config.read('config.ini')
+titleMode = config.get('main', 'Convert_Type')
+root.title("Colour Tint Converter:  " + titleMode)
 
 if not config.has_section('main'):
     # Adds main config section
