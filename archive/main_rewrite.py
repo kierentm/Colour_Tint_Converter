@@ -194,7 +194,7 @@ class Home(tk.Frame):
 
     def remove_entry(self):
         if not len(self.RemovableEntry.instances) == 0:
-            Home.RemovableEntry.instances[-1].delete_last()
+            Home.RemovableEntry.instances[-1].remove()
 
     # ----------------------------- File write Start ----------------------------- #
     def file_write(self):

@@ -141,7 +141,7 @@ def main():
     # Initialise Tab Parent Notebook
     tab_parent = ttk.Notebook(root)
 
-    # Initialise home frame
+    # Initialise all frames
     home = Home(root)
     settings = Settings(root)
     hotkeys = Hotkeys(root)
@@ -214,7 +214,7 @@ class Home(tk.Frame):
     def remove_entry(self):
         # If there are instances in the list, remove the last one
         if not len(self.RemovableEntry.instances) == 0:
-            Home.RemovableEntry.instances[-1].delete_last()
+            Home.RemovableEntry.instances[-1].remove()
 
     # ----------------------------- Colour Picker Functionality ----------------------------- #
     # --- Initiates screenshot, overlay and key binds for screenshot --- #
@@ -304,27 +304,30 @@ class Home(tk.Frame):
             self.entry_name = Home.EntryWithPlaceholder(self, width=20, placeholder="Colour Name", bg=entry_bg,
                                                         fg=btn_fg)
 
+            # --- Create variables to track/modify values --- #
             self.r_value = tk.StringVar()
             self.g_value = tk.StringVar()
             self.b_value = tk.StringVar()
             self.hex_box_value = tk.StringVar()
 
+            # --- Create RGB entries with placeholder value --- #
             self.r_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.r_value, bg=entry_bg, fg=btn_fg)
             self.g_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.g_value, bg=entry_bg, fg=btn_fg)
             self.b_entry = Home.EntryWithPlaceholder(self, width=4, textvariable=self.b_value, bg=entry_bg, fg=btn_fg)
 
+            # --- Create hex entry, colour preview and remove button --- #
             self.colour_preview = tk.Entry(self, width=4)
-
             self.hex_box = tk.Entry(self, width=10, textvariable=self.hex_box_value, bg=entry_bg, fg=btn_fg)
-
             self.remove_button = tk.Button(self, text="X", bg=entry_bg, fg=btn_fg, command=lambda: self.remove())
 
-            # ---- Remove placeholder functionality if it's a screenshot ---- #
+            # ---- Remove placeholder functionality if it's a screenshot by changing the foreground colour  ---- #
             if is_screenshot:
+                # Change text colour of RGB entries
                 self.r_entry.config(fg=btn_fg)
                 self.g_entry.config(fg=btn_fg)
                 self.b_entry.config(fg=btn_fg)
 
+                # Set RGB values to those given by the screenshot function
                 self.r_value.set(r)
                 self.g_value.set(g)
                 self.b_value.set(b)
@@ -364,15 +367,18 @@ class Home(tk.Frame):
             event.widget.tk_focusNext().focus()
             return "break"
 
+        # --- Run hex conversion when RGB value changed --- #
         def value_change(self):
             self.hex_convert()
 
+        # --- Function to convert RGB to hex value based on option in settings --- #
         def hex_convert(self):
             # ---- Fetch values ---- #
             conversion_type = config.get('main', 'Convert_Type')
             entries = [self.r_entry, self.g_entry, self.b_entry]
             get_entries = [self.r_entry.get(), self.g_entry.get(), self.b_entry.get()]
 
+            # --- Check all RGB value validity --- #
             for e in entries:
                 if incorrect_entry_test(e.get(), conversion_type):
                     e.config(background=entry_bg)
@@ -381,37 +387,37 @@ class Home(tk.Frame):
 
             # If there is no empty box...
             if '' not in get_entries:
-
                 # Use conversion type...
                 # Conversion type sRGB [0,1]
                 if conversion_type == "sRGB [0,1]":
                     rgb_nonlin = get_entries_convert(get_entries, conversion_type)
                     rgb_linear = LSRGBtoSRGB8(rgb_nonlin)
                     hexvals = rgb_to_hex(rgb_linear)
-                    self.hex_box_value.set(hexvals.upper())
+                    self.hex_box_value.set(hexvals.upper())  # Sets hex box value
                     self.colour_preview.config({"background": self.hex_box.get()})  # Adds colour to side box
 
                 # Conversion type sRGB [0,1]
                 if conversion_type == "sRGB8 [0,255]":
                     rgb_nonlin = get_entries_convert(get_entries, conversion_type)
                     hexvals = rgb_to_hex(rgb_nonlin)
-                    self.hex_box_value.set(hexvals.upper())
+                    self.hex_box_value.set(hexvals.upper())  # Sets hex box value
                     self.colour_preview.config({"background": self.hex_box.get()})  # Adds colour to side box
 
                 if conversion_type == "sRGB' [0,1]":
                     rgb_nonlin = get_entries_convert(get_entries, conversion_type)
                     yeet = NLSRGBtoSRGB8(rgb_nonlin)
                     hexvals = rgb_to_hex(yeet)
-                    self.hex_box_value.set(hexvals.upper())
+                    self.hex_box_value.set(hexvals.upper())  # Sets hex box value
                     self.colour_preview.config({"background": self.hex_box.get()})  # Adds colour to side box
 
-        def delete_last(self):
+        # --- Destroy instance and remove from instances list --- #
+        def remove(self):
             Home.RemovableEntry.instances.remove(self)
             self.destroy()
 
-        def remove(self):
-            self.destroy()
-            Home.RemovableEntry.instances.remove(self)
+        # def remove(self):
+        #     self.destroy()
+        #     Home.RemovableEntry.instances.remove(self)
 
     # ----- Class to create entries with placeholder text ----- #
     class EntryWithPlaceholder(tk.Entry):

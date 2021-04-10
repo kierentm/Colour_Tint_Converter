@@ -452,7 +452,7 @@ def on_key_press(event):
     # Escape key
     if event.keycode == 27:
         # Delete last tint frame instance
-        RemovableTint.instances[-1].delete_last()
+        RemovableTint.instances[-1].remove()
         print(RemovableTint.instances)
     # Print keypress for debugging
     # print(f"Key Press - char:{event.keycode}, readable: {event.char}")
