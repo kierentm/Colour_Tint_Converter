@@ -11,34 +11,6 @@ from webcolors import rgb_to_hex
 from PIL import ImageGrab, ImageTk
 from utility_functions import *
 
-# ---- Version 1.0 ----- #
-
-# TODO: Create readme and video
-# TODO: Could create manual file
-
-# TODO: Comment [Jake]
-# TODO: Refactor some names (eg. spin) [Jake]
-# TODO: Remove redundant self. tags (High Risk) [Jake]
-
-# TODO: Optimise imports (High Risk)
-# TODO: Pack into exe binary files and use installer (High Risk)
-
-# TODO: Remove config generation from much of the task
-
-# FIXME: when restarting to change settings, when you use colour picker it crashes
-#  (not happening when I created exe)
-
-# TODO: Github 1.0 release
-# TODO: Github about page
-
-# ---- Version 1.1 ----- #
-# TODO: Save session (json?) (High Risk)
-# TODO: Add group column and reorganize output file (High Risk)
-# TODO: Custom hotkeys (High Risk)
-# TODO: Live preview box for colour picker (High Risk)
-# TODO: Scroll bar (High Risk)
-# TODO: Change default placeholder to 0.0 (High Risk)
-
 
 root = tk.Tk()
 root.geometry("450x500")
@@ -53,56 +25,11 @@ config.read('config.ini')
 titleMode = config.get('main', 'Convert_Type')
 root.title("Colour Tint Converter:  " + titleMode)
 
-if not config.has_section('main'):
+# Checks if ran before and sets default path location to install location
+if not config.has_option('main', 'first_time_setup'):
     # Adds main config section
-    config.add_section('main')
     config.set('main', 'SaveLocation', f'{Path().absolute()}')
-    config.set('main', 'OnTop', '0')
-    config.set('main', 'Convert_Type', 'sRGB [0,1]')
-    config.set('main', 'Colour_Mode', 'dark_mode')
-
-    # Adds dark mode config section
-    config.add_section('dark_mode')
-    config.set('dark_mode', 'btn_clr', '#393a40')
-    config.set('dark_mode', 'btn_clr_act', '#BCBCBC')
-    config.set('dark_mode', 'btn_fg', '#ffffff')
-    config.set('dark_mode', 'btn_font_type', 'Calibri')
-    config.set('dark_mode', 'btn_font_size', '16')
-    config.set('dark_mode', 'bg_clr', '#2f3136')
-    config.set('dark_mode', 'tab_bg_clr', '#45484f')
-    config.set('dark_mode', 'tab_bg_clr_act', '#45484f')
-    config.set('dark_mode', 'entry_bg', '#212426')
-
-    config.set('dark_mode', 'plus_ico', 'UI_Images/Plus_Ico_Dark_Mode.png')
-    config.set('dark_mode', 'minus_ico', 'UI_Images/Minus_Ico_Dark_Mode.png')
-    config.set('dark_mode', 'pipette_ico', 'UI_Images/Pipette_Ico_Dark_Mode.png')
-    config.set('dark_mode', 'export_ico', 'UI_Images/Txt_Ico_Dark_Mode.png')
-    config.set('dark_mode', 'git_ico', 'UI_Images/Github_Ico_Dark_Mode.png')
-    config.set('dark_mode', 'twitter_ico', 'UI_Images/Twitter_Ico_Dark_Mode.png')
-
-    config.set('dark_mode', 'option_menu_mode', 'Dark Mode')
-
-    # Adds light mode config section
-    config.add_section('light_mode')
-    config.set('light_mode', 'btn_clr', '#f0f0f0')
-    config.set('light_mode', 'btn_clr_act', '#ffffff')
-    config.set('light_mode', 'btn_fg', '#0d0d0d')
-    config.set('light_mode', 'btn_font_type', 'Calibri')
-    config.set('light_mode', 'btn_font_size', '16')
-    config.set('light_mode', 'bg_clr', '#f0f0f0')
-    config.set('light_mode', 'tab_bg_clr', '#f0f0f0')
-    config.set('light_mode', 'tab_bg_clr_act', '#ffffff')
-    config.set('light_mode', 'entry_bg', '#f5f5f5')
-
-    config.set('light_mode', 'plus_ico', 'UI_Images/Plus_Ico_Light_Mode.png')
-    config.set('light_mode', 'minus_ico', 'UI_Images/Minus_Ico_Light_Mode.png')
-    config.set('light_mode', 'pipette_ico', 'UI_Images/Pipette_Ico_Light_Mode.png')
-    config.set('light_mode', 'export_ico', 'UI_Images/Txt_Ico_Light_Mode.png')
-    config.set('light_mode', 'git_ico', 'UI_Images/Github_Ico_Light_Mode.png')
-    config.set('light_mode', 'twitter_ico', 'UI_Images/Twitter_Ico_Light_Mode.png')
-
-    config.set('light_mode', 'option_menu_mode', 'Light Mode')
-
+    config.set('main', 'first_time_setup', '1')
     with open('config.ini', 'w') as file:
         config.write(file)
 
