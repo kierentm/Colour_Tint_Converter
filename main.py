@@ -23,10 +23,8 @@ from utility_functions import *
 # TODO: Create readme and video
 # TODO: Could create manual file
 
-# TODO: Remove sus comments
 # TODO: Refactor some names (eg. spin)
 # TODO: Remove redundant self. tags (High Risk)
-# TODO: Add Comments
 # TODO: Optimise imports (High Risk)
 
 # TODO: Pack into exe binary files and use installer (High Risk)
@@ -465,7 +463,7 @@ class About(tk.Frame):
 
         self.donationLink = tk.Label(self.donationFrame, text="Donate", fg="#538cc2", cursor="hand2", bg=bg_clr)
         self.ContactUs = tk.Label(self, text="Contact us at : kajdevelopmentofficial@gmail.com", bg=bg_clr, fg=btn_fg)
-        
+
         self.github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
         self.twitter.bind("<Button-1>", lambda e: self.github_click("https://twitter.com/KajDevelopment"))
         self.donationLink.bind("<Button-1>", lambda e: self.github_click(
@@ -492,7 +490,7 @@ class Hotkeys(tk.Frame):
         # --- Main frames --- #
         tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr, pady=5, padx=4)
 
-        # Add content to about frame
+        # Add content to about frame using to grid to align -
         tk.Label(self, text="Enter", fg=btn_fg, bg=bg_clr).grid(column=0, row=0, sticky='w')
         tk.Label(self, text="-", fg=btn_fg, bg=bg_clr).grid(column=1, row=0, sticky='w')
         tk.Label(self, text="Insert new colour", fg=btn_fg, bg=bg_clr).grid(column=2, row=0, sticky='w')
@@ -510,12 +508,16 @@ class Hotkeys(tk.Frame):
         webbrowser.open_new(url)
 
 
+# --- Settings Class --- #
 class Settings(tk.Frame):
+
+    # Create settings variables, setting values set to default to config value
     on_top_var = tk.IntVar(value=config.get('main', 'OnTop'))
     dark_mode = tk.IntVar()
     dummy1 = tk.IntVar()
     dummy2 = tk.IntVar()
 
+    # Create convert type list and set initial value based on config
     convert_types = [
         "sRGB8 [0,255]",
         "sRGB' [0,1]",
@@ -523,6 +525,7 @@ class Settings(tk.Frame):
     ]
     convert_var = tk.StringVar(value=config.get('main', 'Convert_Type'))
 
+    # Create colour mode list and set initial value based on config
     colour_modes = [
         "Light Mode",
         "Dark Mode"
@@ -532,6 +535,7 @@ class Settings(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs, bg=bg_clr)
 
+        # Generate variables for use in restart warning pop up windows
         self.restart_popup = None
         self.restore_popup = None
 
@@ -575,7 +579,6 @@ class Settings(tk.Frame):
         # Packs frames left
         self.main_settings_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(5, 15))
         self.on_top.pack(side="left")
-        # self.on_top.place()
 
         self.convert_frame.pack(side="top", anchor="nw", fill=tk.X, pady=(0, 15), padx=6)
         self.convert_options.pack(side="left")
@@ -593,17 +596,19 @@ class Settings(tk.Frame):
 
     @staticmethod
     def update_settings_main():
+        # Updates config with new setting automatically from previous trace
         root.attributes('-topmost', Settings.on_top_var.get())
         config.set('main', 'OnTop', f"{Settings.on_top_var.get()}")
         with open('config.ini', 'w') as conf:
             config.write(conf)
 
     def restart_window(self):
+        # Generates warning restart window when choosing to save update to colour mode and conversion type
         self.restart_popup = tk.Toplevel()
         self.restart_popup.attributes('-topmost', True)
-
         self.restart_popup.title("Warning")
 
+        # Inputs warning and packs to top
         question_label = tk.Label(self.restart_popup, fg="red",
                                   text="----------------------- Warning -----------------------\n"
                                        "Saving requires a program restart,\n"
@@ -611,14 +616,17 @@ class Settings(tk.Frame):
                                        "Would you like to restart now?")
         question_label.pack(side="top", fill='x')
 
+        # Creates option buttons which either restart and update setting or return to previous window without update
         button_bonus = tk.Button(self.restart_popup, text="Yes", command=self.update_convert_type_yes)
         button_bonus.pack(fill='x')
 
         button_close = tk.Button(self.restart_popup, text="No", command=self.update_convert_type_no)
         button_close.pack(fill='x')
 
+    # Update config file and restart program
     @staticmethod
     def update_convert_type_yes():
+        # Update config to convert type and colour mode (if statement used as defined as dark/light_mode in config
         config.set('main', 'Convert_Type', f"{Settings.convert_var.get()}")
         if f"{Settings.colour_var.get()}" == "Dark Mode":
             colour_config = "dark_mode"
@@ -627,9 +635,11 @@ class Settings(tk.Frame):
         config.set('main', 'Colour_Mode', colour_config)
         with open('config.ini', 'w') as f:
             config.write(f)
+        # Restarts program to allow update to take effect
         python = executable
         execl(python, python, *argv)
 
+    # Restores lists to current value and closes warning window
     def update_convert_type_no(self):
         self.convert_var.set(config.get('main', 'Convert_Type'))
         self.colour_var.set(config.get(f"{config.get('main', 'Colour_Mode')}", "option_menu_mode"))
@@ -647,7 +657,9 @@ class Settings(tk.Frame):
         # Updates file location box
         self.folder_location.set(f"{config.get('main', 'SaveLocation')}")
 
+    # Warning when selecting restore
     def restore_warning(self):
+        # Generates window and title
         self.restore_popup = tk.Toplevel()
         self.restore_popup.attributes('-topmost', True)
         self.restore_popup.title("Warning")
@@ -659,12 +671,14 @@ class Settings(tk.Frame):
 
         restore_label.pack(side="top", fill='x')
 
+        # Creates option buttons to either restore to default and restart or close warning window
         button_bonus = tk.Button(self.restore_popup, text="Yes", command=self.restore)
         button_bonus.pack(fill='x')
 
         button_close = tk.Button(self.restore_popup, text="No", command=self.restore_popup.destroy)
         button_close.pack(fill='x')
 
+    # Restores config to default and restarts window
     def restore(self):
         config.set('main', 'SaveLocation', f'{Path().absolute()}')
         config.set('main', 'OnTop', '0')
@@ -674,9 +688,9 @@ class Settings(tk.Frame):
             config.write(restore_conf)
 
         self.folder_location.set(f"{config.get('main', 'SaveLocation')}")
-
         self.restore_popup.destroy()
 
+        # Restarts program
         python = executable
         execl(python, python, *argv)
 
