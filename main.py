@@ -6,7 +6,6 @@ __maintainer__ = "Kieren Townley-Moss, Jake Broughton, Alex Todd"
 __email__ = "kajdevelopmentofficial@gmail.comu"
 __status__ = "Development"
 
-
 from pathlib import Path
 import tkinter as tk
 import webbrowser
@@ -195,17 +194,16 @@ class Home(tk.Frame):
         picker.pack(fill="x", side="left", expand=1)
 
         # --- Export --- #
-        self.export_frame = tk.Frame(self, bg=bg_clr, padx=5, pady=5)
-        self.export_btn = tk.Button(self.export_frame, image=export_ico, text="Export .txt", bg=btn_clr,
-                                    fg=btn_fg,
-                                    activebackground=btn_clr_act, command=self.file_write,
-                                    bd="3", relief="raised", height="22", compound="left", font=btn_font)
-        self.export_name = self.EntryWithPlaceholder(self.export_frame, "Item Name", bg=entry_bg, fg=btn_fg,
+        export_frame = tk.Frame(self, bg=bg_clr, padx=5, pady=5)
+        export_btn = tk.Button(export_frame, image=export_ico, text="Export .txt", bg=btn_clr, fg=btn_fg,
+                               activebackground=btn_clr_act, command=self.file_write,
+                               bd="3", relief="raised", height="22", compound="left", font=btn_font)
+        self.export_name = self.EntryWithPlaceholder(export_frame, "Item Name", bg=entry_bg, fg=btn_fg,
                                                      bd="3", relief="raised")
 
         # --- Pack Export --- #
-        self.export_frame.pack(side="bottom", fill=tk.X)
-        self.export_btn.pack(side="right")
+        export_frame.pack(side="bottom", fill=tk.X)
+        export_btn.pack(side="right")
         self.export_name.pack(fill=tk.BOTH, side="left", expand=True)
 
         # --- Pack frames --- #
@@ -247,9 +245,9 @@ class Home(tk.Frame):
     def capture(self, event):  # Auto pass in event details (clicking)
         x, y = event.x, event.y  # Mouse x and y coordinates
         self.tracer_win.destroy()  # Destroys grey window
-        self.image = self.image.crop((x - 1, y - 1, x + 1, y + 1))  # Crops image to 2 x 2 box
-        self.image = self.image.convert('RGB')  # Converts to RGB8
-        rgb_tuple = self.image.getpixel((1, 1))  # Gets SRGB8 of centre pixel
+        image = self.image.crop((x - 1, y - 1, x + 1, y + 1))  # Crops image to 2 x 2 box
+        image = image.convert('RGB')  # Converts to RGB8
+        rgb_tuple = image.getpixel((1, 1))  # Gets SRGB8 of centre pixel
 
         # --- Conversions depending on which setting is chosen --- #
         conversion_type = config.get('main', 'Convert_Type')
