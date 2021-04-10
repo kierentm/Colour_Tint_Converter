@@ -13,21 +13,20 @@ from utility_functions import *
 
 # ---- Version 1.0 ----- #
 
-# FIXME: when restarting to change settings, when you use colour picker it crashes
-#  (not happening when I created exe)
-
-# TODO: Comment
-
-# Group Bonding Moment Stuff
-
 # TODO: Create readme and video
 # TODO: Could create manual file
 
-# TODO: Refactor some names (eg. spin)
-# TODO: Remove redundant self. tags (High Risk)
-# TODO: Optimise imports (High Risk)
+# TODO: Comment [Jake]
+# TODO: Refactor some names (eg. spin) [Jake]
+# TODO: Remove redundant self. tags (High Risk) [Jake]
 
+# TODO: Optimise imports (High Risk)
 # TODO: Pack into exe binary files and use installer (High Risk)
+
+# TODO: Remove config generation from much of the task
+
+# FIXME: when restarting to change settings, when you use colour picker it crashes
+#  (not happening when I created exe)
 
 # TODO: Github 1.0 release
 # TODO: Github about page
