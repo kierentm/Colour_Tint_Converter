@@ -3,7 +3,7 @@
 
 ## About
 
-<img align="left" src="UI_PIC.PNG">
+<img align="left" src="read_me_images/UI_PIC.PNG">
 
 A handy tool for quick grabbing and converting colour tints to hex values. Supports sRGB
 sRGB' and sRGB8. Developed by Kieren Townley-Moss, Jake Broughton and Alex Todd.
