@@ -20,8 +20,7 @@ sRGB' and sRGB8. Developed by Kieren Townley-Moss, Jake Broughton and Alex Todd.
 - Easily make and save colour pallets
 - Convert sRGB [0,1], sRGB' [0,1], sRGB [0,255] to hex values
 - Colour pick directly from your program
-
-
+- Save hex and sRGB value to txt file for reference
 
 ## Installation
 Option 1
