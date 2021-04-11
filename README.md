@@ -27,7 +27,8 @@ Option 1
 1 - Download Colour_Tint_Converter_Installer.exe
 2 - Run installer to select install location and install
 3 - Run ColourTintConverter.exe within install location
-
+  
+  
 Option 2
 1 - Download all files from within GitHub and run ColourTintConverter.exe
 
