@@ -22,7 +22,7 @@ sRGB' and sRGB8. Developed by Kieren Townley-Moss, Jake Broughton and Alex Todd.
 - Colour pick directly from your program
 - Save hex and sRGB value to txt file for reference
 
-\\
+  
 ## Installation
 #Option 1
 1 - Download Colour_Tint_Converter_Installer.exe
