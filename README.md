@@ -1,9 +1,8 @@
 # Colour Tint Converter
 
-## About
-
 <img align="left" src="read_me_images/UI_PIC.PNG">
 
+## About
 A handy tool for quick grabbing and converting colour tints to hex values. Supports sRGB
 sRGB' and sRGB8. Developed by Kieren Townley-Moss, Jake Broughton and Alex Todd.
 
@@ -21,8 +20,8 @@ sRGB' and sRGB8. Developed by Kieren Townley-Moss, Jake Broughton and Alex Todd.
 - Convert sRGB [0,1], sRGB' [0,1], sRGB [0,255] to hex values
 - Colour pick directly from your program
 - Save hex and sRGB value to txt file for reference
-\
-\  
+
+
 ## Installation
 ### Option 1
 1 - Download Colour_Tint_Converter_Installer.exe
