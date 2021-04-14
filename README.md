@@ -31,3 +31,4 @@ sRGB' and sRGB8. Developed by Kieren Townley-Moss, Jake Broughton and Alex Todd.
 1 - Download all files from within GitHub and run ColourTintConverter.exe
 
 ## Changelog
+### v1.0 Initial release - 14/04/21
