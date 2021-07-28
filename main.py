@@ -1,7 +1,7 @@
 # --- Colour Tint Converter 2020 --- #
 __author__ = "Kieren Townley-Moss, Jake Broughton & Alex Todd"
 __credits__ = ["Kieren Townley-Moss", "Jake Broughton", "Alex Todd"]
-__version__ = "1.0.24"
+__version__ = "1.0.1"
 __maintainer__ = "Kieren Townley-Moss, Jake Broughton, Alex Todd"
 __email__ = "kajdevelopmentofficial@gmail.com"
 __status__ = "Production"
