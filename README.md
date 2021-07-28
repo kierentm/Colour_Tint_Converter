@@ -32,3 +32,4 @@ sRGB' and sRGB8. Developed by Kieren Townley-Moss, Jake Broughton and Alex Todd.
 
 ## Changelog
 ### v1.0 Initial release - 14/04/21
+### v1.0.1 Export sRGB Value Bugfix - 28/07/2021. - Fixed issue with exported sRGB value when number was 1.0 or 255. 
