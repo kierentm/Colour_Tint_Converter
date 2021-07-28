@@ -48,7 +48,7 @@ def RGB8toNLSRGB(srgb8):
 def export_clarity(value, conv_type):
     # Converts value over 1 to 1 to make printing make more sense and returns 0 for non numerical ones
     if not conv_type == "sRGB8 [0,255]":
-        if 1.0 < value:
+        if 1.0 <= value:
             return 1.0
         elif 0.0 <= value < 1.0:
             return value
@@ -56,7 +56,7 @@ def export_clarity(value, conv_type):
             return 0.0
     # Converts value over 255 to 255 to make printing make more sense and returns 0 for non numerical ones
     else:
-        if 255 < value:
+        if 255 <= value:
             return 255
         elif 0 <= value < 255:
             return int(value)

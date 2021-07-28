@@ -1,10 +1,13 @@
 # --- Colour Tint Converter 2020 --- #
-__author__ = "Kieren Townley-Moss, Jake Broughton, Alex Todd"
+__author__ = "Kieren Townley-Moss, Jake Broughton & Alex Todd"
 __credits__ = ["Kieren Townley-Moss", "Jake Broughton", "Alex Todd"]
-__version__ = "1.0.0"
+__version__ = "1.0.24"
 __maintainer__ = "Kieren Townley-Moss, Jake Broughton, Alex Todd"
-__email__ = "kajdevelopmentofficial@gmail.comu"
-__status__ = "Development"
+__email__ = "kajdevelopmentofficial@gmail.com"
+__status__ = "Production"
+__github__ = "https://github.com/kierentm/Colour_Tint_Converter"
+__twitter__ = "https://twitter.com/KajDevelopment"
+__donate__ = "https://www.specialeffect.org.uk/get-involved/donate"
 
 from pathlib import Path
 import tkinter as tk
@@ -389,8 +392,8 @@ class About(tk.Frame):
 
         # Add content to about frame
         about_big_text = tk.Label(self, text="Colour Tint Converter\n", font="bold, 20", bg=bg_clr, fg=btn_fg)
-        about_content = tk.Label(self, text="Tool developed by Kieren Townley-Moss, Jake Broughton and "
-                                            "Alex Todd\n\n Version 1.0.23 \n\n Copyright©2021 \n\n", bg=bg_clr,
+        about_content = tk.Label(self, text=f"Tool developed by \n {__author__}"
+                                            f"\n\n Version {__version__} \n\n Copyright©2021 \n\n", bg=bg_clr,
                                  fg=btn_fg)
         about_links = tk.Frame(self, bg=bg_clr)
         donation_frame = tk.Frame(self, bg=bg_clr)
@@ -403,12 +406,11 @@ class About(tk.Frame):
                                     bg=bg_clr, fg=btn_fg)
 
         donation_link = tk.Label(donation_frame, text="Donate", fg="#538cc2", cursor="hand2", bg=bg_clr)
-        contact_us = tk.Label(self, text="Contact us at : kajdevelopmentofficial@gmail.com", bg=bg_clr, fg=btn_fg)
+        contact_us = tk.Label(self, text=f"Contact us at : {__email__}", bg=bg_clr, fg=btn_fg)
 
-        github.bind("<Button-1>", lambda e: self.github_click("https://github.com/kierentm/Colour_Tint_Converter"))
-        twitter.bind("<Button-1>", lambda e: self.github_click("https://twitter.com/KajDevelopment"))
-        donation_link.bind("<Button-1>", lambda e: self.github_click(
-            "https://www.specialeffect.org.uk/get-involved/donate"))
+        github.bind("<Button-1>", lambda e: self.github_click(f"{__github__}"))
+        twitter.bind("<Button-1>", lambda e: self.github_click(f"{__twitter__}"))
+        donation_link.bind("<Button-1>", lambda e: self.github_click(f"{__donate__}"))
 
         # Packs content to about frame
         about_big_text.pack(side="top")
